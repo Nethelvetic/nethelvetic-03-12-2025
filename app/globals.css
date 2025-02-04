@@ -48,10 +48,8 @@ p {
   --text-title-8: 12px;
 
   /* Définition des images de fond personnalisées */
-  bgConteneur: {
-    'bg-gradient': 'linear-gradient(to right, #EB5E57, #4445D2)',
-    'bg-gradient2': 'linear-gradient(to right, #000E59, #AF8FF7)',
-  }
+  --color-bgGradient1: linear-gradient(to right, #EB5E57, #4445D2);
+  --color-bgGradient2: linear-gradient(to right, #000E59, #AF8FF7);
 }
 
 /* Application des tailles de police aux titres */

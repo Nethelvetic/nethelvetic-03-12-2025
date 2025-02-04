@@ -1,0 +1,79 @@
+/* src/app/globals.css */
+
+/* Import du préflight (reset) de Tailwind */
+@import "tailwindcss";
+
+/* Définition des variables CSS */
+:root {
+  --background: #2d3748;
+  --foreground: #cbd5e0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* Styles globaux */
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-open-sans-regular), sans-serif;
+  @apply text-gray-400;
+}
+
+/* Styles pour les titres */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-bebas-neue), sans-serif;
+  @apply text-gray-400;
+}
+
+/* Styles pour les paragraphes */
+p {
+  font-family: var(--font-open-sans-regular), sans-serif;
+}
+
+/* Définition du thème personnalisé */
+@theme {
+  /* Tailles de police personnalisées */
+  --text-title-1: 85px;
+  --text-title-2: 65px;
+  --text-title-3: 46px;
+  --text-title-4: 34px;
+  --text-title-5: 26px;
+  --text-title-6: 20px;
+  --text-title-7: 14px;
+  --text-title-8: 12px;
+
+  /* Définition des images de fond personnalisées */
+  bgConteneur: {
+    'bg-gradient': 'linear-gradient(to right, #EB5E57, #4445D2)',
+    'bg-gradient2': 'linear-gradient(to right, #000E59, #AF8FF7)',
+  }
+}
+
+/* Application des tailles de police aux titres */
+h1 {
+  font-size: var(--text-title-1);
+}
+h2 {
+  font-size: var(--text-title-2);
+}
+h3 {
+  font-size: var(--text-title-3);
+}
+h4 {
+  font-size: var(--text-title-4);
+}
+h5 {
+  font-size: var(--text-title-5);
+}
+h6 {
+  font-size: var(--text-title-6);
+}
+
+.text-title-10 {
+  font-size: var(--text-title-1);
+}

@@ -1,9 +1,10 @@
-import Image from "next/image";
+import React from 'react';
+import PageAccueil from './components/pageVuComponents';
 
 export default function Home() {
   return (
-    <div>
-      <h1>bonjour</h1>
-    </div>
+    <main>
+      <PageAccueil />
+    </main>
   );
 }

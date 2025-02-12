@@ -1,25 +1,11 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
 import { Bebas_Neue, Open_Sans } from "next/font/google";
+import  NavBarH  from "./components/navBar-H";
+import  footer  from "./components/footer";
 import "./globals.css";
+import Footer from "./components/footer";
 
-const BebasNeue = Bebas_Neue({
-  weight: "400",
-  variable: "--font-bebas-neue",
-  subsets: ["latin"],
-});
-
-const openSansRegular = Open_Sans({
-  weight: "400",
-  variable: "--font-open-sans-regular",
-  subsets: ["latin"],
-});
-
-const openSansBold = Open_Sans({
-  weight: "700",
-  variable: "--font-open-sans-bold",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -33,15 +19,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`
-          ${BebasNeue.variable}
-          ${openSansRegular.variable}
-          ${openSansBold.variable}
-          antialiased
-        `}
-      >
-        {children}
+      <body style={{ background: "black" }}>
+        <header>
+        <NavBarH logo="/LogoNeth.png" items={[
+          { title: 'Accueil', link: '/' },
+          { title: 'Communauté', link: '/communauteVIP' },
+          { title: 'Blog', link: '/blog' },
+          { title: 'Contact', link: '/contact' }
+        ]} />
+        </header>
+
+        <main>
+          {children}
+        </main>
+
+        <footer>
+          <Footer/>
+        </footer>
       </body>
     </html>
   );

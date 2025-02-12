@@ -1,12 +1,15 @@
 /* src/app/globals.css */
 
+/* Import de la police Bebas Neue depuis Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 /* Import du préflight (reset) de Tailwind */
 @import "tailwindcss";
 
-/* Définition des variables CSS */
+/* Définition des variables CSS standards */
 :root {
-  --background: #2d3748;
-  --foreground: #cbd5e0;
+  --background: #ffffff;
+  --foreground: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,11 +24,11 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-open-sans-regular), sans-serif;
-  @apply text-gray-400;
+  font-size: 20px;
 }
 
-/* Styles pour les titres */
-h1, h2, h3, h4, h5, h6 {
+/* Styles pour les titres (pour h4, h5, h6 – h1, h2 et h3 sont stylisés séparément) */
+h4, h5, h6 {
   font-family: var(--font-bebas-neue), sans-serif;
   @apply text-gray-400;
 }
@@ -35,9 +38,9 @@ p {
   font-family: var(--font-open-sans-regular), sans-serif;
 }
 
-/* Définition du thème personnalisé */
+/* Définition du thème personnalisé avec @theme */
 @theme {
-  /* Tailles de police personnalisées */
+  /* Tokens de taille (pour référence) */
   --text-title-1: 85px;
   --text-title-2: 65px;
   --text-title-3: 46px;
@@ -47,31 +50,160 @@ p {
   --text-title-7: 14px;
   --text-title-8: 12px;
 
-  /* Définition des images de fond personnalisées */
-  --color-bgGradient1: linear-gradient(to right, #EB5E57, #4445D2);
-  --color-bgGradient2: linear-gradient(to right, #000E59, #AF8FF7);
+  /* Dégradés personnalisés
+     blacks = #000000
+     gray-600 = #4b5563
+     gray-700 = #374151
+     gray-800 = #1F2937
+     gray-950 = #111827
+  */
+  --color-bgGardient1: linear-gradient(to right, #EB5E57, #4445D2);
+  --color-bgGardient2: linear-gradient(to right, #000E59, #AF8FF7);
+  --color-bgGardientNoire: linear-gradient(to right, #1F2937, #111827);
+  --color-bgGardientNoire2: linear-gradient(135deg, #1F2937, #000000);
+
+  /* Nouveau token pour la bordure en dégradé */
+  --color-bordure-gardient: linear-gradient(to right, #EB5E57, #4445D2);
+
+  /* Couleurs */
+  --color-white: #ffffff;
+  --color-border-black: #000000;
+
+  /* Déclaration de la police Bebas Neue */
+  --font-bebas-neue: 'Bebas Neue', sans-serif;
 }
 
-/* Application des tailles de police aux titres */
+/* Style spécifique du h1 */
 h1 {
-  font-size: var(--text-title-1);
-}
-h2 {
-  font-size: var(--text-title-2);
-}
-h3 {
-  font-size: var(--text-title-3);
-}
-h4 {
-  font-size: var(--text-title-4);
-}
-h5 {
-  font-size: var(--text-title-5);
-}
-h6 {
-  font-size: var(--text-title-6);
+  background: var(--color-bgGardient1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--font-bebas-neue), sans-serif;
 }
 
-.text-title-10 {
-  font-size: var(--text-title-1);
+/* Style spécifique du h2 */
+h2 {
+  color: var(--color-white);
+  font-family: var(--font-bebas-neue), sans-serif;
+  -webkit-text-stroke: 0.1px var(--color-border-black);
 }
+
+/* Style spécifique du h3 avec un dégradé sur le texte */
+h3 {
+  background: var(--color-bgGardient1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--font-bebas-neue), sans-serif;
+}
+
+/* Style spécifique du h4 avec une couleur de texte 
+   red-700 = #b91c1c 
+   red-800 = #7f1d1d
+   orange-300 = #fdba74
+   orange-800 = #9a3412
+   rose-800 = #9f1239
+   pink-800 = #9d174d
+*/
+h4 {
+  color: #fdba74; /* red-900 */
+  font-family: var(--font-bebas-neue), sans-serif;
+}
+
+/* h5 et h6 restent sans font-size fixe pour laisser la flexibilité aux container queries */
+
+/* Exemple de classe d'un conteneur utilisant le dégradé */
+.couleurConteneur {
+  background: var(--color-bgGardient1);
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+
+
+/* Classes utilitaires */
+@layer utilities {
+  .bg-bgGardient1 {
+    background: var(--color-bgGardient1);
+  }
+  .bg-bgGardient2 {
+    background: var(--color-bgGardient2);
+  }
+  .bg-bgGardientNoire {
+    background: var(--color-bgGardientNoire);
+  }
+  .bg-bgGardientNoire2 {
+    background: var(--color-bgGardientNoire2);
+  }
+  .bg-white {
+    background: var(--color-white);
+  }
+  .border-black{
+    border: 1px solid var(--color-border-black);
+  }
+  .border-white {
+    background: var(--color-white);
+    border: 1px solid var(--color-border-black);
+  }
+  .border-gardient {
+    border: 4px solid transparent;
+    border-image: var(--color-bordure-gardient) 1;
+  }
+  .border-tb-gardient {
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: none;
+    border-right: none;
+    border-image: var(--color-bordure-gardient) 1 stretch;
+  }
+  .border-b-gardient {
+    border-bottom: 4px solid transparent;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-image: var(--color-bordure-gardient) 1 stretch;
+  }
+}
+
+/* Classes utilitaires pour l'animation */
+@layer utilities {
+  @keyframes slideInSlow {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .animate-slide-in-slow {
+    animation: slideInSlow 3s ease-out forwards;
+  }
+
+  @keyframes fadeOutSlow {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  .animate-fade-out-slow {
+    animation: fadeOutSlow 4s ease-out forwards;
+  }
+}
+

@@ -60,7 +60,9 @@ p {
   --color-bgGardient1: linear-gradient(to right, #EB5E57, #4445D2);
   --color-bgGardient2: linear-gradient(to right, #000E59, #AF8FF7);
   --color-bgGardientNoire: linear-gradient(to right, #1F2937, #111827);
-  --color-bgGardientNoire2: linear-gradient(135deg, #1F2937, #000000);
+  --color-bgGardientNoire2: radial-gradient(ellipse at top, #1F2937 15%, transparent 85%);
+
+
 
   /* Nouveau token pour la bordure en dégradé */
   --color-bordure-gardient: linear-gradient(to right, #EB5E57, #4445D2);
@@ -172,10 +174,10 @@ h4 {
     border-image: var(--color-bordure-gardient) 1 stretch;
   }
   .border-b-gardient {
-    border-bottom: 4px solid transparent;
+    border-bottom: none;
     border-left: none;
     border-right: none;
-    border-top: none;
+    border-top: 4px solid transparent;
     border-image: var(--color-bordure-gardient) 1 stretch;
   }
 }

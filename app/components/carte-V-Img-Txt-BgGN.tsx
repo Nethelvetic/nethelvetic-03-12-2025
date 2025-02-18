@@ -28,7 +28,7 @@ const CarteVImgTxtBgGN: React.FC<CarteVImgTxtBgGNProps> = ({ imageSrc, title, ch
       
       {/*----------------1.2 DEBUT CONTENEUR  titre   */}
       <div>
-        <h3 className="font-bold text-4xl md:text-7xl my-6">
+        <h3 className="font-bold text-3xl md:text-7xl my-6">
           {title}
         </h3>
       </div>

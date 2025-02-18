@@ -22,7 +22,7 @@ const CarteHImgTxtBgG: React.FC<CarteHImgTxtBgGProps> = ({ imageSrc, title, chil
     <ContainerBgG>
         {/*----------------1.1 DEBUT CONTENEUR texte et titre */}
         <div className="w-full md:w-2/3  flex flex-col">
-          <h4 className="font-bold text-4xl md:text-7xl mb-4 md:mb-10">
+          <h4 className="font-bold text-3xl md:text-7xl mb-4 md:mb-10">
             {title}
           </h4>
           <p className="text-sm md:text-xl">

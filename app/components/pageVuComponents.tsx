@@ -10,7 +10,7 @@ import BtnSmBgG from './btn-Sm-BgG';
 
 
 
-const PageAccueil: React.FC = () => {
+const PageToutComponents: React.FC = () => {
   return (
     <div>
 
@@ -125,4 +125,4 @@ const PageAccueil: React.FC = () => {
   );
 };
 
-export default PageAccueil;
+export default PageToutComponents;

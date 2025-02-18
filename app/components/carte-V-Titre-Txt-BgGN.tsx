@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react';
-import ContainerBgN from './cont-BgN';
+import ContainerBgGN from './cont-BgGN';
 
-interface CarteVTitreTxtBgNProps {
+interface CarteVTitreTxtBgGNProps {
   title: string;
   children?: ReactNode;
 }
 
-const CarteVTitreTxtBgN: React.FC<CarteVTitreTxtBgNProps> = ({ title, children }) => {
+const CarteVTitreTxtBgGN: React.FC<CarteVTitreTxtBgGNProps> = ({ title, children }) => {
 
 
 
@@ -17,11 +17,11 @@ const CarteVTitreTxtBgN: React.FC<CarteVTitreTxtBgNProps> = ({ title, children }
   return (
 
      //-----------------------------1 DEBUT CONTAINER-BgN
-     <ContainerBgN>
+     <ContainerBgGN >
       
         {/*----------------1.1 DEBUT CONTENEUR titre  */}
         <div>
-            <h3 className="font-bold text-3xl md:text-7xl my-6">
+            <h3 className="font-bold text-3xl md:text-7xl text-center my-6">
               {title}
             </h3>
           </div>
@@ -32,9 +32,9 @@ const CarteVTitreTxtBgN: React.FC<CarteVTitreTxtBgNProps> = ({ title, children }
           {children}
         </div>
      
-    </ContainerBgN>
+    </ContainerBgGN>
     //-----------------------------1 FIN CONTAINER-BgN
   );
 };
 
-export default CarteVTitreTxtBgN;
+export default CarteVTitreTxtBgGN;

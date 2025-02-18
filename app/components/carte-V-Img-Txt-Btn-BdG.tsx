@@ -2,14 +2,17 @@
 
 import React, {  ReactNode } from 'react';
 import ContainerBdG from './cont-BdG';
+import BtnLgBgG from './btn-Lg-BgG';
 
-interface CarteVImgTxtBdGProps {
+interface CarteVImgTxtBtnBdGProps {
   imageSrc: string;
   title: string;
+  route: string;
+  btnTxt?: string;
   children: ReactNode;
 }
 
-const CarteVImgTxtBdG: React.FC<CarteVImgTxtBdGProps> = ({ imageSrc, title, children }) => {
+const CarteVImgTxtBtnBdG: React.FC<CarteVImgTxtBtnBdGProps> = ({ imageSrc, title, route, btnTxt, children }) => {
 
   
   //---------------------------------------------------------------------
@@ -42,9 +45,17 @@ const CarteVImgTxtBdG: React.FC<CarteVImgTxtBdGProps> = ({ imageSrc, title, chil
           {children}
         </p>
       </div>
+
+
+       {/*----------------1.4 DEBUT CONTENEUR texte/children   */}
+       <div className="w-full pt-6 ">
+        <BtnLgBgG route={route}>
+            {btnTxt}
+        </BtnLgBgG>
+      </div>
     </ContainerBdG>
     //-----------------------------1 DEBUT CONTAINER-BdG
   );
 };
 
-export default CarteVImgTxtBdG;
+export default CarteVImgTxtBtnBdG;

@@ -1,5 +1,5 @@
 import React from 'react';
-import PageCreerEntreprise from '../components/page-C-Entr';
+import PageEvenement from '../components/page-Evenements';
 
 
 export default function CreationEntreprise() {
@@ -10,7 +10,7 @@ export default function CreationEntreprise() {
 //--------------------------------------------------------------------- 
   return (
     <div>
-      <PageCreerEntreprise />
+      <PageEvenement  />
     </div>
   );
 }

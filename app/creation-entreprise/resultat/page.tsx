@@ -1,5 +1,5 @@
 import React from 'react';
-import PageCreerEntreprise from '../components/page-C-Entr';
+import PageQuestionnaireResult from '../../components/page-C-Entr-Quest-Result';
 
 
 export default function CreationEntreprise() {
@@ -7,10 +7,10 @@ export default function CreationEntreprise() {
 
 //---------------------------------------------------------------------
 //------------------------3 Début affichage ---------------------------
-//--------------------------------------------------------------------- 
+//---------------------------------------------------------------------
   return (
     <div>
-      <PageCreerEntreprise />
+      <PageQuestionnaireResult />
     </div>
   );
 }

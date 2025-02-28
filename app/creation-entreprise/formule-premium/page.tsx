@@ -1,5 +1,5 @@
 import React from 'react';
-import PageCreerEntreprise from '../components/page-C-Entr';
+import PageCrEntrFormuPremium from '../../components/page-C-Entr-Formu_Premium';
 
 
 export default function CreationEntreprise() {
@@ -10,7 +10,7 @@ export default function CreationEntreprise() {
 //--------------------------------------------------------------------- 
   return (
     <div>
-      <PageCreerEntreprise />
+      <PageCrEntrFormuPremium    />
     </div>
   );
 }

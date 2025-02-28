@@ -1,16 +1,17 @@
 import React from 'react';
-import PageCreerEntreprise from '../components/page-C-Entr';
+import PageCommunaute from '../components/page-Communaute';
 
 
-export default function CreationEntreprise() {
+export default function Communaute() {
 
 
 //---------------------------------------------------------------------
 //------------------------3 Début affichage ---------------------------
 //--------------------------------------------------------------------- 
   return (
-    <div>
-      <PageCreerEntreprise />
-    </div>
+      <div>
+      <PageCommunaute/>
+      </div>
+  
   );
-}
+};

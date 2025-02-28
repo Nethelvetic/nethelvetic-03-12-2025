@@ -1,6 +1,6 @@
 import React from 'react';
 import CarteHImgTxtBgG from './carte-H-Img-Txt-BgG';
-import CarteHImgTxtBdG from './carte-V-Img-Txt-BdG';
+import CarteVImgTxtBdG from './carte-V-Img-Txt-BdG';
 import CarteVImgTxtBgGN from './carte-V-Img-Txt-BgGN';
 import CarteH3xCarteBdG from './carte-H-xxCarte-BdG';
 import CarteHxxCarteBtnBdG from './carte-H-xxCarte-Btn-BdG';
@@ -71,7 +71,7 @@ const cardData = [
 
         {/*-----------------------------3 DEBUT CONTENEUR btn-Sm-BgG */}
         <div className='p-6'>
-            <BtnSmBgG route='/pageAcceuil'>
+            <BtnSmBgG route='/communaute'>
               Rejoindre la communauté 
             </BtnSmBgG>
         </div>
@@ -114,15 +114,6 @@ const cardData = [
         {/*-----------------------------6 DEBUT CONTENEUR carte-H-xxCarteBtnBdG */}
         <div className='p-6'>
             <CarteHxxCarteBtnBdG cards={cardData} />
-        </div>
-
-
-
-        {/*-----------------------------7 DEBUT CONTENEUR carte-Img-Txt-Bdg */}
-        <div>
-            <CarteHImgTxtBdG imageSrc='/jeroNum651Bg.png' title='Petit test titre '>
-                aléjsfdé  fjaélfkjéak féalf jéaljkf éljf fjélak fjéaljkf lakj aléjsfdé  fjaélfkjéak féalf jéaljkf éljf fjélak fjéaljkf lakj aléjsfdé  fjaélfkjéak féalf jéaljkf éljf fjélak fjéaljkf lakj aléjsfdé  fjaélfkjéak féalf jéaljkf éljf fjélak fjéaljkf lakj aléjsfdé  fjaélfkjéak féalf jéaljkf éljf fjélak fjéaljkf lakj aléjsfdé  fjaélfkjéak féalf jéaljkf éljf fjélak fjéaljkf lakj aléjsfdé  fjaélfkjéak féalf jéaljkf éljf fjélak fjéaljkf lakj aléjsfdé  fjaélfkjéak féalf jéaljkf éljf fjélak fjéaljkf lakj aléjsfdé  fjaélfkjéak féalf jéaljkf éljf fjélak fjéaljkf lakj aléjsfdé  fjaélfkjéak féalf jéaljkf éljf fjélak fjéaljkf lakj aléjsfdé  fjaélfkjéak féalf jéaljkf éljf fjélak fjéaljkf lakj 
-            </CarteHImgTxtBdG>
         </div>
     </div>
 

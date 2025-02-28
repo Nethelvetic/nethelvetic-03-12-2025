@@ -38,8 +38,7 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
           <a 
             key={index} 
             href={item.link} 
-            className="text-white hover:text-gray-200 font-openSansRegular"
-          >
+            className="text-white hover:text-gray-200 font-openSansRegular">
             {item.title}
           </a>
         ))}
@@ -49,8 +48,7 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
       <div className="md:hidden">
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="text-white focus:outline-none"
-        >
+          className="text-white focus:outline-none" >
           ☰
         </button>
       </div>

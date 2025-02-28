@@ -3,7 +3,7 @@ import ContainerBgGN from './cont-BgGN';
 
 interface CarteVImgTxtBgGNProps {
   imageSrc: string;
-  title: string;
+  title?: string;
   children: ReactNode;
 }
 

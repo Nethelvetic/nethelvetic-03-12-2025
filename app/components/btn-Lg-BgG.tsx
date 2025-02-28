@@ -1,40 +1,41 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import ContainerBtnLgBgG from './cont-Btn-Lg-BgG';
 import { useRouter } from 'next/navigation';
 
 interface BtnLgBgGProps {
-  route: string;
+  route?: string;
+  externalUrl?: string; // Lien externe ajouté
   children: React.ReactNode;
 }
 
-const BtnLgBgG: React.FC<BtnLgBgGProps> = ({ route, children}) => {
+const BtnLgBgG: React.FC<BtnLgBgGProps> = ({ route, externalUrl, children }) => {
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique  ---------------------
   //---------------------------------------------------------------------
-
   const router = useRouter();
-
-
-
 
   //---------------------------------------------------------------------
   //------------------------2 Début comportement  -----------------------
   //---------------------------------------------------------------------
   const onClick = () => {
-    router.push(route);
+    // Navigation interne sur une page de votre site, si la route existe
+    if (route) {
+      router.push(route);
+    }
+    // Ouverture du lien externe dans un nouvel onglet, si l'URL existe
+    if (externalUrl) {
+      window.open(externalUrl, '_blank');
+    }
   };
-
-
-
 
   //---------------------------------------------------------------------
   //------------------------3 Début affichage  --------------------------
   //---------------------------------------------------------------------
   return (
     <ContainerBtnLgBgG>
-      <button className='w-full h-full'  onClick={onClick}>
+      <button className='w-full h-full' onClick={onClick}>
         {children}
       </button>
     </ContainerBtnLgBgG>

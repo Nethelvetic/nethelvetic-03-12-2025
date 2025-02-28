@@ -1,8 +1,8 @@
 "use client";
 
 import React, { ReactNode } from 'react';
-import CarteVImgTxtBdG from './carte-V-Img-Txt-BdG';
 import ContainerBgN from './cont-BgN';
+import CarteVImgTxtBdG from './carte-V-Img-Txt-BdG';
 
 interface CarteData {
   imageSrc: string;
@@ -10,17 +10,26 @@ interface CarteData {
   children: ReactNode;
 }
 
-interface CarteH3xCarteBdGProps {
+interface CarteHxxCarteBtnBdGProps {
   cards: CarteData[];
 }
 
-const CarteH3xCarteBdG: React.FC<CarteH3xCarteBdGProps> = ({ cards }) => {
+const CarteHxxCarteBdG: React.FC<CarteHxxCarteBtnBdGProps> = ({ cards }) => {
   return (
     <ContainerBgN>
-      <div className='flex flex-col md:flex-row w-full'>
+      <div
+        className="w-full gap-6 mx-auto"
+        style={{ 
+          display: 'grid', 
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          justifyContent: 'center'
+        }}
+      >
         {cards.map((card, index) => (
-          <div key={index} className='p-6 flex-1 min-w-0'>
-            <CarteVImgTxtBdG imageSrc={card.imageSrc} title={card.title}>
+          <div key={index} className="p-6">
+            <CarteVImgTxtBdG 
+              imageSrc={card.imageSrc}
+              title={card.title} >
               {card.children}
             </CarteVImgTxtBdG>
           </div>
@@ -30,4 +39,4 @@ const CarteH3xCarteBdG: React.FC<CarteH3xCarteBdGProps> = ({ cards }) => {
   );
 };
 
-export default CarteH3xCarteBdG;
+export default CarteHxxCarteBdG;

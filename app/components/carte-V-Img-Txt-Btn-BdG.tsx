@@ -7,12 +7,13 @@ import BtnLgBgG from './btn-Lg-BgG';
 interface CarteVImgTxtBtnBdGProps {
   imageSrc: string;
   title: string;
-  route: string;
+  route?: string;
+  externalUrl?: string;
   btnTxt?: string;
   children: ReactNode;
 }
 
-const CarteVImgTxtBtnBdG: React.FC<CarteVImgTxtBtnBdGProps> = ({ imageSrc, title, route, btnTxt, children }) => {
+const CarteVImgTxtBtnBdG: React.FC<CarteVImgTxtBtnBdGProps> = ({ imageSrc, title, route, externalUrl, btnTxt, children }) => {
 
   
   //---------------------------------------------------------------------
@@ -33,7 +34,7 @@ const CarteVImgTxtBtnBdG: React.FC<CarteVImgTxtBtnBdGProps> = ({ imageSrc, title
       
       {/*----------------1.2 DEBUT CONTENEUR  titre   */}
       <div>
-        <h3 className="font-bold text-3xl text-center md:text-7xl my-6">
+        <h3 className="font-bold text-3xl text-center md:text-6xl my-6">
           {title}
         </h3>
       </div>
@@ -49,7 +50,7 @@ const CarteVImgTxtBtnBdG: React.FC<CarteVImgTxtBtnBdGProps> = ({ imageSrc, title
 
        {/*----------------1.4 DEBUT CONTENEUR texte/children   */}
        <div className="w-full pt-6 ">
-        <BtnLgBgG route={route}>
+        <BtnLgBgG route={route} externalUrl={externalUrl}>
             {btnTxt}
         </BtnLgBgG>
       </div>

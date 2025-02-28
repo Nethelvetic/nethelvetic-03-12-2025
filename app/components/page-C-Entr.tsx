@@ -12,6 +12,8 @@ import BtnSmBgG from './btn-Sm-BgG';
 
 
 
+
+
 const PageCreerEntreprise: React.FC = () => {
 
 //---------------------------------------------------------------------
@@ -19,18 +21,18 @@ const PageCreerEntreprise: React.FC = () => {
 //---------------------------------------------------------------------
 const cardData = [
     {
-      route:"/",
+      route:"/creation-entreprise/formule-gratuite",
       btnTxt:"Découvrir",
       imageSrc: '/chimieFioleBg.png',
       title: 'Formule gratuite',
-      children: <p>Vous êtes sûr de vous et maîtrisez l’essentiel ? Débutez immédiatement, gratuitement, via notre plateforme automatisée. Obtenez rapidement votre statut d’indépendant, sans intervention humaine.</p>,
+      children: <p>Vous êtes sûr de vous et maîtrisez l’essentiel ? Débutez immédiatement, via une demande auprès d'une caisse de compensation AVS.</p>,
     },
     {
-      route:"/",
+      route:"/creation-entreprise/formule-premium",
       btnTxt:"Découvrir",
       imageSrc: '/chimieFiolesBg.png',
       title: 'Formule Premium',
-      children: <p>Vous voulez un lancement pro et complet (nom, logo, site, formalités) ? Optez pour notre pack d’accompagnement personnalisé. Nous vous tenons la main à chaque étape pour une création réussie et un branding cohérent.</p>,
+      children: <p>Idéal si vous voulez un soutien complet pour éviter les pièges.</p>,
     },
   ];
 
@@ -43,7 +45,7 @@ const cardData = [
     <div>
          {/*-----------------------------1 DEBUT CONTENEUR carte-H-Img-Titre-BgN */}
         <div className='p-6'>
-            <CarteVImgTitreBgN imageSrc='/jeroNum801Bg.png' title='Devenez Indépendant en Suisse, Sans Stress'/>
+            <CarteVImgTitreBgN imageSrc='/jeroNum1010Bg.png' title='Devenez Indépendant en Suisse, Sans Stress'/>
         </div>
 
 
@@ -64,7 +66,7 @@ const cardData = [
 
         {/*-----------------------------3 DEBUT CONTENEUR btn-Sm-BgG */}
         <div className='p-6'>
-            <BtnSmBgG route='/pageAcceuil'>
+            <BtnSmBgG route='/creation-entreprise/questionnaire'>
               Faire le test 
             </BtnSmBgG>
         </div>

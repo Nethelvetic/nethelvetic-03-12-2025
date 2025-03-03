@@ -5,7 +5,7 @@ import ContainerBgN from './cont-BgN';
 import CarteVImgTxtBdG from './carte-V-Img-Txt-BdG';
 
 interface CarteData {
-  imageSrc: string;
+  imageSrc?: string;
   title: string;
   children: ReactNode;
 }
@@ -28,7 +28,7 @@ const CarteHxxCarteBdG: React.FC<CarteHxxCarteBtnBdGProps> = ({ cards }) => {
         {cards.map((card, index) => (
           <div key={index} className="p-6">
             <CarteVImgTxtBdG 
-              imageSrc={card.imageSrc}
+              imageSrc={card.imageSrc || ""}  // Valeur par défaut si undefined
               title={card.title} >
               {card.children}
             </CarteVImgTxtBdG>

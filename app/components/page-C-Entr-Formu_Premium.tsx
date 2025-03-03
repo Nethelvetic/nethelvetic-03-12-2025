@@ -23,9 +23,9 @@ const PageCreerEntrPremium: React.FC = () => {
 const cardData = [
   {
     route:"/creation-entreprise/formule-gratuite",
-    btnTxt:"Découvrir",
+    btnTxt:"Réserver mon entretien",
     imageSrc: '/jeroNum631.jpg',
-    title: 'Entretien Personnel',
+    title: 'Entretien Personnel (350 CHF)',
     children: <p>Un appel vidéo de 60 min pour clarifier votre projet.</p>,
   },
   {

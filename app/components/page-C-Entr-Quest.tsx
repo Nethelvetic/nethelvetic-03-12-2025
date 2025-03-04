@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import CarteVTitreTxtBgGN from './carte-V-Titre-Txt-BgGN';
+import CarteVTitreTxtBgGN from './cart-V-Titre-Txt-BgGN';
 import { useQuestionnaireStore } from "../util/questionnaireStore"; // Adaptez le chemin selon votre projet
 
 interface Choice {

@@ -1,4 +1,5 @@
 import React from 'react';
+import CarteHImgTxtBdgBdG from '../../components/cart-H-Img-Txt-Btn-BdG';
 
 type Props = {
   params: {
@@ -42,10 +43,17 @@ export default function DatePage({ params }: Props) {
   //------------------------2 Début affichage  ---------------------------
   //---------------------------------------------------------------------
   return (
+
     <div>
       {/* Espace entre les sections */}
       <div className="h-10 md:h-25"></div>
 
+
+
+
+
+
+      {/*-----------------------------5 DEBUT CONTENEUR carte-H-3xCarte */}
       <h1 className="text-2xl font-bold text-center">Page de date : {dateId}</h1>
 
       <div className="max-w-2xl mx-auto p-4">

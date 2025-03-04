@@ -2,11 +2,14 @@
 
 import React, { ReactNode } from 'react';
 import ContainerBgN from './cont-BgN';
-import CarteVImgTxtBdG from './carte-V-Img-Txt-BdG';
+import CarteVImgTxtBtnBdG from './cart-V-Img-Txt-Btn-BdG';
 
 interface CarteData {
-  imageSrc?: string;
+  imageSrc: string;
   title: string;
+  route?: string;
+  externalUrl?: string;
+  btnTxt: string;
   children: ReactNode;
 }
 
@@ -14,7 +17,7 @@ interface CarteHxxCarteBtnBdGProps {
   cards: CarteData[];
 }
 
-const CarteHxxCarteBdG: React.FC<CarteHxxCarteBtnBdGProps> = ({ cards }) => {
+const CarteHxxCarteBtnBdG: React.FC<CarteHxxCarteBtnBdGProps> = ({ cards }) => { 
   return (
     <ContainerBgN>
       <div
@@ -27,11 +30,15 @@ const CarteHxxCarteBdG: React.FC<CarteHxxCarteBtnBdGProps> = ({ cards }) => {
       >
         {cards.map((card, index) => (
           <div key={index} className="p-6">
-            <CarteVImgTxtBdG 
-              imageSrc={card.imageSrc || ""}  // Valeur par défaut si undefined
-              title={card.title} >
+            <CarteVImgTxtBtnBdG
+              imageSrc={card.imageSrc}
+              title={card.title}
+              route={card.route}
+              externalUrl={card.externalUrl}
+              btnTxt={card.btnTxt}
+            >
               {card.children}
-            </CarteVImgTxtBdG>
+            </CarteVImgTxtBtnBdG>
           </div>
         ))}
       </div>
@@ -39,4 +46,4 @@ const CarteHxxCarteBdG: React.FC<CarteHxxCarteBtnBdGProps> = ({ cards }) => {
   );
 };
 
-export default CarteHxxCarteBdG;
+export default CarteHxxCarteBtnBdG;

@@ -1,9 +1,9 @@
 import React from 'react';
-import CarteVImgTitreBgN from './carte-V-Img-Titre-BgN';
-import CarteVTitreTxtBgGN from './carte-V-Titre-Txt-BgGN';
-import CarteVImgTxtBgGN from './carte-V-Img-Txt-BgGN';
-import CarteHxxCarteBtnBdG from './carte-H-xxCarte-Btn-BdG';
-import CarteVImgTxtBdG from './carte-V-Img-Txt-BdG';
+import CarteVImgTitreBgN from './cart-V-Img-Titre-BgN';
+import CarteVTitreTxtBgGN from './cart-V-Titre-Txt-BgGN';
+import CarteVImgTxtBgGN from './cart-V-Img-Txt-BgGN';
+import CarteHxxCarteBtnBdG from './cart-H-xxCarte-Btn-BdG';
+import CarteVImgTxtBdG from './cart-V-Img-Txt-BdG';
 import BtnSmBgG from './btn-Sm-BgG';
 
 

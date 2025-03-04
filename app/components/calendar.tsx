@@ -12,6 +12,8 @@ const MonthCalendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const router = useRouter();
 
+
+
   //---------------------------------------------------------------------
   //------------------------2 Début comportement ------------------------
   //---------------------------------------------------------------------
@@ -57,6 +59,8 @@ const MonthCalendar: React.FC = () => {
     // Redirection vers la page dynamique app/date/[dateId]/page.tsx
     router.push(`/date/${formattedDate}`);
   };
+
+
 
   //---------------------------------------------------------------------
   //------------------------3 Début affichage ---------------------------

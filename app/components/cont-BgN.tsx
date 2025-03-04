@@ -17,7 +17,7 @@ const ContanerBgN: React.FC<ContanerBgNProps> = ({ children }) => {
     <div className="min-h-24 md:min-h-32 max-w-5xl mx-auto rounded-lg  bg-black  overflow-hidden">
 
       {/*--------1.1 DEBUT container texte/children   */}
-      <div className="flex flex-col justify-center items-center p-3 md:p-5  rounded-lg">
+      <div className="flex flex-col justify-center items-center  rounded-lg">
         {children}
       </div>
     </div>

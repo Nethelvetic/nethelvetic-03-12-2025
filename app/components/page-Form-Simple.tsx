@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import CarteVImgTxtBgGN from './carte-V-Img-Txt-BgGN';
+import CarteVImgTxtBgGN from './cart-V-Img-Txt-BgGN';
 import ContBtnLgBgG from './cont-Btn-Lg-BgG';
 
 interface FormData {

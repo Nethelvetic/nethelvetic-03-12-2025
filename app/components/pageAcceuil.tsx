@@ -1,12 +1,12 @@
 import React from 'react';
-import CarteHImgTxtBgG from './carte-H-Img-Txt-BgG';
-import CarteVImgTxtBdG from './carte-V-Img-Txt-BdG';
-import CarteVImgTxtBgGN from './carte-V-Img-Txt-BgGN';
-import CarteH3xCarteBdG from './carte-H-xxCarte-BdG';
-import CarteHxxCarteBtnBdG from './carte-H-xxCarte-Btn-BdG';
-import CarteVTitreTxtBgN from './carte-V-Titre-Txt-BgN';
-import CarteVTitreTxtBgGN from './carte-V-Titre-Txt-BgGN';
-import CarteVImgTitreBgN from './carte-V-Img-Titre-BgN';
+import CarteHImgTxtBgG from './cart-H-Img-Txt-BgG';
+import CarteVImgTxtBdG from './cart-V-Img-Txt-BdG';
+import CarteVImgTxtBgGN from './cart-V-Img-Txt-BgGN';
+import CarteH3xCarteBdG from './cart-H-xxCarte-BdG';
+import CarteHxxCarteBtnBdG from './cart-H-xxCarte-Btn-BdG';
+import CarteVTitreTxtBgN from './cart-V-Titre-Txt-BgN';
+import CarteVTitreTxtBgGN from './cart-V-Titre-Txt-BgGN';
+import CarteVImgTitreBgN from './cart-V-Img-Titre-BgN';
 import BtnLgBgG from './btn-Lg-BgG';
 import BtnSmBgG from './btn-Sm-BgG';
 
@@ -72,7 +72,7 @@ const cardData = [
         {/*-----------------------------3 DEBUT CONTENEUR btn-Sm-BgG */}
         <div className='p-6'>
             <BtnSmBgG route='/communaute'>
-              Rejoindre la communauté 
+              Rejoins nous 
             </BtnSmBgG>
         </div>
 

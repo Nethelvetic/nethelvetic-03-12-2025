@@ -1,8 +1,8 @@
 import React from 'react';
-import Calendar from '../components/calendar';
+import PageFormation from '../components/page-formation';
 
 
-export default function CreationEntreprise() {
+export default function Formation() {
 
 
 //---------------------------------------------------------------------
@@ -10,7 +10,8 @@ export default function CreationEntreprise() {
 //--------------------------------------------------------------------- 
   return (
     <div>
-      <Calendar  />
+      <div className="h-10 md:h-20"></div>
+      <PageFormation/>
     </div>
   );
 }

@@ -25,6 +25,7 @@ export default function RootLayout({
             items={[
               { title: "Accueil", link: "/" },
               { title: "Communauté", link: "/communaute" },
+              { title: "Formation", link: "/formation" },
               { title: "Blog", link: "/blog" },
               { title: "Contact", link: "/contact" },
             ]}

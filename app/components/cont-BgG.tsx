@@ -48,10 +48,10 @@ const ContanerHBg: React.FC<ContanerHBgProps> = ({ children }) => {
     //-------------------------1 DEBUT CONTAINER PRINCIPALE
       <div
         ref={containerRef}
-        className={`min-h-24 md:min-h-32 max-w-5xl mx-auto rounded-lg bg-bgGardient1 ${isVisible ? "animate-slide-in-slow" : "animate-fade-out-slow"}`}>
+        className={`min-h-23  max-w-5xl mx-auto rounded-lg bg-bgGardient1 ${isVisible ? "animate-slide-in-slow" : "animate-fade-out-slow"}`}>
 
         {/*--------1.1 DEBUT CONTENEUR texte/children   */}
-        <div className="flex flex-col items-center p-3 md:p-5  md:p-10rounded-lg">
+        <div className="w-full flex flex-col items-center md:p-10rounded-lg">
           {children}
         </div>
       </div>

@@ -48,10 +48,10 @@ const ContanerBdG: React.FC<ContanerBdGProps> = ({ children }) => {
     //-------------------------1 DEBUT CONTAINER PRINCIPALE
     <div 
       ref={containerRef}
-      className={`min-h-64 md:min-h-96 max-w-5xl mx-auto rounded-lg border border-b-gardient bg-black ${isVisible ? "animate-slide-in-slow" : "animate-fade-out-slow"}`}>
+      className={`min-h-24  max-w-5xl mx-auto rounded-lg border border-b-gardient bg-black ${isVisible ? "animate-slide-in-slow" : "animate-fade-out-slow"}`}>
 
       {/*--------1.1 DEBUT CONTENEUR texte/children   */}
-      <div className="flex flex-col justify-center items-center p-3 md:p-5 rounded-lg">
+      <div className="w-full flex flex-col justify-center items-center rounded-lg">
         {children}
       </div>
     </div>

@@ -27,7 +27,8 @@ export default function RootLayout({
               { title: "Accueil", link: "/" },
               { title: "Communauté", link: "/communaute",
                 subItems: [
-                  { title: "Evenements", link: "/evenements" },
+                  { title: "Bienvenue", link: "/communaute" },
+                  { title: "Evénements", link: "/evenements" },
                 ],
                },
               {
@@ -40,7 +41,6 @@ export default function RootLayout({
               },
               { title: "Blog", link: "/blog" },
               { title: "Contact", link: "/contact" },
-              { title: "Admin", link: "/admin" },
             ]}
           />
         </header>

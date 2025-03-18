@@ -25,14 +25,14 @@ const cardData = [
       btnTxt:"Découvrir",
       imageSrc: '/chimieFioleBg.png',
       title: 'Formule gratuite',
-      children: <p>Vous êtes sûr de vous et maîtrisez l’essentiel ? Débutez immédiatement, via une demande auprès d'une caisse de compensation AVS.</p>,
+      children: "Vous êtes sûr de vous et maîtrisez l’essentiel ? Débutez immédiatement, via une demande auprès d'une caisse de compensation AVS.",
     },
     {
       route:"/creation-entreprise/formule-premium",
       btnTxt:"Découvrir",
       imageSrc: '/chimieFiolesBg.png',
       title: 'Formule Premium',
-      children: <p>Idéal si vous voulez un soutien complet pour éviter les pièges.</p>,
+      children: "Idéal si vous voulez un soutien complet pour éviter les pièges.",
     },
   ];
 

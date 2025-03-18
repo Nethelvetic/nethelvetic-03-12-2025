@@ -26,21 +26,21 @@ const cardData = [
     btnTxt:"Réserver mon entretien",
     imageSrc: '/jeroNum631.jpg',
     title: 'Entretien Personnel (350 CHF)',
-    children: <p>Un appel vidéo de 60 min pour clarifier votre projet.</p>,
+    children: "Un appel vidéo de 60 min pour clarifier votre projet.",
   },
   {
-    route:"/formation",
+    route:"/formations",
     btnTxt:"Découvrir",
     imageSrc: '/jeroNum621.jpg',
     title: 'Formation Collective',
-    children: <p>Apprendre à moindre coût, dans une ambiance collaborative.</p>,
+    children: "Apprendre à moindre coût, dans une ambiance collaborative.",
   },
   {
     route:"/creation-entreprise/formule-premium",
     btnTxt:"Découvrir",
     imageSrc: '/jeroNum611.jpg',
     title: 'Ressources Gratuites',
-    children: <p>Guides PDF, vidéos pour approfondir vos connaissances</p>,
+    children: "Guides PDF, vidéos pour approfondir vos connaissances.",
   },
 ];
 

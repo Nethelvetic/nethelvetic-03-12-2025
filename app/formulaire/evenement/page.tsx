@@ -1,17 +1,16 @@
 import React from 'react';
-import PageFormation from '../components/page-formation';
+import FormSimple from '../../components/form-Simple';
 
 
-export default function Formation() {
+export default function FormulaireEvenments() {
 
 
 //---------------------------------------------------------------------
 //------------------------3 Début affichage ---------------------------
 //--------------------------------------------------------------------- 
   return (
-    <div>
-      <div className="h-10 md:h-20"></div>
-      <PageFormation/>
+    <div className="w-full md:w-5xl mx-auto">
+        <FormSimple />
     </div>
   );
 }

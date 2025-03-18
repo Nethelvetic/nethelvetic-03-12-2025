@@ -149,10 +149,6 @@ const QuestionnaireIndependant: React.FC = () => {
   return (
     <div>
 
-        {/*-----------0 DEBUT espace entre les sections */}
-        <div className="h-10 md:h-20"></div>
-
-
         {/*-----------------------------1 DEBUT CONTENEUR carte-V-TitreBgGN*/}
         <div className='p-6'>
             <CarteVTitreTxtBgGN title={`Question ${currentStep + 1} sur ${questions.length}`}>

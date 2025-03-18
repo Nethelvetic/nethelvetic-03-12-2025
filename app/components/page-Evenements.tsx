@@ -1,63 +1,40 @@
-import React from 'react';
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { selectionEvenements } from "../db/dbQuery-Evenements";
 import CarteVImgTitreBgN from './cart-V-Img-Titre-BgN';
-import CarteVTitreTxtBgGN from './cart-V-Titre-Txt-BgGN';
-import CarteVImgTxtBgGN from './cart-V-Img-Txt-BgGN';
-import CarteHxxCarteBtnBdG from './cart-H-xxCarte-Btn-BdG';
-import CarteVImgTxtBdG from './cart-V-Img-Txt-BdG';
-import BtnSmBgG from './btn-Sm-BgG';
+import ListHImgTxtBtnBdG from './list-H-Img-Txt-Btn-BgGN';
 
 
 const PageEvenements: React.FC = () => {
 
 //---------------------------------------------------------------------
-//------------------------2 Début data dynamique ----------------------
+//------------------------1 Début data dynamique ----------------------
 //---------------------------------------------------------------------
-const cardData = [
-  {
-    route:"/formulaire-simple",
-    btnTxt:"Je M’inscris",
-    imageSrc: '/PortraitRobotBg.png',
-    title: "Tournoi d'Echec & Raclette",
-    children: <p>Le Vendredi 27 février 2025 </p>,
-  },
-  {
-    route:"/formulaire-simple",
-    btnTxt:"Je M’inscris",
-    imageSrc: '/radioruporBg.png',
-    title: 'Brassage de Bière & Apéro-Dégustation',
-    children: <p>Samedi 23 mars 2025</p>,
-  },
-  {
-    route:"/formulaire-simple",
-    btnTxt:"Je M’inscris",
-    imageSrc: '/radioruporBg.png',
-    title: 'Atelier Fromage & Vin',
-    children: <p>Samedi 23 avril 2025</p>,
-  },
-  {
-    route:"/formulaire-simple",
-    btnTxt:"Je M’inscris",
-    imageSrc: '/radioruporBg.png',
-    title: 'Tournoi de cartes & Raclette ',
-    children: <p>Samedi 23 mai 2025</p>,
-  },
-  {
-    route:"/formulaire-simple",
-    btnTxt:"Je M’inscris",
-    imageSrc: '/radioruporBg.png',
-    title: 'Journée Ski & Convivialité',
-    children: <p>Samedi 23 janvier 2025</p>,
-  },
-];
-
+  const [cardData, setCardData] = useState<any[]>([]);
 
 
 
 //---------------------------------------------------------------------
-//------------------------2 Début affichage   -------------------------
+//------------------------2 Début comportement ------------------------
+//---------------------------------------------------------------------
+  useEffect(() => {
+    console.log("2 debut useEffect");
+    async function fetchEvenements() {
+      const data = await selectionEvenements ();
+      setCardData(data);
+      console.log("2.1 reponse data =", data);
+    }
+    fetchEvenements();
+  }, []);
+
+  
+//---------------------------------------------------------------------
+//------------------------3 Début affichage   -------------------------
 //--------------------------------------------------------------------- 
   return (
     <div>
+
 
          {/*-----------------------------1 DEBUT CONTENEUR carte-H-Img-Titre-BgN */}
         <div className='p-6'>
@@ -65,10 +42,13 @@ const cardData = [
         </div>
 
 
+        {/*-----------0 DEBUT espace entre les sections */} 
+        <div className="h-20 md:h-50"></div>
+
 
         {/*-----------------------------5 DEBUT CONTENEUR carte-H-3xCarte */} 
         <div className='p-6'>
-            <CarteHxxCarteBtnBdG cards={cardData} />
+            <ListHImgTxtBtnBdG cards={cardData} />
         </div>
 
     

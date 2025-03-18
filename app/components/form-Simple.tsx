@@ -27,7 +27,6 @@ const FormSimple: React.FC = () => {
   return (
     <div>
       <div className='p-6' >
-
         {/*-----------------------------1 DEBUT CONTENEUR carte-V-Img-Txt-BgGN */}
         <CarteVImgTxtBgGN imageSrc="/ordinateurBg.png" title="">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4 max-w-md mx-auto">

@@ -2,7 +2,7 @@ import React from 'react';
 import CarteVImgTitreBgN from './cart-V-Img-Titre-BgN';
 import CarteVTitreTxtBgGN from './cart-V-Titre-Txt-BgGN';
 import CarteVImgTxtBgGN from './cart-V-Img-Txt-BgGN';
-import CarteHxxCarteBtnBdG from './cart-H-xxCarte-Btn-BdG';
+import CartHxxCarteBtnBdG from './cart-H-xxCarte-Btn-BdG';
 import CarteVImgTxtBdG from './cart-V-Img-Txt-BdG';
 import BtnSmBgG from './btn-Sm-BgG';
 
@@ -18,14 +18,18 @@ const cardData = [
     btnTxt:"En savoir plus",
     imageSrc: '/PortraitRobotBg.png',
     title: 'Ne ratez plus nos événements',
-    children: <p>Découvrez nos journées thématiques et rencontrez la communauté hors du cadre pro ! </p>,
+    children: "Découvrez nos journées thématiques et rencontrez la communauté hors du cadre pro !",
   },
   {
-    route:"/formulaire-simple",
+    route:"/formulaire",
     btnTxt:"Je M’inscris Maintenant",
     imageSrc: '/radioruporBg.png',
     title: 'La NO BULLSH*T Newsletter ',
-    children: <p>la <strong>NO BULLSH*T Newsletter</strong>, un concentré d’info brute, d’astuces franc-parlées et d’opportunités concrètes.</p>,
+    children: <>
+    selon: la <strong>NO BULLSH*T Newsletter</strong>, un concentré d’info brute, d’astuces franc-parlées et d’opportunités concrètes.
+  </>
+  
+    ,
   },
 ];
 
@@ -52,14 +56,14 @@ const cardData = [
         {/*-----------------------------2 DEBUT CONTENEUR carte-V-Titre-TxT-BgN */}
         <div className='p-6'>
             <CarteVTitreTxtBgGN title="On ne veut pas entendre “tout va bien”. On veut la réalité.">
-            <p>
+            
             Tu en as assez de ces réseaux d’entrepreneurs <i>où tout le monde est beau, tout le monde est gentil</i>, et où personne n’ose parler des vrais problèmes ? Nous aussi.
             
             <br></br>
             <br></br>
             
             Ici, on aborde <strong> les vrais chiffres, les vrais échecs</strong>, et les vrais doutes sans fard. Parce que c’est en analysant ce qui ne va pas qu’on apprend à avancer <strong> pour de vrai.</strong>
-            </p>
+            
             </CarteVTitreTxtBgGN>
         </div>
 
@@ -82,10 +86,10 @@ const cardData = [
       {/*-----------------------------4 DEBUT CONTENEUR carte-V-Img-Txt-BgGN */}
       <div className='p-6'>
           <CarteVImgTxtBgGN imageSrc='/colorfulBg.png' title='Notre ADN : la confrontation pour construire'>
-          <p>
+          
             <strong>Assez de la complaisance</strong> où tout le monde hoche la tête en mode “super idée, j’adore”.
             Dans la Communauté NO BULLSH*T, on organise des <strong>débats</strong> (voire des fights bienveillants) :
-          </p>
+          
           <br></br>
           <ul className="list-disc ml-6">
             <li>
@@ -99,9 +103,9 @@ const cardData = [
             </li>
           </ul>
            <br></br> 
-          <p>
+          
             On se dit les choses, on se confronte aux visions différentes. Et c’est dans ce choc d’idées que naît l’innovation.
-          </p>
+          
           </CarteVImgTxtBgGN>
       </div>
 
@@ -115,13 +119,13 @@ const cardData = [
         {/*-----------------------------5 DEBUT CONTENEUR carte-Img-Txt-Bdg */}
         <div className='p-6'>
             <CarteVImgTxtBgGN  imageSrc='/boucheBg.png' title='Ce que tu vas trouver chez NO BULLSH*T'>
-              <p><strong>Des Discussions Sans Tabou</strong></p><p>Coaching collectif où chacun peut être “récadré” (mais avec bienveillance) pour avancer plus vite.</p>
+              <strong>Des Discussions Sans Tabou</strong> Coaching collectif où chacun peut être “récadré” (mais avec bienveillance) pour avancer plus vite.
               <br></br>
-              <p><strong>Des Débats Style “Fight Club”</strong></p><p>Opposer deux profils radicalement différents pour faire émerger la meilleure approche.</p>
+              <strong>Des Débats Style “Fight Club”</strong> Opposer deux profils radicalement différents pour faire émerger la meilleure approche.
               <br></br>
-              <p><strong>Un espace collaboratif anti-polissé</strong></p><p>Tu veux booster ton business ? On te dira si ton idée est brillante… ou si elle ne tiendra pas la route.</p>
+              <strong>Un espace collaboratif anti-polissé</strong> Tu veux booster ton business ? On te dira si ton idée est brillante… ou si elle ne tiendra pas la route.
               <br></br>
-              <p><strong>Outils pratiques pour les entrepreneurs.</strong></p><p>Des ressources prêtes à l’emploi qui simplifient la gestion de leur activité.<p/></p>
+              <strong>Outils pratiques pour les entrepreneurs.</strong> Des ressources prêtes à l’emploi qui simplifient la gestion de leur activité.
             </CarteVImgTxtBgGN >
         </div>
 
@@ -136,20 +140,25 @@ const cardData = [
         {/*-----------------------------6 DEBUT CONTENEUR carte-V-Titre-TxT-BgN */}
         <div className='p-6'>
             <CarteVTitreTxtBgGN title="Comment rejoindre le Mouvement ?">
-              <strong>Candidature </strong>
-              <p>Tu remplis un formulaire</p>
+              <strong>Candidature: </strong>
+              <br></br>
+              Tu remplis un formulaire
 
             <br></br>
+            <br></br>
 
-              <strong>Accès immédiat </strong>
-              <p>Tu entres gratuitement.</p>
-              <p>Découvres les débats, nos ressources et notre énergie.</p>
+              <strong>Accès immédiat: </strong>
+              <br></br>
+              Tu entres gratuitement.
+              Découvres les débats, nos ressources et notre énergie.
            
             <br></br>
+            <br></br>
        
-              <strong>Essai gratuit de 2 mois</strong>
-              <p>Après 2 mois, si tu kiffes, deviens membre moyennant une cotisation.</p> 
-              <p> Sinon, aucun souci : tu peux nous quitter sans frais, ni rancune.</p>
+              <strong>Essai gratuit de 2 mois: </strong>
+              <br></br>
+              Après 2 mois, si tu kiffes, deviens membre moyennant une cotisation.
+              Sinon, aucun souci : tu peux nous quitter sans frais, ni rancune.
             
             </CarteVTitreTxtBgGN>
         </div>
@@ -172,7 +181,7 @@ const cardData = [
 
         {/*-----------------------------5 DEBUT CONTENEUR carte-H-3xCarte */}
         <div className='p-6'>
-            <CarteHxxCarteBtnBdG cards={cardData} />
+            <CartHxxCarteBtnBdG cards={cardData} />
         </div>
 
     

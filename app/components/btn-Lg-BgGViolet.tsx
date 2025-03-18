@@ -1,31 +1,36 @@
 "use client";
 
 import React from 'react';
-import ContainerBtnLgBgG2 from './cont-Btn-Lg-BgG2';
+import ContainerBtnLgBgG2 from './cont-Btn-Lg-BgGViolet';
 import { useRouter } from 'next/navigation';
 
-interface BtnLgBgG2Props {
-  route?: string;
-  externalUrl?: string; // Lien externe ajouté
+interface BtnLgBgGVioletProps {
+  interneUrl?: string;
+  externalUrl?: string; 
   children: React.ReactNode;
 }
 
-const BtnLgBgG2: React.FC<BtnLgBgG2Props> = ({ route, externalUrl, children }) => {
+const BtnLgBgGViolet: React.FC<BtnLgBgGVioletProps> = ({ interneUrl, externalUrl, children }) => {
+ 
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique  ---------------------
   //---------------------------------------------------------------------
+  console.log("1 btnLgBgG2 début");
   const router = useRouter();
 
   //---------------------------------------------------------------------
   //------------------------2 Début comportement  -----------------------
   //---------------------------------------------------------------------
   const onClick = () => {
+    console.log("2 btnLgBgG2 début onClick");
+    console.log("2 btnLgBgG2 début onClick interneUrl= ", interneUrl);
+    console.log("2 btnLgBgG2 début onClick externalUrl= ", externalUrl);
     // Navigation interne sur une page de votre site, si la route existe
-    if (route) {
-      router.push(route);
-    }
-    // Ouverture du lien externe dans un nouvel onglet, si l'URL existe
-    if (externalUrl) {
+    if (interneUrl) {
+      console.log("2.1 btnLgBgG2 interneUrl =", interneUrl);
+      router.push(interneUrl);
+    }else{
+      console.log("2.1 btnLgBgG2 externalUrl =", externalUrl);
       window.open(externalUrl, '_blank');
     }
   };
@@ -42,4 +47,4 @@ const BtnLgBgG2: React.FC<BtnLgBgG2Props> = ({ route, externalUrl, children }) =
   );
 };
 
-export default BtnLgBgG2;
+export default BtnLgBgGViolet;

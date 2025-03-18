@@ -2,11 +2,11 @@
 
 import React, { useEffect, useRef, useState, ReactNode } from 'react';
 
-interface ContainerBtnLgBgG2Props {
+interface ContBtnLgBgGVioletProps {
   children: ReactNode;
 }
 
-const ContainerBtnLgBgG2: React.FC<ContainerBtnLgBgG2Props> = ({ children }) => {
+const ContBtnLgBgGViolet: React.FC<ContBtnLgBgGVioletProps> = ({ children }) => {
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -38,4 +38,4 @@ const ContainerBtnLgBgG2: React.FC<ContainerBtnLgBgG2Props> = ({ children }) => 
   );
 };
 
-export default ContainerBtnLgBgG2;
+export default ContBtnLgBgGViolet;

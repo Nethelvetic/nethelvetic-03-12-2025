@@ -1,6 +1,6 @@
 import React from 'react';
 import CarteHImgTxtBgG from './cart-H-Img-Txt-BgG';
-import CartHImgTxtBtnBdG from './cart-H-Img-Txt-Btn-BdG';
+import CartHImgTxtBtnBdG from './list-H-Img-Txt-Btn-BgGN';
 import CarteVImgTxtBgGN from './cart-V-Img-Txt-BgGN';
 import CarteVImgTxtBdG from './cart-V-Img-Txt-BdG';
 import CarteVTitreTxtBgN from './cart-V-Titre-Txt-BgN';

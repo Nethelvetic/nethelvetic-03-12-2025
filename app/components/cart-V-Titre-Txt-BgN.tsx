@@ -21,7 +21,7 @@ const CarteVTitreTxtBgN: React.FC<CarteVTitreTxtBgNProps> = ({ title, children }
       
         {/*----------------1.1 DEBUT CONTENEUR titre  */}
         <div>
-            <h3 className="font-bold text-3xl md:text-7xl my-6">
+            <h3 className="font-bold text-3xl md:text-7xl text-center">
               {title}
             </h3>
           </div>

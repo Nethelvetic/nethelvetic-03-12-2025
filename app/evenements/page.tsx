@@ -9,7 +9,7 @@ export default function CreationEntreprise() {
 //------------------------3 Début affichage ---------------------------
 //--------------------------------------------------------------------- 
   return (
-    <div>
+    <div className="w-full md:w-5xl mx-auto">
       <PageEvenement  />
     </div>
   );

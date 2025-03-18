@@ -50,7 +50,7 @@ const CarteVImgTxtBtnBdG: React.FC<CarteVImgTxtBtnBdGProps> = ({ imageSrc, title
 
        {/*----------------1.4 DEBUT CONTENEUR texte/children   */}
        <div className="w-full pt-6 ">
-        <BtnLgBgG route={route} externalUrl={externalUrl}>
+        <BtnLgBgG interneUrl={route} externalUrl={externalUrl}>
             {btnTxt}
         </BtnLgBgG>
       </div>

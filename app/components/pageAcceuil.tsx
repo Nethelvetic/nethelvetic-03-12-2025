@@ -24,21 +24,42 @@ const cardData = [
       btnTxt:"Découvrir",
       imageSrc: '/jeroNum851Bg.png',
       title: 'Création d’entreprise rapide.',
-      children: <p>Créer ton entreprise en Suisse, en simplifiant toutes les démarches.</p>,
+      children: "Créer ton entreprise en Suisse, en simplifiant toutes les démarches."
     },
     {
       route:"/",
       btnTxt:"Découvrir",
       imageSrc: '/jeroNum831Bg.png',
       title: 'Automatiser les tâches répétitives',
-      children: <p>Libère jusqu'à 20 heures par semaine.</p>,
+      children: "Libère jusqu'à 20 heures par semaine.",
     },
     {
       route:"/",
       btnTxt:"Découvrir",
       imageSrc: '/jeroNum711Bg.png',
       title: 'Facture - Offre - Comptabilité.',
-      children: <p>Des applications prêts à l’emploi pour organiser ton entreprise.</p>,
+      children: "Des applications prêts à l’emploi pour organiser ton entreprise.",
+    },
+    {
+      route:"/creation-entreprise/formule-gratuite",
+      btnTxt:"Réserver mon entretien",
+      imageSrc: '/jeroNum631.jpg',
+      title: 'Entretien Personnel (350 CHF)',
+      children: "Un appel vidéo de 60 min pour clarifier votre projet.",
+    },
+    {
+      route:"/formations",
+      btnTxt:"Découvrir",
+      imageSrc: '/jeroNum621.jpg',
+      title: 'Formation Collective',
+      children: "Apprendre à moindre coût, dans une ambiance collaborative.",
+    },
+    {
+      route:"/creation-entreprise/formule-premium",
+      btnTxt:"Découvrir",
+      imageSrc: '/jeroNum611.jpg',
+      title: 'Ressources Gratuites',
+      children: "Guides PDF, vidéos pour approfondir vos connaissances",
     },
   ];
 
@@ -49,6 +70,7 @@ const cardData = [
 //---------------------------------------------------------------------
   return (
     <div>
+
          {/*-----------------------------1 DEBUT CONTENEUR carte-H-Img-Titre-BgN */}
         <div className='p-6'>
             <CarteVImgTitreBgN imageSrc='/jeroNum651Bg.png' title='Simplifie ton entreprise'/>

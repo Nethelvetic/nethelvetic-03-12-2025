@@ -121,6 +121,15 @@ h4 {
   background: var(--color-bgGardient1);
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
 
 @keyframes fadeIn {
   from {

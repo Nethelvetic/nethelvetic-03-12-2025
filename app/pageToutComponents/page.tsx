@@ -17,7 +17,7 @@ export default function PageToutComponents() {
   //---------------------------------------------------------------------
   return (
 
-    <div>
+    <div className="w-full md:w-5xl mx-auto">
      <PageVuComponents/>
     </div>
   );

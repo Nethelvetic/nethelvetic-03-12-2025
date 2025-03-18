@@ -1,5 +1,6 @@
 import React from 'react';
-import PageFormSimple from '../components/page-Form-Simple';
+import FormLogin from '../components/form-login';
+import FormSimple from '../components/form-Simple';
 
 
 export default function CreationEntreprise() {
@@ -9,8 +10,8 @@ export default function CreationEntreprise() {
 //------------------------3 Début affichage ---------------------------
 //--------------------------------------------------------------------- 
   return (
-    <div>
-        <PageFormSimple />
+    <div className="w-full md:w-5xl mx-auto">
+      <FormLogin />
     </div>
   );
 }

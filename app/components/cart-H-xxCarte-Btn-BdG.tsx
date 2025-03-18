@@ -2,7 +2,7 @@
 
 import React, { ReactNode } from 'react';
 import ContainerBgN from './cont-BgN';
-import CarteVImgTxtBtnBdG from './cart-V-Img-Txt-Btn-BdG';
+import CartVImgTxtBtnBdG from './cart-V-Img-Txt-Btn-BdG';
 
 interface CarteData {
   imageSrc: string;
@@ -30,7 +30,7 @@ const CarteHxxCarteBtnBdG: React.FC<CarteHxxCarteBtnBdGProps> = ({ cards }) => {
       >
         {cards.map((card, index) => (
           <div key={index} className="p-6">
-            <CarteVImgTxtBtnBdG
+            <CartVImgTxtBtnBdG
               imageSrc={card.imageSrc}
               title={card.title}
               route={card.route}
@@ -38,7 +38,7 @@ const CarteHxxCarteBtnBdG: React.FC<CarteHxxCarteBtnBdGProps> = ({ cards }) => {
               btnTxt={card.btnTxt}
             >
               {card.children}
-            </CarteVImgTxtBtnBdG>
+            </CartVImgTxtBtnBdG>
           </div>
         ))}
       </div>

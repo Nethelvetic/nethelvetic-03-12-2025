@@ -1,5 +1,5 @@
 import React from 'react';
-import CarteHImgTxtBdgBdG from '../../components/cart-H-Img-Txt-Btn-BdG';
+import CarteHImgTxtBdgBdG from '../../components/list-H-Img-Txt-Btn-BgGN';
 
 type Props = {
   params: {

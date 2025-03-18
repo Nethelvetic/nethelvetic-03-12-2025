@@ -14,7 +14,6 @@ const ContanerHBg: React.FC<ContanerHBgProps> = ({ children }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
 
-
   
   // ---------------------------------------------------------------------
   // ------------------------ 2 Début comportement ------------------------
@@ -42,20 +41,21 @@ const ContanerHBg: React.FC<ContanerHBgProps> = ({ children }) => {
 
 
   // ---------------------------------------------------------------------
-  // ------------------------ 2 Début affichage ---------------------------
+  // ------------------------ 2 Début affichage --------------------------
   // ---------------------------------------------------------------------
   return (
     //-------------------------1 DEBUT CONTAINER PRINCIPALE
       <div
         ref={containerRef}
-        className={`min-h-23  max-w-5xl mx-auto rounded-lg bg-bgGardient1 ${isVisible ? "animate-slide-in-slow" : "animate-fade-out-slow"}`}>
+        className={`min-h-24 w-full mx-auto rounded-lg bg-bgGardient1 mb-6 
+        ${isVisible ? "animate-slide-in-slow" : "animate-fade-out-slow"}`}>
 
         {/*--------1.1 DEBUT CONTENEUR texte/children   */}
-        <div className="w-full flex flex-col items-center md:p-10rounded-lg">
+        <div className="w-full flex flex-col justify-center items-stretch rounded-lg">
           {children}
         </div>
       </div>
-    //-------------------------1 FIN CONTAINER PRINCIPALE
+    //-------------------------1 FIN CONTAINER PRINCIPALEf
   );
 };
 

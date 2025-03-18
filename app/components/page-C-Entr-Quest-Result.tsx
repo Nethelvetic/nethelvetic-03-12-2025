@@ -1,41 +1,23 @@
+// ClientPageResultatQuestion.tsx
 "use client";
 
-import PageCrEntrFormuPremium from './page-C-Entr-Formu_Premium';
-import PageCrEntrFormuGratuite from './page-C-Entr-Formu-Gratuite';
+import PageCrEntrFormuPremium from "./page-C-Entr-Formu_Premium";
+import PageCrEntrFormuGratuite from "./page-C-Entr-Formu-Gratuite";
 import { useSearchParams } from "next/navigation";
 
-
-
-
 export default function PageResultatQuestion() {
+  // Récupération des search params côté client
+  const searchParams = useSearchParams();
+  const score = searchParams.get("score"); // string ou null
+  const scoreNum = Number(score) || 0;
 
-
-//---------------------------------------------------------------------
-//-------------------------1 Début data dynamique ---------------------
-//---------------------------------------------------------------------
-const searchParams = useSearchParams();
-const score = searchParams.get("score"); // string ou null
-const scoreNum = Number(score) || 0;
-
-//---------------------------------------------------------------------
-//------------------------2 Début comportement ------------------------
-//---------------------------------------------------------------------
-let content;
-if (scoreNum < 31) {
-  content = < PageCrEntrFormuPremium  />;
-} else {
-  content = < PageCrEntrFormuGratuite  />;
-}
-
-
-
-//---------------------------------------------------------------------
-//------------------------2 Début affichage   -------------------------
-//--------------------------------------------------------------------- 
-    return ( 
-            <div>
-                {content}
-            </div>
-    );
+  // Sélection du contenu à afficher selon le score
+  let content;
+  if (scoreNum < 31) {
+    content = <PageCrEntrFormuPremium />;
+  } else {
+    content = <PageCrEntrFormuGratuite />;
   }
-  
+
+  return <div>{content}</div>;
+}

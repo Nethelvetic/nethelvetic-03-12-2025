@@ -1,18 +1,14 @@
-"use client";
+// page.tsx (dans app/creation-entreprise/resultat/)
+import { Suspense } from "react";
+import PageCrEntrResultQues from "../../components/page-C-Entr-Quest-Result";
 
-import React from 'react';
-import PageQuestionnaireResult from '../../components/page-C-Entr-Quest-Result';
-
-
-export default function CreationEntreprise() {
-
-
-//---------------------------------------------------------------------
-//------------------------3 Début affichage ---------------------------
-//---------------------------------------------------------------------
+export default function PageResultatQuestion() {
   return (
-    <div className="w-full md:w-5xl mx-auto">
-      <PageQuestionnaireResult />
+    <div>
+      <h1>Résultat de la création d'entreprise</h1>
+      <Suspense fallback={<div>Chargement…</div>}>
+        <PageCrEntrResultQues />
+      </Suspense>
     </div>
   );
 }

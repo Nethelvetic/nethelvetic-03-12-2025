@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import PageQuestionnaireResult from '../../components/page-C-Entr-Quest-Result';
 

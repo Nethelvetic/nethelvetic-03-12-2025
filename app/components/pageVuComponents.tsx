@@ -1,6 +1,5 @@
 import React from 'react';
 import CarteHImgTxtBgG from './cart-H-Img-Txt-BgG';
-import CartHImgTxtBtnBdG from './list-H-Img-Txt-Btn-BgGN';
 import CarteVImgTxtBgGN from './cart-V-Img-Txt-BgGN';
 import CarteVImgTxtBdG from './cart-V-Img-Txt-BdG';
 import CarteVTitreTxtBgN from './cart-V-Titre-Txt-BgN';
@@ -64,13 +63,6 @@ const cardData = [
 
 
 
-      {/*-----------------------------3 DEBUT CONTENEUR carte-H-Img-Titre-BdG */}
-      <div className=" p-6">
-         <CartHImgTxtBtnBdG cards={cardData} /> 
-      </div>
-
-
-
 
   
       {/*-----------------------------2 DEBUT CONTENEUR carte-H-Img-Txt-BgG */}
@@ -84,7 +76,7 @@ const cardData = [
 
       {/*-----------------------------3 DEBUT CONTENEUR BtnLgBgG */} 
             <div className="p-6">
-        <BtnLgBgG route='' >
+        <BtnLgBgG >
           BtnLgBgG 
         </BtnLgBgG >
       </div>
@@ -128,7 +120,7 @@ const cardData = [
 
       {/*-----------------------------6 DEBUT CONTENEUR BtnLgBgG */} 
       <div className="p-6">
-        <BtnLgBgG route='' >
+        <BtnLgBgG >
           BtnLgBgG 
         </BtnLgBgG >
       </div>

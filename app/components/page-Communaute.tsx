@@ -71,7 +71,7 @@ const cardData = [
 
         {/*-----------------------------3 DEBUT CONTENEUR btn-Sm-BgG */}
         <div className='p-6'>
-            <BtnSmBgG route='/formulaire'>
+            <BtnSmBgG route='/formulaire/communaute'>
               Candidater
             </BtnSmBgG>
         </div>
@@ -167,7 +167,7 @@ const cardData = [
 
         {/*-----------------------------7 DEBUT CONTENEUR btn-Sm-BgG */}
         <div className='p-6'>
-            <BtnSmBgG route='/formulaire'>
+            <BtnSmBgG route='/formulaire/communaute'>
               Candidater
             </BtnSmBgG>
         </div>

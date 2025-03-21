@@ -1,8 +1,8 @@
 import React from 'react';
-import FormContact from '../../components/form-Contact';
+import FormCommunaute from '../../components/form-Communaute';
 
 
-export default function FormulaireContact() {
+export default function FormulaireFormations() {
 
 
 //---------------------------------------------------------------------
@@ -10,7 +10,7 @@ export default function FormulaireContact() {
 //--------------------------------------------------------------------- 
   return (
     <div className="w-full md:w-5xl mx-auto">
-        <FormContact />
+        <FormCommunaute />
     </div>
   );
 }

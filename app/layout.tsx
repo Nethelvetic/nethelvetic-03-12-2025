@@ -40,7 +40,7 @@ export default function RootLayout({
                 ],
               },
               { title: "Blog", link: "/blog" },
-              { title: "Contact", link: "/contact" },
+              { title: "Contact", link: "/formulaire/contact" },
             ]}
           />
         </header>

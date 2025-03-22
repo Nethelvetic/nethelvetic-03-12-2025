@@ -1,51 +1,83 @@
 "use client";
 
-import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import CarteVImgTxtBgGN from './cart-V-Img-Txt-BgGN';
-import ContBtnLgBgG from './cont-Btn-Lg-BgG';
+import React, { useState } from "react";
+import ContainerBGN from "./cont-BgGN";
+import ContBtnLgBgG from "./cont-Btn-Lg-BgG";
+import { useRouter } from "next/navigation";
+// Assurez-vous d'adapter le chemin vers votre fonction de création d'utilisateur
+import { createUser } from "../db/dbQuery-Users";
 
-interface FormData {
+type FormDataType = {
   email: string;
   nom: string;
   prenom: string;
-  newsletter: boolean;
-  noBullshit: boolean;
-  message: string;  // ← Ajout du champ "message"
-}
+  message: string;
+};
+
+const initialFormData: FormDataType = {
+  email: "",
+  nom: "",
+  prenom: "",
+  message: "",
+};
 
 const FormContact: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>();
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log("Données du formulaire :", data);
+
+  //---------------------------------------------------------------------
+  //------------------------1 Début data dynamique ----------------------
+  //---------------------------------------------------------------------
+  const [formData, setFormData] = useState<FormDataType>(initialFormData);
+  const router = useRouter();
+
+
+
+  //---------------------------------------------------------------------
+  //------------------------2 Début comportement ------------------------
+  //---------------------------------------------------------------------
+  const handleClick = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Vérification statique que tous les champs obligatoires sont remplis
+    if (!formData.email || !formData.nom || !formData.prenom || !formData.message) {
+      alert("Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
+
+    try {
+      console.log("Données à insérer :", formData);
+      const response = await createUser(formData);
+      console.log("Réponse API :", response);
+      if (response.success) {
+        // Réinitialisation du formulaire après succès
+        setFormData(initialFormData);
+        // Redirection vers la liste des utilisateurs (par exemple)
+        router.push("/admin/users");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la création de l'utilisateur :", error);
+    }
   };
 
+
+
+  //---------------------------------------------------------------------
+  //------------------------3 Début affichage ---------------------------
+  //---------------------------------------------------------------------
   return (
-    <div>
-      <div className="p-6">
-        {/*-----------------------------1 DEBUT CONTENEUR carte-V-Img-Txt-BgGN */}
-        <CarteVImgTxtBgGN imageSrc="/ordinateur5Bg.png" title="">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4 max-w-md mx-auto">
+    <div className="p-6">
+      <ContainerBGN>
+        <div className="w-full">
+          <form onSubmit={handleClick} className="space-y-4 p-4 max-w-md mx-auto">
             {/* Champ Email */}
             <div>
               <label className="block text-sm md:text-xl font-medium">Email</label>
               <input
                 type="email"
-                {...register("email", {
-                  required: "L'email est requis",
-                  pattern: {
-                    value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                    message: "Email invalide",
-                  },
-                })}
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="mt-1 block w-full border-b border-gray-300 shadow-sm"
               />
-              {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
             </div>
 
             {/* Champ Nom */}
@@ -53,10 +85,10 @@ const FormContact: React.FC = () => {
               <label className="block text-sm md:text-xl font-medium">Nom</label>
               <input
                 type="text"
-                {...register("nom", { required: "Le nom est requis" })}
+                value={formData.nom}
+                onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
                 className="mt-1 block w-full border-b border-gray-300 shadow-sm"
               />
-              {errors.nom && <span className="text-red-500 text-sm">{errors.nom.message}</span>}
             </div>
 
             {/* Champ Prénom */}
@@ -64,36 +96,34 @@ const FormContact: React.FC = () => {
               <label className="block text-sm md:text-xl font-medium">Prénom</label>
               <input
                 type="text"
-                {...register("prenom", { required: "Le prénom est requis" })}
+                value={formData.prenom}
+                onChange={(e) => setFormData({ ...formData, prenom: e.target.value })}
                 className="mt-1 block w-full border-b border-gray-300 shadow-sm"
               />
-              {errors.prenom && <span className="text-red-500 text-sm">{errors.prenom.message}</span>}
             </div>
 
-
-            {/* Champ Message (textarea) */}
+            {/* Champ Message */}
             <div>
               <label className="block text-sm md:text-xl font-medium">Message</label>
               <textarea
                 rows={4}
-                {...register("message", {
-                  required: "Le message est requis",
-                })}
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 className="mt-1 block w-full border-b border-gray-300 shadow-sm"
               ></textarea>
-              {errors.message && <span className="text-red-500 text-sm">{errors.message.message}</span>}
             </div>
 
             {/* Bouton de soumission */}
-            <ContBtnLgBgG>
-              <button type="submit" className="w-full h-full">
-                Envoyer
-              </button>
-            </ContBtnLgBgG>
+            <div className="w-full pt-3 pb-3">
+              <ContBtnLgBgG>
+                <button type="submit" className="w-full h-full">
+                  Envoyer
+                </button>
+              </ContBtnLgBgG>
+            </div>
           </form>
-        </CarteVImgTxtBgGN>
-        {/*-----------------------------1 FIN CONTENEUR carte-V-Img-Txt-BgGN */}
-      </div>
+        </div>
+      </ContainerBGN>
     </div>
   );
 };

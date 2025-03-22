@@ -6,35 +6,46 @@ import {
   text, 
   json 
 } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { sql, relations } from "drizzle-orm";
 
-// -------------------
-// 1. Définition des tables
-// -------------------
 
+
+
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+//                        DEFINR LES TABLES
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+
+
+
+
+//---------------------------------------------------------------------
+//------------------------1.1 Début Table users -----------------------
+//---------------------------------------------------------------------
 export const usersTable = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   nom: varchar({ length: 255 }).notNull(),
   prenom: varchar({ length: 255 }).notNull(),
-  // Vous pouvez conserver "ville" si nécessaire, ou le réutiliser dans l'adresse
   ville: varchar({ length: 255 }),
   telephone: varchar({ length: 20 }).unique(),
-  // Remplacement de "age" par "date_de_naissance"
   date_de_naissance: date(),
-  // Date de création du compte
-  date_creation: date().notNull(),
+  date_creation: date().notNull().default(sql`CURRENT_DATE`),
   email: varchar({ length: 255 }).notNull().unique(),
-  // Nouveaux champs ajoutés
   mot_de_passe: varchar({ length: 255 }),
   username: varchar({ length: 255 }).unique(),
   statut: varchar({ length: 50 }), // ex: "actif", "inactif", "suspendu"
-  profession: varchar({ length: 255 }),        // Métier ou domaine professionnel
-  employeur: varchar({ length: 255 }),           // Entreprise ou organisation
-  statut_professionnel: varchar({ length: 255 }),  // ex: "indépendant", "salarié", "freelance"
-  // Adresse postale complète (vous pouvez aussi la décomposer en plusieurs colonnes si besoin)
+  profession: varchar({ length: 255 }),
+  employeur: varchar({ length: 255 }),
+  statut_professionnel: varchar({ length: 255 }),
   adresse: text(),
 });
 
+//---------------------------------------------------------------------
+//------------------------1.2 Début Table formation ---------------------
+//---------------------------------------------------------------------
 export const formationTable = pgTable("formations", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   titre: varchar({ length: 255 }).notNull(),
@@ -50,9 +61,13 @@ export const formationTable = pgTable("formations", {
   btnModifUrl: varchar({ length: 255 }).notNull(),
   date_dernier_payment: date(),    
   status_paiement: varchar({ length: 50 }).notNull().default("non payé"),
-  userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
 });
 
+
+
+//---------------------------------------------------------------------
+//------------------------1.3 Début Table evenements --------------------
+//---------------------------------------------------------------------
 export const evenementsTable = pgTable("evenements", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   titre: varchar({ length: 255 }).notNull(),
@@ -68,83 +83,203 @@ export const evenementsTable = pgTable("evenements", {
   btnModifUrl: varchar({ length: 255 }).notNull(),
   date_dernier_payment: date(),    
   status_paiement: varchar({ length: 50 }).notNull().default("non payé"),
-  userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
 });
 
-// Table Communauté (déjà définie)
+
+
+//---------------------------------------------------------------------
+//------------------------1.4 Début Table communaute --------------------
+//---------------------------------------------------------------------
 export const communauteTable = pgTable("communaute", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  user_id: integer().references(() => usersTable.id, { onDelete: "cascade" }),
   date_debut_abonnement: date().notNull(),
   date_fin_abonnement: date(),            // Peut être null si l'appartenance est en cours
   date_invitation: date(),     // Optionnel
   statut: varchar({ length: 50 }).notNull(), // ex: "actif", "en attente", "suspendu"
   role: varchar({ length: 50 }).notNull(),   // ex: "membre", "modérateur", "administrateur"
-  date_debut_test: date(),                // Date de début de la période d'essai
-  date_fin_test: date(),                  // Date de fin de la période d'essai
-  date_dernier_payment: date(),           // Date à laquelle la cotisation a été réglée
+  date_debut_test: date(),                // Période d'essai
+  date_fin_test: date(),
+  date_dernier_payment: date(),           
   date_prochain_payment: date(), 
   status_paiement: varchar({ length: 50 }).notNull().default("non payé"),
 });
 
-// Nouvelle table Saas
+
+
+//---------------------------------------------------------------------
+//------------------------1.5 Début Table Saas --------------------------
+//---------------------------------------------------------------------
 export const saasTable = pgTable("saas", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  user_id: integer().references(() => usersTable.id, { onDelete: "cascade" }),
-  plan: varchar({ length: 255 }).notNull(), // Nom ou identifiant du plan (Free, Pro, Premium, etc.)
-  plan_details: json("plan_details").notNull(), // Détails ou configuration du plan, stockés en JSON
-  date_debut_abonnement: date().notNull(), // Date de début de l'abonnement effectif
-  date_fin_abonnement: date(),              // Date de fin de l'abonnement (si temporaire ou résilié)
-  date_debut_test: date(),                  // Date de début de la période d’essai
-  date_fin_test: date(),                    // Date de fin de la période d’essai
-  status_abonnement: varchar({ length: 50 }).notNull(), // ex: "actif", "en période d'essai", "résilié", "suspendu"
-  date_dernier_payment: date(),                // Date du dernier paiement effectué
-  date_prochain_payment: date(),                // Date prévue pour le prochain paiement
+  plan: varchar({ length: 255 }).notNull(), // ex: "Free", "Pro", "Premium"
+  plan_details: json("plan_details").notNull(),
+  date_debut_abonnement: date().notNull(),
+  date_fin_abonnement: date(),
+  date_debut_test: date(),
+  date_fin_test: date(),
+  status_abonnement: varchar({ length: 50 }).notNull(), // ex: "actif", "en période d'essai", etc.
+  date_dernier_payment: date(),
+  date_prochain_payment: date(),
   status_paiement: varchar({ length: 50 }).notNull().default("non payé"),
-  mode_paiement: varchar({ length: 100 }),    // Mode de paiement utilisé (carte bancaire, PayPal, etc.)
-  facturation_info: text(),                 // Informations complémentaires de facturation (adresse, périodicité, etc.)
+  mode_paiement: varchar({ length: 100 }),
+  facturation_info: text(),
 });
 
-// -------------------
-// 2. Définition des relations
-// -------------------
 
-// a) Relations côté "parent" : Users
+
+
+
+
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+//                        TABLES DE LIASION
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// pour chaque user il y a une ligne
+
+
+
+//---------------------------------------------------------------------
+//------------------------2.1 Table de liaison formations/users ----------
+//---------------------------------------------------------------------
+export const formationUsersTable = pgTable("formation_users", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  formationId: integer().references(() => formationTable.id, { onDelete: "cascade" }),
+  userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
+});
+
+
+
+//---------------------------------------------------------------------
+//------------------------2.2 Table de liaison evenements/users ---------
+//---------------------------------------------------------------------
+export const evenementsUsersTable = pgTable("evenements_users", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  evenementId: integer().references(() => evenementsTable.id, { onDelete: "cascade" }),
+  userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
+});
+
+
+
+//---------------------------------------------------------------------
+//------------------------2.3 Table de liaison communautes/users --------
+//---------------------------------------------------------------------
+export const communauteUsersTable = pgTable("communaute_users", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  communauteId: integer().references(() => communauteTable.id, { onDelete: "cascade" }),
+  userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
+});
+
+
+
+//---------------------------------------------------------------------
+//------------------------2.4 Table de liaison Saas/users ---------------
+//---------------------------------------------------------------------
+export const saasUsersTable = pgTable("saas_users", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  saasId: integer().references(() => saasTable.id, { onDelete: "cascade" }),
+  userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
+});
+
+
+
+
+
+
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+//                   DEFINIR RELATION
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+
+
+
+//---------------------------------------------------------------------
+//------------------------2.1 realation parent/users ------------------
+//---------------------------------------------------------------------
 export const userRelations = relations(usersTable, ({ many }) => ({
-  formations: many(formationTable),
-  evenements: many(evenementsTable),
-  communaute: many(communauteTable),
-  saas: many(saasTable),
+  formations: many(formationUsersTable),
+  evenements: many(evenementsUsersTable),
+  communaute: many(communauteUsersTable),
+  saas: many(saasUsersTable),
 }));
 
-// b) Relations côté "enfant" : Formation
-export const formationRelations = relations(formationTable, ({ one }) => ({
+
+
+//---------------------------------------------------------------------
+//------------------------2.2 realation formation/users ---------------
+//---------------------------------------------------------------------
+export const formationRelations = relations(formationTable, ({ many }) => ({
+  participants: many(formationUsersTable),
+}));
+export const formationUsersRelations = relations(formationUsersTable, ({ one }) => ({
+  formation: one(formationTable, {
+    fields: [formationUsersTable.formationId],
+    references: [formationTable.id],
+  }),
   user: one(usersTable, {
-    fields: [formationTable.userId],
+    fields: [formationUsersTable.userId],
     references: [usersTable.id],
   }),
 }));
 
-// c) Relations côté "enfant" : Evenements
-export const evenementsRelations = relations(evenementsTable, ({ one }) => ({
+
+
+//---------------------------------------------------------------------
+//------------------------2.3 realation evenement/users ---------------
+//---------------------------------------------------------------------
+export const evenementsRelations = relations(evenementsTable, ({ many }) => ({
+  participants: many(evenementsUsersTable),
+}));
+export const evenementsUsersRelations = relations(evenementsUsersTable, ({ one }) => ({
+  evenement: one(evenementsTable, {
+    fields: [evenementsUsersTable.evenementId],
+    references: [evenementsTable.id],
+  }),
   user: one(usersTable, {
-    fields: [evenementsTable.userId],
+    fields: [evenementsUsersTable.userId],
     references: [usersTable.id],
   }),
 }));
 
-// d) Relation côté "enfant" : Communauté
-export const communauteRelations = relations(communauteTable, ({ one }) => ({
+
+
+//---------------------------------------------------------------------
+//------------------------2.4 realation communaute/users --------------
+//---------------------------------------------------------------------
+export const communauteRelations = relations(communauteTable, ({ many }) => ({
+  members: many(communauteUsersTable),
+}));
+export const communauteUsersRelations = relations(communauteUsersTable, ({ one }) => ({
+  communaute: one(communauteTable, {
+    fields: [communauteUsersTable.communauteId],
+    references: [communauteTable.id],
+  }),
   user: one(usersTable, {
-    fields: [communauteTable.user_id],
+    fields: [communauteUsersTable.userId],
     references: [usersTable.id],
   }),
 }));
 
-// e) Relation côté "enfant" : Saas
-export const saasRelations = relations(saasTable, ({ one }) => ({
+
+
+//---------------------------------------------------------------------
+//------------------------2.5 realation Saas/users --------------------
+//---------------------------------------------------------------------
+export const saasRelations = relations(saasTable, ({ many }) => ({
+  subscribers: many(saasUsersTable),
+}));
+export const saasUsersRelations = relations(saasUsersTable, ({ one }) => ({
+  saas: one(saasTable, {
+    fields: [saasUsersTable.saasId],
+    references: [saasTable.id],
+  }),
   user: one(usersTable, {
-    fields: [saasTable.user_id],
+    fields: [saasUsersTable.userId],
     references: [usersTable.id],
   }),
 }));

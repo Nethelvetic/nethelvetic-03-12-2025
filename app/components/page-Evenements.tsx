@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { selectionEvenements } from "../db/dbQuery-Evenements";
 import CarteVImgTitreBgN from './cart-V-Img-Titre-BgN';
-import ListHImgTxtBtnBdG from './list-H-Img-Txt-Btn-BgGN';
+import ListHImgTxtBtnBgGN from './list-H-Img-Txt-Btn-BgGN';
 
 
 const PageEvenements: React.FC = () => {
@@ -48,7 +48,7 @@ const PageEvenements: React.FC = () => {
 
         {/*-----------------------------5 DEBUT CONTENEUR carte-H-3xCarte */} 
         <div className='p-6'>
-            <ListHImgTxtBtnBdG cards={cardData} />
+            <ListHImgTxtBtnBgGN  cards={cardData} />
         </div>
 
     

@@ -62,8 +62,6 @@ const FormAdmEventModif: React.FC = () => {
       console.log("2.4 FormAdmEventModif selectionUnEvenement après réponse data = ", data);
       if (data && data.length > 0) {
         const evenement = data[0];
-        // Transformation pour garantir que btnUrlInt et btnUrlExt ne soient pas null,
-        // et que 'prix' soit toujours un nombre (0 si null)
         const fetchedEvenement: FormDataType = {
           titre: evenement.titre,
           texte: evenement.texte,
@@ -122,9 +120,7 @@ const FormAdmEventModif: React.FC = () => {
       const response = await actualiserUnEvenement(modifId, dataToInsert);
       console.log("3.1 FormAdmEventModif handleClick actualiserUnEvent après réponse :", response);
       if (response.success) {
-        // Réinitialisation du formulaire après succès
         setUnEventData(initialFormData);
-        // Redirection vers la route /admin/formations
         router.push("/admin/evenements");
       }
     } catch (error) {
@@ -161,7 +157,7 @@ const FormAdmEventModif: React.FC = () => {
               {/* Section Image */}
               <div className="w-full flex flex-col md:w-1/3 h-48 md:h-88 overflow-hidden">
                 <div>
-                  <label className="block text-sm md:text-xl font-medium">
+                  <label className="block text-base md:text-lg font-bold">
                     Image url
                   </label>
                   <input
@@ -183,9 +179,10 @@ const FormAdmEventModif: React.FC = () => {
               </div>
               {/* Section Autres champs */}
               <div className="w-full md:w-2/3 flex flex-col text-left pl-4 mt-4">
+
                 {/* Champ Date */}
                 <div className="w-full flex flex-col mt-4">
-                  <label className="block text-sm md:text-xl font-medium">
+                  <label className="block text-base md:text-lg font-bold">
                     Date
                   </label>
                   <h4 className="mt-1 block">
@@ -199,25 +196,27 @@ const FormAdmEventModif: React.FC = () => {
                     />
                   </h4>
                 </div>
-                {/* Champ Titre (affiché sur 2 lignes) */}
+
+                {/* Champ Titre */}
                 <div className="w-full mt-4">
-                  <label className="block text-sm md:text-xl font-medium">
+                  <label className="block text-base md:text-lg font-bold">
                     Titre
                   </label>
-                  <h3 className="mt-1 block">
+                  <h3>
                     <textarea
-                      rows={3}
-                      value={unEventData.titre}
-                      onChange={(e) =>
-                        setUnEventData({ ...unEventData, titre: e.target.value })
-                      }
-                      className="block w-full border-b border-gray-300 shadow-sm mt-4 resize-none font-bold text-3xl md:text-5xl"
+                       rows={2}
+                       value={unEventData.titre}
+                       onChange={(e) =>
+                         setUnEventData({ ...unEventData, titre: e.target.value })
+                       }
+                       className="block w-full border-b border-gray-300 shadow-sm mt-4 resize-none font-bold text-3xl md:text-5xl"
                     />
                   </h3>
                 </div>
+
                 {/* Champ Description */}
                 <div className="w-full mt-4">
-                  <label className="block text-sm md:text-xl font-medium">
+                  <label className="block text-base md:text-lg font-bold">
                     Description
                   </label>
                   <textarea
@@ -225,13 +224,14 @@ const FormAdmEventModif: React.FC = () => {
                     onChange={(e) =>
                       setUnEventData({ ...unEventData, texte: e.target.value })
                     }
-                    className="block w-full border-b border-gray-300 shadow-sm mt-4"
+                    className="block w-full border-b border-gray-300 text-base md:text-lg  shadow-sm mt-4"
                     rows={4}
                   ></textarea>
                 </div>
+
                 {/* Champ Prix */}
                 <div className="w-full mt-4">
-                  <label className="block text-sm md:text-xl font-medium">
+                  <label className="block text-base md:text-lg font-bold">
                     Prix
                   </label>
                   <input
@@ -243,12 +243,13 @@ const FormAdmEventModif: React.FC = () => {
                         prix: parseInt(e.target.value),
                       })
                     }
-                    className="mt-1 block w-full border-b border-gray-300 shadow-sm"
+                    className="mt-1 block w-full border-b border-gray-300 text-base md:text-lg  shadow-sm"
                   />
                 </div>
+
                 {/* Champ Heure */}
                 <div className="w-full mt-4">
-                  <label className="block text-sm md:text-xl font-medium">
+                  <label className="block text-base md:text-lg font-bold">
                     Heure
                   </label>
                   <input
@@ -257,12 +258,13 @@ const FormAdmEventModif: React.FC = () => {
                     onChange={(e) =>
                       setUnEventData({ ...unEventData, heure: e.target.value })
                     }
-                    className="mt-1 block w-full border-b border-gray-300 shadow-sm"
+                    className="mt-1 block w-full border-b border-gray-300 text-base md:text-lg  shadow-sm"
                   />
                 </div>
+
                 {/* Champ Lieu */}
                 <div className="w-full mt-4">
-                  <label className="block text-sm md:text-xl font-medium">
+                  <label className="block text-base md:text-lg font-bold">
                     Lieu
                   </label>
                   <input
@@ -271,9 +273,10 @@ const FormAdmEventModif: React.FC = () => {
                     onChange={(e) =>
                       setUnEventData({ ...unEventData, lieu: e.target.value })
                     }
-                    className="mt-1 block w-full border-b border-gray-300 shadow-sm"
+                    className="mt-1 block w-full border-b border-gray-300 text-base md:text-lg  shadow-sm"
                   />
                 </div>
+
                 {/* Boutons de soumission */}
                 <div className="w-full pt-3 pb-3 flex space-x-4">
                   <ContainerBtnLgBgG>

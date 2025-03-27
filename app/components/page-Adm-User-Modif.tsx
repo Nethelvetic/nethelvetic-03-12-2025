@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import FormAdmFormaAdd from './form-Adm-Forma-Add';
+import FormAdmUserModif from './form-Adm-User-Modif';
 
 
-const AdmFormaAdd: React.FC = () => {
+const PageAdmUserModif: React.FC = () => {
 
 
 
@@ -16,10 +16,10 @@ const AdmFormaAdd: React.FC = () => {
 
         {/*-----------------------------1 DEBUT CONTENEUR carte-H-Img-Titre-BdG */}
         <div className="p-6">
-          <FormAdmFormaAdd />
+          <FormAdmUserModif/>
          </div>
     </div>
   );
 };
 
-export default AdmFormaAdd;
+export default PageAdmUserModif;

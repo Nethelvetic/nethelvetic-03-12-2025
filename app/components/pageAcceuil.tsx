@@ -42,7 +42,7 @@ const cardData = [
     },
     {
       route:"/creation-entreprise/formule-gratuite",
-      btnTxt:"Réserver mon entretien",
+      btnTxt:"Réserver entretien",
       imageSrc: '/jeroNum631.jpg',
       title: 'Entretien Personnel (350 CHF)',
       children: "Un appel vidéo de 60 min pour clarifier votre projet.",

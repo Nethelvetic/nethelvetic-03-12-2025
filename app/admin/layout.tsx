@@ -17,27 +17,26 @@ export default function AdminLayout({
 }) {
   return (
     <div className="flex flex-col min-h-screen" style={{ background: "black" }}>
+           
+
       <header>
         <NavBarVAdmin 
           items={[
-            { title: "Clients", link: "./clients" },
-            { title: "News-Letter", link: "./newsLetter" },
+            { title: "Users", link: "/admin/users" },
+            { title: "News-Letter", link: "/admin/newsLetter" },
             {
               title: "Evénements",
               subItems: [
-                { title: "Formations", link: "./formations" },
-                { title: "Evenements", link: "./evenements" },
-                { title: "Communaute", link: "./Communaute" },
+                { title: "Formations", link: "/admin/formations" },
+                { title: "Evenements", link: "/admin/evenements" },
+                { title: "Communaute", link: "/admin/Communaute" },
               ],
             },
-            { title: "Blog", link: "./blog" },
-            { title: "Contact", link: "./contact" },
+            { title: "Blog", link: "admin/blog" },
+            { title: "Contact", link: "admin/contact" },
           ]}
         />
       </header>
-
-      {/* Espace entre les sections */}
-      <div className="h-10 md:h-15"></div>
 
       <div className="flex-grow">{children}</div>
     </div>

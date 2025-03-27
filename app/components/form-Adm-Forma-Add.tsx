@@ -156,8 +156,8 @@ const FormAdmFormaAdd: React.FC = () => {
                     Titre
                   </label>
                   <h3 className="mt-1 block">
-                    <input
-                      type="text"
+                    <textarea
+                      rows={2}
                       value={titre}
                       onChange={(e) =>
                         setFormData({ ...formData, titre: e.target.value })

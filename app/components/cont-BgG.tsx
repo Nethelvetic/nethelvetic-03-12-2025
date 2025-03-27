@@ -1,62 +1,28 @@
 "use client";
 
-import React, { useEffect, useRef, useState, ReactNode } from 'react';
+import React, {ReactNode } from 'react';
 
-interface ContanerHBgProps {
+interface ContanerHBgGProps {
   children: ReactNode;
 }
 
-const ContanerHBg: React.FC<ContanerHBgProps> = ({ children }) => {
-  // ---------------------------------------------------------------------
-  // ------------------------ 2 Début data dynamique --------------------
-  // ---------------------------------------------------------------------
-  const [isVisible, setIsVisible] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
+const ContanerBgG: React.FC<ContanerHBgGProps> = ({ children }) => {
 
   
   // ---------------------------------------------------------------------
-  // ------------------------ 2 Début comportement ------------------------
-  // ---------------------------------------------------------------------
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        } else {
-          setIsVisible(false);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-
-
-
-  // ---------------------------------------------------------------------
-  // ------------------------ 2 Début affichage --------------------------
+  // ------------------------ 2 Début affichage ---------------------------
   // ---------------------------------------------------------------------
   return (
-    //-------------------------1 DEBUT CONTAINER PRINCIPALE
-      <div
-        ref={containerRef}
-        className={`min-h-24 w-full mx-auto rounded-lg bg-bgGardient1 mb-6 
-        ${isVisible ? "animate-slide-in-slow" : "animate-fade-out-slow"}`}>
+      //-------------------------1 DEBUT CONTAINER PRINCIPALE
+      <div className="min-h-24  max-w-5xl mx-auto rounded-lg bg-bgGardient1 mb-6" >
 
-        {/*--------1.1 DEBUT CONTENEUR texte/children   */}
-        <div className="w-full flex flex-col justify-center items-stretch rounded-lg">
+        {/*--------1.1 DEBUT container texte/children   */}
+        <div className="w-full flex flex-col justify-center items-stretch  rounded-lg">
           {children}
         </div>
       </div>
-    //-------------------------1 FIN CONTAINER PRINCIPALEf
+      //-------------------------1 FIN CONTAINER PRINCIPALE
   );
 };
 
-export default ContanerHBg;
+export default ContanerBgG;

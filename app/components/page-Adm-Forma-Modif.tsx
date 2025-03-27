@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import FormAdmFormaModif from './/form-Adm-Forma-Modif';
+import FormAdmFormaModif from './form-Adm-Forma-Modif';
 
 
 const AdmFormaModif: React.FC = () => {

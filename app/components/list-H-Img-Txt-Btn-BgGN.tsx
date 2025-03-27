@@ -55,7 +55,7 @@ const ListHImgTxtBtnBdG: React.FC<ListHImgTxtBtnBgGProps> = ({ cards }) => {
                   <h2 className="w-full font-bold text-3xl md:text-5xl">
                     {card.titre}
                   </h2>
-                  <div className="w-full mt-4">
+                  <div className="w-full text mt-4">
                     {card.texte}
                   </div>
                   <div className="w-full mt-4">
@@ -100,7 +100,7 @@ const ListHImgTxtBtnBdG: React.FC<ListHImgTxtBtnBgGProps> = ({ cards }) => {
                   <h3 className="w-full font-bold text-3xl md:text-5xl">
                     {card.titre}
                   </h3>
-                  <div className="w-full mt-4">
+                  <div className="w-full text-base md:text-lg mt-4">
                     {card.texte}
                   </div>
                   <div className="w-full mt-4">

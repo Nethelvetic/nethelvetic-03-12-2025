@@ -22,11 +22,11 @@ interface CarteData {
   usserid: number;
 }
 
-interface ListHImgTxtBtnMBgGProps {
+interface ListHImgTxtBtnMBgGNProps {
   cards: CarteData[];
 }
 
-const ListHImgTxtBtnMBdG: React.FC<ListHImgTxtBtnMBgGProps> = ({ cards }) => {
+const ListHImgTxtBtnMBgGN: React.FC<ListHImgTxtBtnMBgGNProps> = ({ cards }) => {
   return (
     <div>
       {cards.map((card, index) =>
@@ -51,7 +51,7 @@ const ListHImgTxtBtnMBdG: React.FC<ListHImgTxtBtnMBgGProps> = ({ cards }) => {
                   <h2 className="w-full font-bold text-3xl md:text-5xl">
                     {card.titre}
                   </h2>
-                  <div className="w-full mt-4">
+                  <div className="w-full  mt-4">
                     {card.texte}
                   </div>
                   <div className="w-full mt-4">
@@ -124,4 +124,4 @@ const ListHImgTxtBtnMBdG: React.FC<ListHImgTxtBtnMBgGProps> = ({ cards }) => {
   );
 };
 
-export default ListHImgTxtBtnMBdG;
+export default ListHImgTxtBtnMBgGN;

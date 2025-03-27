@@ -35,208 +35,149 @@ const initialFormData: FormDataType = {
 };
 
 const FormAdmEventAdd: React.FC = () => {
-  console.log("1.0 FormAdmEventAdd ");
+
   //---------------------------------------------------------------------
   //------------------------1 Début Data dynamique   --------------------
   //---------------------------------------------------------------------
   const [formData, setFormData] = useState<FormDataType>(initialFormData);
-  // Déstructuration pour accéder aux valeurs (correction: utiliser imgUrl au lieu de img)
   const { imgUrl, titre, texte, date, prix, heure, lieu } = formData;
 
   const router = useRouter();
 
+
   //---------------------------------------------------------------------
-  //------------------------2 Début comportement   ----------------------
+  //------------------------2 Début comportement ------------------------
   //---------------------------------------------------------------------
   const handleClick = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("2.0 FormAdmEventAdd handleClick");
     e.preventDefault();
 
-    // Vérification statique que tous les champs sont remplis
     if (
       !formData.titre ||
       !formData.texte ||
       !formData.date ||
       !formData.heure ||
       !formData.imgUrl ||
-      !formData.lieu 
+      !formData.lieu
     ) {
       alert("Veuillez remplir tous les champs.");
       return;
     }
 
     const dataToInsert = {
-      titre: formData.titre,
-      texte: formData.texte,
-      date: formData.date,
-      heure: formData.heure,
-      prix: formData.prix,
-      imgUrl: formData.imgUrl,
-      lieu: formData.lieu,
+      ...formData,
       btnUrlInt: "/formulaire/evenement",
-      btnUrlExt: " ",
-      btnTexte: "S'inscrire",
-      btnModifUrl: "/admin/evenements/" 
+      btnModifUrl: "/admin/evenements/",
     };
 
     try {
-      console.log("2.1 FormAdmEventAdd avant createEvenement(dataToInsert: )", dataToInsert);
       const response = await createEvenement(dataToInsert);
-      console.log("2.2 FormAdmEventAdd après createEvenement(dataToInsert: ) réponse: ", response);
       if (response.success) {
-        // Réinitialisation du formulaire après succès
         setFormData(initialFormData);
-        // Redirection vers la route /admin/formations
         router.push("/admin/evenements");
       }
     } catch (error) {
-      console.error("2.3 FormAdmEventAdd createEvenement(dataToInsert) erreur:", error);
+      console.error("Erreur lors de la création de l'événement:", error);
     }
   };
 
+
   //---------------------------------------------------------------------
-  //------------------------3 Début Affichage   -------------------------
+  //------------------------3 Début affichage ---------------------------
   //---------------------------------------------------------------------
   return (
     <div className="p-6">
       <ContainerBGN>
-        <div className="w-full">
-          {/*-------------------------------------1 debut formulaire */}
-          <form onSubmit={handleClick} className="space-y-4 p-4 w-full">
-            {/*-----------------------2 debut conteneur flex-col md:flex-row  */}
-            <div className="flex flex-col md:flex-row items-start p-3">
-              {/*-----------2.1 debut Image flex-col  */}
-              <div className="w-full flex flex-col md:w-1/3 h-48 md:h-88 overflow-hidden">
-                {/* Image label et input */}
-                <div>
-                  <label className="block text-sm md:text-xl font-medium">
-                    Image url
-                  </label>
-                  <input
-                    type="text"
-                    value={imgUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, imgUrl: e.target.value })
-                    }
-                    className="mt-1 block w-full border-b border-gray-300 shadow-sm"
-                  />
-                </div>
-                {/* Image affichage */}
-                <div className="w-full overflow-hidden">
-                  <img
-                    src={imgUrl}
-                    alt={titre}
-                    className="object-contain w-full h-full"
-                  />
-                </div>
+        <form onSubmit={handleClick} className="space-y-4 p-4 w-full">
+          <div className="flex flex-col md:flex-row items-start p-3">
+            <div className="w-full flex flex-col md:w-1/3 h-48 md:h-88 overflow-hidden">
+              <div>
+                <label className="block text-base md:text-lg font-bold">Image url</label>
+                <input
+                  type="text"
+                  value={imgUrl}
+                  onChange={(e) => setFormData({ ...formData, imgUrl: e.target.value })}
+                  className="mt-1 block w-full border-b border-gray-300 shadow-sm"
+                />
               </div>
-              {/*-----------2.1 Fin Image flex-col  */}
+              <div className="w-full overflow-hidden">
+                <img src={imgUrl} alt={titre} className="object-contain w-full h-full" />
+              </div>
+            </div>
 
-              {/*-----------2.2 Debut conteneur autre champs */}
-              <div className="w-full md:w-2/3 flex flex-col text-left pl-4 mt-4">
-                {/* Champ Date avec balise h4 */}
-                <div className="w-full flex flex-col mt-4">
-                  <label className="block text-sm md:text-xl font-medium">
-                    Date
-                  </label>
-                  <h4 className="mt-1 block">
-                    <input
-                      type="date"
-                      value={date}
-                      onChange={(e) =>
-                        setFormData({ ...formData, date: e.target.value })
-                      }
-                      className="w-full border-b border-gray-300 shadow-sm font-bold text-2xl md:text-3xl"
-                    />
-                  </h4>
-                </div>
-                {/* Champ Titre avec balise h3 */}
-                <div className="w-full mt-4">
-                  <label className="block text-sm md:text-xl font-medium">
-                    Titre
-                  </label>
-                  <h3 className="mt-1 block">
-                    <input
-                      type="text"
-                      value={titre}
-                      onChange={(e) =>
-                        setFormData({ ...formData, titre: e.target.value })
-                      }
-                      className="w-full border-b border-gray-300 shadow-sm font-bold text-3xl md:text-5xl"
-                    />
-                  </h3>
-                </div>
-                {/* Champ Description */}
-                <div className="w-full mt-4">
-                  <label className="block text-sm md:text-xl font-medium">
-                    Description
-                  </label>
+            <div className="w-full md:w-2/3 flex flex-col text-left pl-4 mt-4">
+              <div className="w-full flex flex-col mt-4">
+                <label className="block text-base md:text-lg font-bold">Date</label>
+                <h4 className="mt-1 block">
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    className="w-full border-b border-gray-300 shadow-sm font-bold text-2xl md:text-3xl"
+                  />
+                </h4>
+              </div>
+
+              {/* Champ Titre */}
+              <div className="w-full mt-4">
+                <label className="block text-base md:text-lg font-bold">Titre</label>
+                <h3>
+                  <textarea
+                    rows={2}
+                    value={titre}
+                    onChange={(e) => setFormData({ ...formData, titre: e.target.value })}
+                    className="w-full border-b border-gray-300 shadow-sm font-bold text-3xl md:text-5xl"
+                  />
+                </h3>
+              </div>
+
+              <div className="w-full mt-4">
+                <label className="block text-base md:text-lg font-bold">Description</label>
                   <textarea
                     value={texte}
-                    onChange={(e) =>
-                      setFormData({ ...formData, texte: e.target.value })
-                    }
-                    className="block w-full border-b border-gray-300 shadow-sm mt-4"
-                    rows={4}
-                  ></textarea>
-                </div>
-                {/* Champ Prix */}
-                <div className="w-full mt-4">
-                  <label className="block text-sm md:text-xl font-medium">
-                    Prix
-                  </label>
-                  <input
-                    type="number"
-                    value={prix}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        prix: parseInt(e.target.value),
-                      })
-                    }
-                    className="mt-1 block w-full border-b border-gray-300 shadow-sm"
-                  />
-                </div>
-                {/* Champ Heure */}
-                <div className="w-full mt-4">
-                  <label className="block text-sm md:text-xl font-medium">
-                    Heure
-                  </label>
-                  <input
-                    type="time"
-                    value={heure}
-                    onChange={(e) =>
-                      setFormData({ ...formData, heure: e.target.value })
-                    }
-                    className="mt-1 block w-full border-b border-gray-300 shadow-sm"
-                  />
-                </div>
-                {/* Champ Lieu */}
-                <div className="w-full mt-4">
-                  <label className="block text-sm md:text-xl font-medium">
-                    Lieu
-                  </label>
-                  <input
-                    type="text"
-                    value={lieu}
-                    onChange={(e) =>
-                      setFormData({ ...formData, lieu: e.target.value })
-                    }
-                    className="mt-1 block w-full border-b border-gray-300 shadow-sm"
-                  />
-                </div>
-                {/* Bouton de soumission */}
-                <div className="w-full pt-3 pb-3">
-                  <ContainerBtnLgBgG>
-                    <button type="submit">Creer</button>
-                  </ContainerBtnLgBgG>
-                </div>
+                    onChange={(e) => setFormData({ ...formData, texte: e.target.value })}
+                    className="block w-full border-b border-gray-300 text-base md:text-lg shadow-sm mt-4"
+                    rows={4}>
+                  </textarea>
               </div>
-              {/*-----------2.2 Fin conteneur autre champs */}
+
+              <div className="w-full mt-4">
+                <label className="block text-base md:text-lg font-bold">Prix</label>
+                <input
+                  type="number"
+                  value={prix}
+                  onChange={(e) => setFormData({ ...formData, prix: parseInt(e.target.value) })}
+                  className="mt-1 block w-full border-b border-gray-300 text-base md:text-lg shadow-sm"
+                />
+              </div>
+
+              <div className="w-full mt-4">
+                <label className="block text-base md:text-lg font-bold">Heure</label>
+                <input
+                  type="time"
+                  value={heure}
+                  onChange={(e) => setFormData({ ...formData, heure: e.target.value })}
+                  className="mt-1 block w-full border-b border-gray-300 text-base md:text-lg shadow-sm"
+                />
+              </div>
+
+              <div className="w-full mt-4">
+                <label className="block text-base md:text-lg font-bold">Lieu</label>
+                <input
+                  type="text"
+                  value={lieu}
+                  onChange={(e) => setFormData({ ...formData, lieu: e.target.value })}
+                  className="mt-1 block w-full border-b border-gray-300 text-base md:text-lg shadow-sm"
+                />
+              </div>
+
+              <div className="w-full pt-3 pb-3">
+                <ContainerBtnLgBgG>
+                  <button type="submit">Creer</button>
+                </ContainerBtnLgBgG>
+              </div>
             </div>
-          </form>
-          {/*-------------------------------------1 fin formulaire */}
-        </div>
+          </div>
+        </form>
       </ContainerBGN>
     </div>
   );

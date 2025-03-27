@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ContBtnLgBgGViolet from './cont-Btn-Lg-BgGViolet';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'; 
 
 interface BtnLgModifBgGVioletProps {
     modifUrl: string;
@@ -21,8 +21,8 @@ const BtnLgModifBgGViolet: React.FC<BtnLgModifBgGVioletProps> = ({ modifUrl, chi
   //------------------------2 Début comportement  -----------------------
   //---------------------------------------------------------------------
   const onClick = () => {
-    console.log("2 btnLgBgG2 début onClick");
-    console.log("2 btnLgBgG2 début onClick interneUrl= ", modifUrl);
+    console.log("2.0 BtnLgModifBgGViolet onClick");
+    console.log("2.1 BtnLgModifBgGViolet onClick modifUrl= ", modifUrl);
     // Navigation interne sur une page de votre site, si la route existe
       router.push(modifUrl);
   };

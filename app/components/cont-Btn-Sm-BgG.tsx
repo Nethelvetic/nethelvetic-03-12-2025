@@ -30,7 +30,7 @@ const ContainerBtnSmBgG: React.FC<ContainerBtnSmBgGProps> = ({ children }) => {
       className={`max-w-3xs md:max-w-xs mx-auto px-4 rounded-lg bg-bgGardient1 flex items-center justify-center  hover:brightness-75 ${isVisible ? "animate-slide-in-slow" : "animate-fade-out-slow"}`}>
 
       {/*--------1.1 DEBUT container texte/children   */}
-      <div className="w-full h-full flex items-center justify-center p-3 md:p-5 ">
+      <div className="w-full h-full flex items-center justify-center text-base md:text-lg p-3 md:p-5 ">
         {children}
       </div>
     </div>

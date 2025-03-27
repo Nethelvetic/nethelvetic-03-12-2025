@@ -36,7 +36,7 @@ const CarteVImgTxtBgGN: React.FC<CarteVImgTxtBgGNProps> = ({ imageSrc, title, ch
 
        {/*----------------1.3 DEBUT CONTENEUR texte/children   */}
       <div>
-        <div className="text-sm md:text-xl">
+        <div className="text-base md:text-lg">
           {children}
         </div>
       </div>

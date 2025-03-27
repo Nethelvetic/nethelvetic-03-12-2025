@@ -53,7 +53,7 @@ const NavBarV: React.FC<NavBarProps> = ({ items}) => {
 
       {/* SIDEBAR NAVIGATION */}
       <nav
-        className={`fixed left-0 top-0 h-full w-64 bg-gray-800 text-white flex flex-col items-center py-6 space-y-6 transition-transform ${
+        className={`fixed left-0 top-15 h-full w-64 bg-gray-800 text-white flex flex-col items-center py-6 space-y-6 transition-transform ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >

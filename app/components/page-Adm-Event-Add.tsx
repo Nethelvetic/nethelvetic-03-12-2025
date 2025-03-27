@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import FormAdmEventAdd from './/form-Adm-Event-Add';
+import FormAdmEventAdd from './form-Adm-Event-Add';
 
 
 const AdmEventAdd: React.FC = () => {

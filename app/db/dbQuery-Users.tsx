@@ -1,34 +1,51 @@
 "use server";
 
 import { 
-  insertUser, 
+  insertOneUser, 
   selectUsers, 
   selectOneUser, 
-  updateUser, 
-  deleteUser 
+  updateOneUser, 
+  deleteOneUser 
 } from "./dbQuery";
 
-type UserInput = {
-  nom: string;
-  prenom: string;
-  texte: string;
-  date_creation: string;
-  email: string;
-};
+  type UserInput = {
+    nom_entreprise: string;             // varchar(255) non null
+    personne_a_contacter: string;        // varchar(255) non null
+    ville: string;                       // varchar(255), optionnel
+    code_postal: string;
+    telephone: string;                  // varchar(20), unique, optionnel
+    date_de_naissance: string;          // date, optionnel
+    date_creation: string;               // date non null (format ISO ou "YYYY-MM-DD")
+    email: string;                       // varchar(255) non null, unique
+    mot_de_passe: string;               // varchar(255), optionnel
+    username: string;                   // varchar(255), unique, optionnel
+    statut: string;                     // varchar(50), optionnel (ex: "actif", "inactif", "suspendu")
+    domaine_activite: string;           // varchar(255), optionnel (anciennement "profession")
+    employeur: string;                  // varchar(255), optionnel
+    statut_professionnel: string;       // varchar(255), optionnel
+    adresse: string;                    // text(), optionnel
+    imgUrl: string;                     // varchar(255), optionnel (URL de l'image de profil)
+    btnUrlInt: string;                  // varchar(255), optionnel
+    btnUrlExt: string;                  // varchar(255), optionnel
+    btnTexte: string;                    // varchar(255) non null
+    btnModifUrl: string;                 // varchar(255) non null
+  };
+  
+  
 
 //--------------------------------------------------------------------------------
 //------------------------1  Fonction createUser ---------------------------
 //--------------------------------------------------------------------------------
-export async function createUser(user: UserInput) {
-  console.log("Début createUser");
-  return await insertUser(user);
+export async function createOneUser(user: UserInput) {
+  console.log("1.0 createUser Début");
+  return await insertOneUser(user);
 }
 
 //--------------------------------------------------------------------------------
 //------------------------2  Fonction selectionUsers ----------------------------
 //--------------------------------------------------------------------------------
 export async function selectionUsers() {
-  console.log("Début selectUsers");
+  console.log("2.0 Début selectUsers");
   return await selectUsers();
 }
 
@@ -36,7 +53,7 @@ export async function selectionUsers() {
 //------------------------3  Fonction selectionOneUser ----------------------------
 //--------------------------------------------------------------------------------
 export async function selectionOneUser(id: number) {
-  console.log("Début selectOneUser avec l'id =", id);
+  console.log("3.0 Début selectOneUser avec l'id =", id);
   return await selectOneUser(id);
 }
 
@@ -44,14 +61,14 @@ export async function selectionOneUser(id: number) {
 //------------------------4  Fonction actualiserOneUser ----------------------------
 //--------------------------------------------------------------------------------
 export async function actualiserOneUser(id: number, user: UserInput) {
-  console.log("Début updateUser pour l'id =", id);
-  return await updateUser(id, user);
+  console.log("4.0 Début updateUser pour l'id =", id);
+  return await updateOneUser(id, user);
 }
 
 //--------------------------------------------------------------------------------
 //------------------------5  Fonction suppOneUser ----------------------------
 //--------------------------------------------------------------------------------
 export async function suppOneUser(id: number) {
-  console.log("Début deleteUser pour l'id =", id);
-  return await deleteUser(id);
+  console.log("5.0 Début deleteUser pour l'id =", id);
+  return await deleteOneUser(id);
 }

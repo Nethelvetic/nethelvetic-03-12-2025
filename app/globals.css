@@ -1,7 +1,7 @@
 /* src/app/globals.css */
 
 /* Import de la police Bebas Neue depuis Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Franklin:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Sofia+Sans:ital,wght@0,1..1000;1,1..1000&display=swap');
 
 /* Import du préflight (reset) de Tailwind */
 @import "tailwindcss";
@@ -35,7 +35,8 @@ h4, h5, h6 {
 
 /* Styles pour les paragraphes */
 p {
-  font-family: var(--font-open-sans-regular), sans-serif;
+  font-family: var( --font-open-sans-light), sans-serif;
+  font-weight: 300;
 }
 
 /* Définition du thème personnalisé avec @theme */
@@ -72,7 +73,10 @@ p {
   --color-border-black: #000000;
 
   /* Déclaration de la police Bebas Neue */
-  --font-bebas-neue: 'Bebas Neue', sans-serif;
+  --font-bebas-neue : 'Bebas Neue';
+  --font-open-sans-regular: 'Open Sans';  
+  --font-open-sans-light: 'Open Sans';
+  --font-open-sans-light-italic: 'Open Sans';
 }
 
 /* Style spécifique du h1 */
@@ -217,3 +221,15 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   }
 }
 
+*:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6):not(p):not(input):not(textarea)   {
+  font-family: var(--font-open-sans-light), sans-serif;
+  font-weight: 300;
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff !important;
+  -webkit-box-shadow: 0 0 0px 1000px #000 inset !important;
+}

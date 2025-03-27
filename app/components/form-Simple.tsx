@@ -1,9 +1,9 @@
 "use client";
 
-import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import CarteVImgTxtBgGN from './cart-V-Img-Txt-BgGN';
-import ContBtnLgBgG from './cont-Btn-Lg-BgG';
+import React, { useState } from "react";
+import CarteVImgTxtBgGN from "./cart-V-Img-Txt-BgGN";
+import ContBtnLgBgG from "./cont-Btn-Lg-BgG";
+import { useForm, SubmitHandler, useWatch } from "react-hook-form";
 
 interface FormData {
   email: string;
@@ -17,8 +17,20 @@ const FormSimple: React.FC = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormData>();
+
+  // Utilisation de watch pour surveiller la valeur des champs
+  const watchedEmail = watch("email", "");
+  const watchedNom = watch("nom", "");
+  const watchedPrenom = watch("prenom", "");
+
+  // Fonction pour déterminer la classe CSS en fonction de la présence de texte
+  const getInputClass = (value: string) =>
+    value
+      ? "bg-white text-black placeholder-gray-500"
+      : "bg-transparent text-white placeholder-white";
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log("Données du formulaire :", data);
@@ -26,8 +38,7 @@ const FormSimple: React.FC = () => {
 
   return (
     <div>
-      <div className='p-6' >
-        {/*-----------------------------1 DEBUT CONTENEUR carte-V-Img-Txt-BgGN */}
+      <div className="p-6">
         <CarteVImgTxtBgGN imageSrc="/ordinateurBg.png" title="">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4 max-w-md mx-auto">
             {/* Champ Email */}
@@ -42,9 +53,11 @@ const FormSimple: React.FC = () => {
                     message: "Email invalide",
                   },
                 })}
-                className="mt-1 block w-full border-b border-gray-300 shadow-sm"
+                className={`mt-1 block w-full border-b border-gray-300 shadow-sm ${getInputClass(watchedEmail)}`}
               />
-              {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
+              {errors.email && (
+                <span className="text-red-500 text-sm">{errors.email.message}</span>
+              )}
             </div>
 
             {/* Champ Nom */}
@@ -53,9 +66,11 @@ const FormSimple: React.FC = () => {
               <input
                 type="text"
                 {...register("nom", { required: "Le nom est requis" })}
-                className="mt-1 block w-full border-b border-gray-300 shadow-sm"
+                className={`mt-1 block w-full border-b border-gray-300 shadow-sm ${getInputClass(watchedNom)}`}
               />
-              {errors.nom && <span className="text-red-500 text-sm">{errors.nom.message}</span>}
+              {errors.nom && (
+                <span className="text-red-500 text-sm">{errors.nom.message}</span>
+              )}
             </div>
 
             {/* Champ Prénom */}
@@ -64,9 +79,11 @@ const FormSimple: React.FC = () => {
               <input
                 type="text"
                 {...register("prenom", { required: "Le prénom est requis" })}
-                className="mt-1 block w-full border-b border-gray-300 shadow-sm"
+                className={`mt-1 block w-full border-b border-gray-300 shadow-sm ${getInputClass(watchedPrenom)}`}
               />
-              {errors.prenom && <span className="text-red-500 text-sm">{errors.prenom.message}</span>}
+              {errors.prenom && (
+                <span className="text-red-500 text-sm">{errors.prenom.message}</span>
+              )}
             </div>
 
             {/* Checkbox Newsletter */}
@@ -90,17 +107,14 @@ const FormSimple: React.FC = () => {
             </div>
 
             {/* Bouton de soumission */}
-
             <ContBtnLgBgG>
-              <button type="submit" className='w-full h-full'>
-              Envoyer
+              <button type="submit" className="w-full h-full">
+                Envoyer
               </button>
-          </ContBtnLgBgG>
+            </ContBtnLgBgG>
           </form>
         </CarteVImgTxtBgGN>
-        {/*-----------------------------1 FIN CONTENEUR carte-V-Img-Txt-BgGN */}
       </div>
-
     </div>
   );
 };

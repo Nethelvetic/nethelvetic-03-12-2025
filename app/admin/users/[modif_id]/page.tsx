@@ -1,14 +1,14 @@
 "use client";
 
 import React from 'react';
-import PageAdmEventModif from '../../../components/page-Adm-Event-Modif';
+import PageAdmUserModif from '../../../components/page-Adm-User-Modif';
 
 
 export default function ModificationFormation() {
 
   return (
     <div className="w-full md:w-5xl mx-auto">
-      <PageAdmEventModif />
+      <PageAdmUserModif/>
     </div>
   );
 }

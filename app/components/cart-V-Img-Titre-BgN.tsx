@@ -28,7 +28,7 @@ const CarteVImgTxtBgGN: React.FC<CarteVImgTitreProps> = ({ imageSrc, title }) =>
         {/* Le titre reste par-dessus l'overlay */}
         <h3
           className="absolute inset-x-0 top-5/6 z-10 flex items-center justify-center text-center font-bold text-4xl md:text-8xl"
-          style={{ transform: 'translateY(calc(-50% + 20px))' }}>
+          style={{ transform: 'translateY(calc(-50% + 20px))' }}> 
           {title}
         </h3>
       </div>

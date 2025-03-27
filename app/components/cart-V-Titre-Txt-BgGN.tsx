@@ -28,7 +28,7 @@ const CarteVTitreTxtBgGN: React.FC<CarteVTitreTxtBgGNProps> = ({ title, children
         
   
         {/*----------------1.2 DEBUT TEXTE/CHILDREN */}
-        <div className="text-sm md:text-xl text-center"> 
+        <div className="text-base md:text-lg text-center"> 
           {children}
         </div>
      

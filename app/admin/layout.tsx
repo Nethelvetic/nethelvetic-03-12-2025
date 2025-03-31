@@ -1,9 +1,7 @@
-// src/app/admin/layout.tsx (ou votre layout admin)
 import type { Metadata } from "next"; 
 import { Bebas_Neue, Open_Sans } from "next/font/google";
 import "../../app/globals.css";
 import NavBarVAdmin from "../components/navBar-V-Admin";
-import dynamic from 'next/dynamic';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,11 +14,10 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col min-h-screen" style={{ background: "black" }}>
-           
-
-      <header>
-        <NavBarVAdmin 
+    <div className="flex min-h-screen" style={{ background: "black" }}>
+      {/* Sidebar fixe sur grand écran */}
+      <aside className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 md:left-0 bg-bgGardient1 z-20">
+        <NavBarVAdmin
           items={[
             { title: "Users", link: "/admin/users" },
             { title: "News-Letter", link: "/admin/newsLetter" },
@@ -36,9 +33,31 @@ export default function AdminLayout({
             { title: "Contact", link: "admin/contact" },
           ]}
         />
-      </header>
+      </aside>
 
-      <div className="flex-grow">{children}</div>
+      {/* Contenu principal, décalé sur grand écran */}
+      <div className="flex-grow md:ml-64">
+        {/* Navbar mobile dans le header */}
+        <header className="md:hidden">
+          <NavBarVAdmin
+            items={[
+              { title: "Users", link: "/admin/users" },
+              { title: "News-Letter", link: "/admin/newsLetter" },
+              {
+                title: "Evénements",
+                subItems: [
+                  { title: "Formations", link: "/admin/formations" },
+                  { title: "Evenements", link: "/admin/evenements" },
+                  { title: "Communaute", link: "/admin/Communaute" },
+                ],
+              },
+              { title: "Blog", link: "admin/blog" },
+              { title: "Contact", link: "admin/contact" },
+            ]}
+          />
+        </header>
+        <main>{children}</main>
+      </div>
     </div>
   );
 }

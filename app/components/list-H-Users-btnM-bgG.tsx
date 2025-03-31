@@ -2,7 +2,8 @@
 
 import React from 'react';
 import ContainerBgGN from './cont-BgGN';
-import BtnLgModifBgG from './btn-Lg-Modif-BgG';
+import ContainerBgG from './cont-BgG';
+import BtnLgModifBgGViolet from './btn-Lg-Modif-BgGViolet';
 import { useRouter } from "next/navigation";
 
 interface CarteData {
@@ -30,11 +31,11 @@ interface CarteData {
   btnModifUrl: string;
 }
 
-interface ListHUsersBtnMBgGNProps {
+interface ListHUsersBtnMBgGProps {
   cards: CarteData[];
 }
 
-const ListHUsersBtnMBgGN: React.FC<ListHUsersBtnMBgGNProps> = ({ cards }) => {
+const ListHUsersBtnMBgG: React.FC<ListHUsersBtnMBgGProps> = ({ cards }) => {
   const router = useRouter();
   console.log("1.0 debut ListHUsersBtnMBgGN => cards", cards);
 
@@ -69,9 +70,9 @@ const ListHUsersBtnMBgGN: React.FC<ListHUsersBtnMBgGNProps> = ({ cards }) => {
                 </div>
                 {/* Bouton visible uniquement sur grand écran */}
                 <div className="pt-1 pb-1 md:pt-3 md:pb-3 hidden md:block">
-                  <BtnLgModifBgG modifUrl={`${card.btnModifUrl}/${card.id}`}>
+                  <BtnLgModifBgGViolet modifUrl={`${card.btnModifUrl}/${card.id}`}>
                     modification
-                  </BtnLgModifBgG>
+                  </BtnLgModifBgGViolet>
                 </div>
               </div>
             </div>
@@ -85,11 +86,15 @@ const ListHUsersBtnMBgGN: React.FC<ListHUsersBtnMBgGNProps> = ({ cards }) => {
               className="md:hidden cursor-pointer"
               onClick={() => router.push(`${card.btnModifUrl}/${card.id}`)}
             >
-              <ContainerBgGN>{content}</ContainerBgGN>
+              {index % 2 !== 0 
+                ? <ContainerBgG>{content}</ContainerBgG>
+                : <ContainerBgGN>{content}</ContainerBgGN>}
             </div>
             {/* Version desktop : conteneur standard avec bouton */}
             <div className="hidden md:block">
-              <ContainerBgGN>{content}</ContainerBgGN>
+              {index % 2 !== 0 
+                ? <ContainerBgG>{content}</ContainerBgG>
+                : <ContainerBgGN>{content}</ContainerBgGN>}
             </div>
           </React.Fragment>
         );
@@ -98,4 +103,4 @@ const ListHUsersBtnMBgGN: React.FC<ListHUsersBtnMBgGNProps> = ({ cards }) => {
   );
 };
 
-export default ListHUsersBtnMBgGN;
+export default ListHUsersBtnMBgG;

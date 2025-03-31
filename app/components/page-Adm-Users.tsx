@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { selectionUsers } from "../db/dbQuery-Users";
 import CartVTitreTxtBgGN from './cart-V-Titre-Txt-BgGN';
+import ListHUserBtnMBgG from './list-H-Users-btnM-bgG';
 import ListHUserBtnMBgGN from './list-H-Users-btnM-bgGN';
 import BtnLgBgG from './btn-Lg-BgG';
 

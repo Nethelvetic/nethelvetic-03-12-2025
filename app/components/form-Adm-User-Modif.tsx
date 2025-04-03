@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { actualiserOneUser, suppOneUser, selectionOneUser, selectionUsers } from "../db/dbQuery-Users";
 import ContainerBGN from "./cont-BgGN";
 import ContainerBtnLgBgG from "./cont-Btn-Lg-BgG";
 import { useParams, useRouter } from "next/navigation";
+// Note : Import de la Server Action pour Vercel Blob
+import fileStoreVercelBlob from "../util/fileStoreVercelBlob";
 
 type UserDataType = {
   nom_entreprise: string;
@@ -67,10 +69,16 @@ const initialUserData: UserDataType = {
 };
 
 const FormAdmUserModif: React.FC = () => {
+  //---------------------------------------------------------------------
+  //------------------------1 data dynamique ----------------------------
+  //---------------------------------------------------------------------
   console.log("1.0 FormAdmUserModif Début ");
   const [unUserData, setUnUserData] = useState<UserDataType>(initialUserData);
   const { modif_id } = useParams();
   const router = useRouter();
+
+  // Référence pour l'input file personnalisé
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   // Fonction de style dynamique pour les inputs
   const getInputClass = (value: string) =>
@@ -82,6 +90,13 @@ const FormAdmUserModif: React.FC = () => {
   const modifIdStr = Array.isArray(modif_id) ? modif_id[0] : modif_id;
   const modifId = modifIdStr ? parseInt(modifIdStr, 10) : NaN;
 
+  //---------------------------------------------------------------------
+  //------------------------2 comportement  -----------------------------
+  //---------------------------------------------------------------------
+
+  //------------------------------------------------------------------------
+  // fonction qui se lance au démarrage pour trouver un user
+  //------------------------------------------------------------------------
   useEffect(() => {
     console.log("2.1 FormAdmUserModif useEffect Début ");
     async function fetchUser() {
@@ -125,6 +140,9 @@ const FormAdmUserModif: React.FC = () => {
     fetchUser();
   }, [modifId, modif_id]);
 
+  //------------------------------------------------------------------------
+  // fonction pour ajouter un user
+  //------------------------------------------------------------------------
   const handleClick = async (e: React.FormEvent<HTMLFormElement>) => {
     console.log("3  FormAdmUserModif handleClick debut");
     e.preventDefault();
@@ -175,6 +193,9 @@ const FormAdmUserModif: React.FC = () => {
     }
   };
 
+  //------------------------------------------------------------------------
+  // fonction pour supprimer un user
+  //------------------------------------------------------------------------
   const handleDelete = async () => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cette formation ?")) {
       try {
@@ -190,6 +211,29 @@ const FormAdmUserModif: React.FC = () => {
     }
   };
 
+  //------------------------------------------------------------------------
+  // Ajout de la fonction handleImageUpload pour gérer la sélection d'une image
+  // et appeler la Server Action fileStoreVercelBlob pour uploader l'image sur Vercel Blob
+  //------------------------------------------------------------------------
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      console.log("Uploading file:", file);
+      try {
+        // Note : Appel de la Server Action pour uploader l'image via Vercel Blob
+        const uploadedUrl = await fileStoreVercelBlob(file);
+        console.log("URL de l'image uploadée:", uploadedUrl);
+        // Mise à jour de l'URL de l'image dans l'état
+        setUnUserData({ ...unUserData, imgUrl: uploadedUrl });
+      } catch (error) {
+        console.error("Erreur lors de l'upload de l'image:", error);
+      }
+    }
+  };
+
+  //---------------------------------------------------------------------
+  //------------------------3 affichage  --------------------------------
+  //---------------------------------------------------------------------
   return (
     <div className="p-6">
       <ContainerBGN>
@@ -198,19 +242,29 @@ const FormAdmUserModif: React.FC = () => {
             <div className="flex flex-row items-start p-3">
               {/* Section Image */}
               <div className="w-full flex flex-col md:w-1/3 h-48 md:h-88 overflow-hidden">
-                <div>
-                  <label className="block text-sm md:text-xl font-medium">Image url</label>
+                {/* Champ pour uploader l'image */}
+                <div className="mt-2">
+                  {/* Input caché */}
                   <input
-                    type="text"
-                    value={unUserData.imgUrl}
-                    onChange={(e) => setUnUserData({ ...unUserData, imgUrl: e.target.value })}
-                    className="mt-1 block w-full border-b border-gray-300 shadow-sm"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    ref={inputFileRef}
+                    className="hidden"
                   />
+                  {/* Bouton personnalisé */}
+                  <button
+                    type="button"
+                    onClick={() => inputFileRef.current?.click()}
+                    className="mt-1 block w-full border border-gray-300 shadow-sm px-4 py-2"
+                  >
+                    charger un fichier
+                  </button>
                 </div>
-                <div className="w-full overflow-hidden">
+                <div className="w-full overflow-hidden mt-2">
                   <img
                     src={unUserData.imgUrl}
-                    alt={unUserData.imgUrl}
+                    alt="Image uploadée"
                     className="object-contain w-full h-full"
                   />
                 </div>
@@ -335,7 +389,6 @@ const FormAdmUserModif: React.FC = () => {
                     <option value="Transports, véhicules">Transports, véhicules</option>
                   </select>
                 </div>
-
 
                 {/* Boutons */}
                 <div className="w-full pt-3 pb-3 flex space-x-4">

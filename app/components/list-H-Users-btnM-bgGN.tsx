@@ -35,12 +35,25 @@ interface ListHUsersBtnMBgGNProps {
 }
 
 const ListHUsersBtnMBgGN: React.FC<ListHUsersBtnMBgGNProps> = ({ cards }) => {
+  //---------------------------------------------------------------------
+  //------------------------1 Début data dynamique ----------------------
+  //---------------------------------------------------------------------
   const router = useRouter();
   console.log("1.0 debut ListHUsersBtnMBgGN => cards", cards);
 
+  // Tri des cartes par ordre croissant en fonction du nom de l'entreprise
+  const sortedCards = [...cards].sort((a, b) =>
+    a.nom_entreprise.localeCompare(b.nom_entreprise)
+  );
+
+
+
+  //---------------------------------------------------------------------
+  //------------------------2 affichage ---------------------------------
+  //---------------------------------------------------------------------
   return (
     <div>
-      {cards.map((card, index) => {
+      {sortedCards.map((card, index) => {
         const content = (
           <div className="w-full">
             <div className="flex flex-row items-start p-1 md:p-3">

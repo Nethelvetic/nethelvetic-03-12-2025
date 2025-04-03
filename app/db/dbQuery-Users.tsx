@@ -5,7 +5,8 @@ import {
   selectUsers, 
   selectOneUser, 
   updateOneUser, 
-  deleteOneUser 
+  deleteOneUser,
+  selectUserWithEmailAndPassword
 } from "./dbQuery";
 
   type UserInput = {
@@ -34,7 +35,7 @@ import {
   
 
 //--------------------------------------------------------------------------------
-//------------------------1  Fonction createUser ---------------------------
+//------------------------1  Fonction createUser ---------------------------------
 //--------------------------------------------------------------------------------
 export async function createOneUser(user: UserInput) {
   console.log("1.0 createUser Début");
@@ -71,4 +72,14 @@ export async function actualiserOneUser(id: number, user: UserInput) {
 export async function suppOneUser(id: number) {
   console.log("5.0 Début deleteUser pour l'id =", id);
   return await deleteOneUser(id);
+}
+
+
+
+//--------------------------------------------------------------------------------
+//------------------------6  Fonction select user with email et passWord --------
+//--------------------------------------------------------------------------------
+export async function selectionUserWithEmailAndPassword(email: string, motDePasse: string ) {
+  console.log("6.0 selectionUserWithEmailAndPassword pour l'email =", email);
+  return await selectUserWithEmailAndPassword(email, motDePasse );
 }

@@ -42,7 +42,7 @@ const CarteVImgTxtBtnBdG: React.FC<CarteVImgTxtBtnBdGProps> = ({ imageSrc, title
 
        {/*----------------1.3 DEBUT Btn   */}
        <div>
-        <p className="text-base md:text-lgtext-center">
+        <p className="text-base md:text-lg text-center">
           {children}
         </p>
       </div>

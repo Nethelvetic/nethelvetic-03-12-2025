@@ -69,7 +69,7 @@ const FormAdmEventAdd: React.FC = () => {
       btnModifUrl: "/admin/evenements/",
     };
 
-    try {
+    try { 
       const response = await createEvenement(dataToInsert);
       if (response.success) {
         setFormData(initialFormData);

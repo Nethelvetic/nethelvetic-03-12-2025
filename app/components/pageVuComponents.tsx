@@ -4,6 +4,7 @@ import CarteVImgTxtBgGN from './cart-V-Img-Txt-BgGN';
 import CarteVImgTxtBdG from './cart-V-Img-Txt-BdG';
 import CarteVTitreTxtBgN from './cart-V-Titre-Txt-BgN';
 import CarteVImgTitreBgN from './cart-V-Img-Titre-BgN';
+import FormUser from './form-User';
 import Calendar from './calendar';
 import BtnLgBgG from './btn-Lg-BgG';
 import BtnSmBgG from './btn-Sm-BgG';
@@ -44,7 +45,6 @@ const cardData = [
 //---------------------------------------------------------------------
 //------------------------3 Début affichage ---------------------------
 //---------------------------------------------------------------------
-
   return (
     <div>
 
@@ -153,6 +153,14 @@ const cardData = [
       </div>
       {/*-----------------------------7 DEBUT CONTENEUR BtnTest */} 
 
+
+
+      {/*-----------------------------8 DEBUT FormUser */} 
+      <div>
+        <FormUser>
+
+        </FormUser>
+      </div>
     </div>
   );
 };

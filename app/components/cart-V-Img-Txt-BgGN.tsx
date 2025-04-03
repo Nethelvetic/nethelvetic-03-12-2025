@@ -18,7 +18,7 @@ const CarteVImgTxtBgGN: React.FC<CarteVImgTxtBgGNProps> = ({ imageSrc, title, ch
     <ContainerBgGN>
       
       {/*----------------1.1 DEBUT CONTENEUR image   */}
-      <div className="w-full h-64 md:h-80 overflow-hidden">
+      <div className="w-full h-64 md:h-64 overflow-hidden">
         <img
           src={imageSrc}
           alt={title}
@@ -28,7 +28,7 @@ const CarteVImgTxtBgGN: React.FC<CarteVImgTxtBgGNProps> = ({ imageSrc, title, ch
       
       {/*----------------1.2 DEBUT CONTENEUR  titre   */}
       <div>
-        <h3 className="font-bold text-3xl md:text-7xl my-6">
+        <h3 className="font-bold text-3xl text-center md:text-6xl my-6">
           {title}
         </h3>
       </div>
@@ -36,7 +36,7 @@ const CarteVImgTxtBgGN: React.FC<CarteVImgTxtBgGNProps> = ({ imageSrc, title, ch
 
        {/*----------------1.3 DEBUT CONTENEUR texte/children   */}
       <div>
-        <div className="text-base md:text-lg">
+        <div className="text-base md:text-lg text-center">
           {children}
         </div>
       </div>

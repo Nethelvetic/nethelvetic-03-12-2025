@@ -32,13 +32,21 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
 
   return (
     <nav className="flex items-center justify-between fixed top-0 left-0 w-full bg-gray-800/70 backdrop-blur-sm py-2 px-6 z-50">
-      {/* Logo */}
-      <div className="logo">
-        <img 
-          src={logo} 
-          alt="Logo" 
-          className="h-8 sm:h-12 md:h-14 lg:h-16"
-        />
+      {/* Logo et onglet "Se connecter" à gauche */}
+      <div className="flex items-center gap-4">
+        <div className="logo">
+          <img 
+            src={logo} 
+            alt="Logo" 
+            className="h-8 sm:h-12 md:h-14 lg:h-16"
+          />
+        </div>
+        <a 
+          href="/formulaire/seConnecter" 
+          className="text-white hover:text-gray-200 font-openSansRegular"
+        >
+          Se connecter
+        </a>
       </div>
 
       {/* Menu visible sur grand écran */}

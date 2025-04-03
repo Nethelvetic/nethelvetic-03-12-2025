@@ -40,7 +40,7 @@ const CartHImgTxtBG: React.FC<CarteHImgTxtBGProps> = ({ cards }) => {
                   <h2 className="w-full font-bold text-3xl md:text-5xl">
                     {card.title}
                   </h2>
-                  <div className="w-full mt-4">
+                  <div className="w-full text-base md:text-lg  mt-4">
                     {card.children}
                   </div>
                 </div>

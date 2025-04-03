@@ -2,7 +2,6 @@ import React from 'react';
 import CarteHImgTxtBgG from './cart-H-Img-Txt-BgG';
 import CarteVImgTxtBdG from './cart-V-Img-Txt-BdG';
 import CarteVImgTxtBgGN from './cart-V-Img-Txt-BgGN';
-import CarteH3xCarteBdG from './cart-H-xxCarte-BdG';
 import CarteHxxCarteBtnBdG from './cart-H-xxCarte-Btn-BdG';
 import CarteVTitreTxtBgN from './cart-V-Titre-Txt-BgN';
 import CarteVTitreTxtBgGN from './cart-V-Titre-Txt-BgGN';
@@ -34,11 +33,11 @@ const cardData = [
       children: "Libère jusqu'à 20 heures par semaine.",
     },
     {
-      route:"/",
+      route:"/gestion360",
       btnTxt:"Découvrir",
       imageSrc: '/jeroNum711Bg.png',
-      title: 'Facture - Offre - Comptabilité.',
-      children: "Des applications prêts à l’emploi pour organiser ton entreprise.",
+      title: 'Gestion 360.',
+      children: "Pilotez votre activité : clients, offres, factures, compta et banque en un seul outil.",
     },
     {
       route:"/creation-entreprise/formule-gratuite",
@@ -121,19 +120,50 @@ const cardData = [
         </div>
 
 
+
         {/*-----------0 DEBUT espace entre les sections */}
         <div className="h-20 md:h-50"></div>
 
 
 
-        {/*-----------------------------5 DEBUT CONTENEUR carte-V-Titre-TxT-BgN */}
+        {/*-----------------------------5 DEBUT CONTENEUR carte-V-Img-Txt-BgGN */}
+        <div className='p-6'>
+            <CarteVImgTxtBgGN  imageSrc='/graphVioletBg.png' title='Gestion 360'>
+            <>
+            <strong>Vous en avez assez de jongler entre différents logiciels et tableaux Excel ?</strong>
+            <br></br>
+            <br></br>
+
+            Imaginez une plateforme intuitive qui centralise absolument TOUT : gestion des clients, offres commerciales, facturation, comptabilité, et même le suivi bancaire. Tout ça dans un seul espace clair, fluide, accessible où que vous soyez.
+              
+            </>
+            </CarteVImgTxtBgGN >
+        </div>
+
+
+
+        {/*-----------------------------6 DEBUT CONTENEUR btn-Sm-BgG */}
+        <div className='p-6'>
+            <BtnSmBgG route='/gestion360'>
+            Découvrez Gestion 360 
+            </BtnSmBgG>
+        </div>
+
+
+        {/*-----------0 DEBUT espace entre les sections */}
+        <div className="h-20 md:h-50"></div>
+
+
+
+
+        {/*-----------------------------7 DEBUT CONTENEUR carte-V-Titre-TxT-BgN */}
         <div className='p-6'>
             <CarteVTitreTxtBgN title="Le collaborateur unique pour toutes les tâches"/>
         </div>
 
 
 
-        {/*-----------------------------6 DEBUT CONTENEUR carte-H-xxCarteBtnBdG */}
+        {/*-----------------------------8 DEBUT CONTENEUR carte-H-xxCarteBtnBdG */}
         <div className='p-6'>
             <CarteHxxCarteBtnBdG cards={cardData} />
         </div>

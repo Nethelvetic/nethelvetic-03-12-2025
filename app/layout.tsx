@@ -36,7 +36,7 @@ export default function RootLayout({
                 subItems: [
                   { title: "Formations", link: "/formations" },
                   { title: "Création d'entreprise", link: "/creation-entreprise" },
-                  { title: "Facture", link: "/facture" },
+                  { title: "Gestion 360", link: "/gestion360" },
                 ],
               },
               { title: "Blog", link: "/blog" },

@@ -14,10 +14,10 @@ const ContanerBgGN: React.FC<ContanerHBgGNProps> = ({ children }) => {
   // ---------------------------------------------------------------------
   return (
       //-------------------------1 DEBUT CONTAINER PRINCIPALE
-      <div className="min-h-24  max-w-5xl mx-auto rounded-lg bg-bgGardientNoire2 mb-2 md:mb-4" >
+      <div className="min-h-24  max-w-5xl mx-auto bg-bgGardientNoire2 mb-2 md:mb-4" >
 
         {/*--------1.1 DEBUT container texte/children   */}
-        <div className="w-full flex flex-col justify-center items-stretch  rounded-lg">
+        <div className="w-full flex flex-col justify-center items-stretch">
           {children}
         </div>
       </div>

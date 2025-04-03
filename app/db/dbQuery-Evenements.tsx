@@ -1,6 +1,7 @@
 "use server"; 
-import { insertEvenement, selectEvenements, selectUnEvenement, updateUnEvenement, deleteUnEvenement   } from "./dbQuery";
 
+import { insertEvenement, selectEvenements, selectUnEvenement, updateUnEvenement, deleteUnEvenement   } from "./dbQuery";
+ 
 type EvenementInput = {
   titre: string;
   texte: string;
@@ -20,7 +21,7 @@ type EvenementInput = {
 //------------------------1.1  Fonction insert Formation ---------------------------
 //--------------------------------------------------------------------------------
 export async function createEvenement(evenement: EvenementInput) {
-  console.log("1.0 dbQuery-Evenements createFormation ");
+  console.log("1.0 dbQuery-Evenements createEvenement ");
   return await insertEvenement(evenement);
 }
 
@@ -30,7 +31,7 @@ export async function createEvenement(evenement: EvenementInput) {
 //------------------------1.2  Fonction selectFormation ----------------------------
 //--------------------------------------------------------------------------------
 export async function selectionEvenements() {
-  console.log("1.2 dbQuery-Evenements  selectFormation");
+  console.log("1.2 dbQuery-Evenements  selectEvenements");
   return await selectEvenements();
 }
 
@@ -40,7 +41,7 @@ export async function selectionEvenements() {
 //------------------------1.3  Fonction selectUneFormation -----------------------
 //--------------------------------------------------------------------------------
 export async function selectionUnEvenement(id:number) {
-  console.log("1.3 dbQuery-Evenements  selectFormation");
+  console.log("1.3 dbQuery-Evenements  selectUnEvenement");
   return await selectUnEvenement(id);
 }
 
@@ -50,7 +51,7 @@ export async function selectionUnEvenement(id:number) {
 //------------------------1.4  Fonction updateUneFormation -----------------------
 //--------------------------------------------------------------------------------
 export async function actualiserUnEvenement(id:number, evenement:EvenementInput) {
-  console.log("1.4 dbQuery-Evenements  selectFormation");
+  console.log("1.4 dbQuery-Evenements  actualiserUnEvenement");
   return await updateUnEvenement(id, evenement);
 }
 
@@ -59,6 +60,6 @@ export async function actualiserUnEvenement(id:number, evenement:EvenementInput)
 //------------------------1.5  Fonction suppUneFormation -------------------------
 //--------------------------------------------------------------------------------
 export async function suppUnEvenement(id:number) {
-  console.log("1.5 dbQuery-Evenements  selectFormation");
+  console.log("1.5 dbQuery-Evenements  suppUnEvenement");
   return await deleteUnEvenement(id);
 }

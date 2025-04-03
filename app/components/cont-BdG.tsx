@@ -43,7 +43,7 @@ const ContanerBdG: React.FC<ContanerBdGProps> = ({ children }) => {
         isVisible ? "animate-slide-in-slow" : "animate-fade-out-slow"
       }`}
     >
-      <div className="w-full flex flex-col justify-center items-stretch rounded-lg">
+      <div className="w-full flex flex-col justify-center items-stretch">
         {children}
       </div>
     </div> 

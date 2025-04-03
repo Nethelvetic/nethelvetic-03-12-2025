@@ -1,8 +1,8 @@
 import React from 'react';
-import FormLogin from '../../components/form-login';
+import FormSeConnecter from '../../components/form-seConnecter';
 
 
-export default function FormulaireFormations() {
+export default function FormulaireSeConnecter() {
 
 
 //---------------------------------------------------------------------
@@ -10,7 +10,7 @@ export default function FormulaireFormations() {
 //--------------------------------------------------------------------- 
   return (
     <div className="w-full md:w-5xl mx-auto">
-        <FormLogin />
+        <FormSeConnecter/>
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import "dotenv/config"; 
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from "drizzle-orm/neon-http";
-import { eq } from "drizzle-orm";
-import { formationTable, evenementsTable, usersTable, messageTable } from "./schema";
+import { and, eq } from "drizzle-orm";
+import { formationTable, evenementsTable, usersTable, messageTable, saasTable } from "./schema";
 
 
 const sql = neon(process.env.DATABASE_URL!);
@@ -25,26 +25,26 @@ type FormatEventInput = {
 
 
 type FormatUserInput = {
-  nom_entreprise: string;             // varchar(255) non null
-  personne_a_contacter: string;        // varchar(255) non null
-  ville: string;                       // varchar(255), optionnel
-  code_postal: string;
-  telephone: string;                  // varchar(20), unique, optionnel
-  date_de_naissance: string;          // date, optionnel
-  date_creation: string;               // date non null (format ISO ou "YYYY-MM-DD")
-  email: string;                       // varchar(255) non null, unique
-  mot_de_passe: string;               // varchar(255), optionnel
-  username: string;                   // varchar(255), unique, optionnel
-  statut: string;                     // varchar(50), optionnel (ex: "actif", "inactif", "suspendu")
-  domaine_activite: string;           // varchar(255), optionnel (anciennement "profession")
-  employeur: string;                  // varchar(255), optionnel
-  statut_professionnel: string;       // varchar(255), optionnel
-  adresse: string;                    // text(), optionnel
-  imgUrl: string;                     // varchar(255), optionnel (URL de l'image de profil)
-  btnUrlInt: string;                  // varchar(255), optionnel
-  btnUrlExt: string;                  // varchar(255), optionnel
-  btnTexte: string;                    // varchar(255) non null
-  btnModifUrl: string;                 // varchar(255) non null
+  nom_entreprise: string;
+  personne_a_contacter: string;
+  ville: string;
+  code_postal: string | null;
+  telephone: string | null;
+  date_de_naissance: string | null;
+  date_creation: string;
+  email: string;
+  mot_de_passe: string;
+  username: string | null;
+  statut: string;
+  domaine_activite: string;
+  employeur: string;
+  statut_professionnel: string;
+  adresse: string;
+  imgUrl: string;
+  btnUrlInt: string;
+  btnUrlExt: string;
+  btnTexte: string;
+  btnModifUrl: string;
 };
 
 
@@ -59,6 +59,26 @@ type FormatMessageInput = {
   message: string;
   date: string; 
 };
+
+
+// Typage pour la table saasTable
+export type FormatSaasInput = {
+  plan: string;                           // ex: "Free", "Pro", "Premium"
+  plan_details: any;                      // données au format JSON
+  date_debut_abonnement: string;          // format "YYYY-MM-DD"
+  date_fin_abonnement?: string;           // format "YYYY-MM-DD"
+  date_debut_test?: string;               // format "YYYY-MM-DD"
+  date_fin_test?: string;                 // format "YYYY-MM-DD"
+  status_abonnement: string;              // ex: "actif", "en période d'essai", etc.
+  date_dernier_payment?: string;          // format "YYYY-MM-DD"
+  date_prochain_payment?: string;         // format "YYYY-MM-DD"
+  status_paiement: string;                // ex: "non payé" (valeur par défaut)
+  mode_paiement?: string;                 // ex: "carte bancaire", etc.
+  facturation_info?: string;              // texte libre
+  userId: number;                         // référence à usersTable.id
+};
+
+
 
 // --------------------------------------------------------------------
 // --------------------------------------------------------------------
@@ -76,8 +96,7 @@ type FormatMessageInput = {
 
 
 
-
-//---------------------------------------------------------------------
+//--------------------------------------------------------------------- 
 //------------------------1.1 Fonction insert one Formation  ----------
 //---------------------------------------------------------------------
 export async function insertFormation(formation: FormatEventInput) {
@@ -320,38 +339,82 @@ export async function insertOneUser(user: FormatUserInput) {
       .select()
       .from(usersTable)
       .where(eq(usersTable.email, user.email));
-      
+
     if (existingUser.length > 0) {
       console.log("3.1.3 dbQuery insertOneUser Utilisateur existant trouvé pour l'email:", user.email);
-      return { 
-        success: true, 
-        message: "Un utilisateur existe déjà avec cette adresse mail.", 
-        id: existingUser[0].id 
+      const userFromDB = existingUser[0];
+      // Transformation de tous les champs potentiellement null pour respecter le type FormatUserInput
+      const transformedUser: FormatUserInput = {
+        nom_entreprise: userFromDB.nom_entreprise ?? user.nom_entreprise,
+        personne_a_contacter: userFromDB.personne_a_contacter ?? user.personne_a_contacter,
+        ville: userFromDB.ville ?? user.ville,
+        code_postal: userFromDB.code_postal ?? user.code_postal,
+        telephone: userFromDB.telephone ?? "",
+        date_de_naissance: userFromDB.date_de_naissance ?? "",
+        date_creation: userFromDB.date_creation, // Supposé non nullable
+        email: userFromDB.email,
+        mot_de_passe: userFromDB.mot_de_passe ?? "",
+        username: userFromDB.username ?? "",
+        statut: userFromDB.statut ?? "",
+        domaine_activite: userFromDB.domaine_activite ?? "",
+        employeur: userFromDB.employeur ?? "",
+        statut_professionnel: userFromDB.statut_professionnel ?? "",
+        adresse: userFromDB.adresse ?? "",
+        imgUrl: userFromDB.imgUrl ?? "",
+        btnUrlInt: userFromDB.btnUrlInt ?? "",
+        btnUrlExt: userFromDB.btnUrlExt ?? "",
+        btnTexte: userFromDB.btnTexte ?? "",
+        btnModifUrl: userFromDB.btnModifUrl ?? "",
       };
+      console.log("3.1.4 dbQuery insertOneUser User objet:", transformedUser);
+      console.log("3.1.5 dbQuery insertOneUser userFromDB.id:", userFromDB.id);
+      
+      // Attendre la réponse de updateOneUser
+      const updateResponse = await updateOneUser(userFromDB.id, transformedUser);
+      if (updateResponse.success) {
+        return { 
+          success: true, 
+          message: "Un utilisateur existe déjà ; nous avons mis à jour son compte avec les informations fournies.", 
+          id: userFromDB.id 
+        };
+      } else {
+        return { 
+          success: false, 
+          message: "L'utilisateur existe déjà, mais la mise à jour a échoué : " + updateResponse.message, 
+          id: userFromDB.id 
+        };
+      }
     }
-    
-    console.log("3.1.4 dbQuery insertOneUser try avant");
+
+    console.log("3.1.6 dbQuery insertOneUser try avant");
     const defaultDate = new Date().toISOString().slice(0, 10); // format "YYYY-MM-DD"
     const userToInsert = {
       ...user,
       date_creation: user.date_creation.trim() === "" ? defaultDate : user.date_creation,
-      date_de_naissance: user.date_de_naissance.trim() === "" ? null : user.date_de_naissance,
-      telephone: user.telephone.trim() === "" ? null : user.telephone,
-      username: user.username.trim() === "" ? null : user.username, // Transformation de "" en null
+      date_de_naissance: user.date_de_naissance 
+        ? (user.date_de_naissance.trim() === "" ? null : user.date_de_naissance)
+        : null,
+      telephone: user.telephone 
+        ? (user.telephone.trim() === "" ? null : user.telephone)
+        : null,
+      username: user.username 
+        ? (user.username.trim() === "" ? null : user.username)
+        : null,
     };
-    
+
     const inserted = await db.insert(usersTable).values(userToInsert).returning();
-    console.log("3.1.5 dbQuery insertOneUser try après", inserted);
+    console.log("3.1.7 dbQuery insertOneUser try après", inserted);
     return { 
       success: true, 
       message: "Utilisateur ajouté avec succès !",
       id: inserted[0].id 
     };
   } catch (error) {
-    console.error("3.1.6 dbQuery insertUser Erreur lors de l'insertion de l'utilisateur :", error);
+    console.error("3.1.8 dbQuery insertUser Erreur lors de l'insertion de l'utilisateur :", error);
     return { success: false, message: "Une erreur est survenue lors de l'ajout de l'utilisateur." };
   }
 }
+
 
 
 
@@ -397,6 +460,51 @@ export async function selectOneUser(id: number) {
 
 
 //---------------------------------------------------------------------
+//------------------------3.4 Début select one users with email et mot de passe 
+//---------------------------------------------------------------------
+export async function selectUserWithEmailAndPassword(
+  email: string,
+  motDePasse: string
+): Promise<{ success: boolean; message: string; user: any }> {
+  console.log("3.4.1 selectUserWithEmailAndPassword avec l'email:", email);
+  try {
+    const user = await db
+      .select()
+      .from(usersTable)
+      .where(
+        and(
+          eq(usersTable.email, email),
+          eq(usersTable.mot_de_passe, motDePasse)
+        )
+      )
+      .limit(1);
+
+  
+    if (user.length > 0) {
+      console.log("3.4.2 selectUserWithEmailAndPassword user existant:", user);
+      return {
+        success: true,
+        message: "Authentification réussie.",
+        user: user[0],
+      };
+    } else {
+      console.log("3.4.3 selectUserWithEmailAndPassword user non existant:");
+      return {
+        success: false,
+        message: "Identifiants incorrects.",
+        user: null,
+      };
+    }
+  } catch (error) {
+    console.error("Erreur lors de la sélection de l'utilisateur :", error);
+    throw error;
+  }
+}
+
+
+
+
+//---------------------------------------------------------------------
 //------------------------3.4 Début update one user -------------------
 //---------------------------------------------------------------------
 export async function updateOneUser(id: number, user: FormatUserInput) {
@@ -406,11 +514,17 @@ export async function updateOneUser(id: number, user: FormatUserInput) {
     const userToUpdate = {
       ...user,
       date_creation: user.date_creation.trim() === "" ? defaultDate : user.date_creation,
-      date_de_naissance: user.date_de_naissance.trim() === "" ? null : user.date_de_naissance,
-      telephone: user.telephone.trim() === "" ? null : user.telephone,
-      username: user.username.trim() === "" ? null : user.username,
+      date_de_naissance: user.date_de_naissance 
+        ? (user.date_de_naissance.trim() === "" ? null : user.date_de_naissance)
+        : null,
+      telephone: user.telephone 
+        ? (user.telephone.trim() === "" ? null : user.telephone)
+        : null,
+      username: user.username 
+        ? (user.username.trim() === "" ? null : user.username)
+        : null,
     };
-    console.log("3.4.1 dbQuery updateUsers try  user.date_creation:",  user.date_creation);
+    console.log("3.4.1 dbQuery updateUsers try  user.date_creation:", user.date_creation);
     console.log("3.4.2 dbQuery updateUsers try avant");
     await db
       .update(usersTable)
@@ -423,7 +537,6 @@ export async function updateOneUser(id: number, user: FormatUserInput) {
     return { success: false, message: "Une erreur est survenue lors de la mise à jour de l'utilisateur." };
   }
 }
-
 
 
 
@@ -548,5 +661,110 @@ export async function insertOneMessage(messageData: FormatMessageInput) {
   } catch (error) {
     console.error("4.5.2 dbQuery insertOneMessage Erreur: ", error);
     return { success: false, message: "Une erreur est survenue lors de l'ajout du message." };
+  }
+}
+
+
+
+
+
+
+
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+//                        DEFINR TABLES SAAS
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+
+
+
+
+
+
+//---------------------------------------------------------------------
+//------------------------5.0 Fonction insertSaas ------------------------
+//---------------------------------------------------------------------
+export async function insertSaas(saas: FormatSaasInput) {
+  console.log("5.0.1 insertSaas - Début, données:", saas);
+  try {
+    await db.insert(saasTable).values(saas);
+    console.log("5.0.2 insertSaas - SaaS record inséré avec succès");
+    return { success: true, message: "SaaS record inserted successfully" };
+  } catch (error) {
+    console.error("5.0.3 insertSaas - Erreur lors de l'insertion :", error);
+    return { success: false, message: "Error inserting SaaS record" };
+  }
+}
+
+//---------------------------------------------------------------------
+//------------------------5.2 Fonction selectSaas ------------------------
+//---------------------------------------------------------------------
+export async function selectSaas() {
+  console.log("5.2.1 selectSaas - Début");
+  try {
+    const records = await db.select().from(saasTable);
+    console.log("5.2.2 selectSaas - SaaS records récupérés :", records);
+    return records;
+  } catch (error) {
+    console.error("5.2.3 selectSaas - Erreur lors de la sélection :", error);
+    throw error;
+  }
+}
+
+//---------------------------------------------------------------------
+//------------------------5.3 Fonction selectUnSaas ----------------------
+//---------------------------------------------------------------------
+export async function selectUnSaas(id: number) {
+  console.log("5.3.1 selectUnSaas - Début, id:", id);
+  try {
+    const record = await db
+      .select()
+      .from(saasTable)
+      .where(eq(saasTable.id, id))
+      .limit(1);
+    console.log("5.3.2 selectUnSaas - SaaS record récupéré :", record);
+    return record;
+  } catch (error) {
+    console.error("5.3.3 selectUnSaas - Erreur lors de la sélection :", error);
+    throw error;
+  }
+}
+
+//---------------------------------------------------------------------
+//------------------------5.4 Fonction updateUnSaas ----------------------
+//---------------------------------------------------------------------
+export async function updateUnSaas(id: number, saas: FormatSaasInput) {
+  console.log("5.4.1 updateUnSaas - Début, id:", id);
+  try {
+    await db
+      .update(saasTable)
+      .set(saas)
+      .where(eq(saasTable.id, id));
+    console.log("5.4.2 updateUnSaas - SaaS record mis à jour avec succès");
+    return { success: true, message: "SaaS record updated successfully" };
+  } catch (error) {
+    console.error("5.4.3 updateUnSaas - Erreur lors de la mise à jour :", error);
+    return { success: false, message: "Error updating SaaS record" };
+  }
+}
+
+//---------------------------------------------------------------------
+//------------------------5.5 Fonction deleteUnSaas ----------------------
+//---------------------------------------------------------------------
+export async function deleteUnSaas(id: number) {
+  console.log("5.5.1 deleteUnSaas - Début, id:", id);
+  try {
+    await db.delete(saasTable).where(eq(saasTable.id, id));
+    console.log("5.5.2 deleteUnSaas - SaaS record supprimé avec succès");
+    return { success: true, message: "SaaS record deleted successfully" };
+  } catch (error) {
+    console.error("5.5.3 deleteUnSaas - Erreur lors de la suppression :", error);
+    return { success: false, message: "Error deleting SaaS record" };
   }
 }

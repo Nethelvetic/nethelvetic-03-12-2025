@@ -131,6 +131,7 @@ export const saasTable = pgTable("saas", {
   status_paiement: varchar({ length: 50 }).notNull().default("non payé"),
   mode_paiement: varchar({ length: 100 }),
   facturation_info: text(),
+  userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
 });
 
 

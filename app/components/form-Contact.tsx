@@ -157,7 +157,7 @@ const FormContact: React.FC = () => {
   return (
     <div className="p-6">
       <CarteVImgTxtBgGN imageSrc="/ordinateur3Bg.png" title="">
-        <div className="w-full">
+        <div className="w-full"> 
           <form onSubmit={handleClick} className="space-y-4 p-4 max-w-md mx-auto">
             {/* Champ Email */}
             <div>

@@ -16,8 +16,8 @@
   //--------------------------------------------------------------------------------
   //------------------------ 1  Fonction createMessage ---------------------------
   //--------------------------------------------------------------------------------
-  export default async function envoiOneEmail() {
+  export default async function courrielInscription(email: string) {
     console.log("1.0 envoiOneEmail Début");
-    return await emailInscription();
+    return await emailInscription(email);
   }
   

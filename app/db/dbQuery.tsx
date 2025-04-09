@@ -28,13 +28,13 @@ type FormatUserInput = {
   nom_entreprise: string;
   personne_a_contacter: string;
   ville: string;
-  code_postal: string | null;
-  telephone: string | null;
-  date_de_naissance: string | null;
+  code_postal: string ;
+  telephone: string;
+  date_de_naissance: string;
   date_creation: string;
   email: string;
   mot_de_passe: string;
-  username: string | null;
+  username: string;
   statut: string;
   domaine_activite: string;
   employeur: string;
@@ -96,8 +96,11 @@ export type FormatSaasInput = {
 
 
 
+
+//---------------------------------------------------------------------
 //--------------------------------------------------------------------- 
 //------------------------1.1 Fonction insert one Formation  ----------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function insertFormation(formation: FormatEventInput) {
 
@@ -117,7 +120,9 @@ export async function insertFormation(formation: FormatEventInput) {
 
 
 //---------------------------------------------------------------------
+//---------------------------------------------------------------------
 //------------------------1.2 Fonction select all Formation  ----------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectFormation() {
   try {
@@ -134,7 +139,9 @@ export async function selectFormation() {
 
 
 //---------------------------------------------------------------------
+//---------------------------------------------------------------------
 //------------------------1.3 Fonction select one Formation  ----------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectUneFormation(id: number) {
   console.log("1.3.0 dbQuery selectUneFormation avec l'id= ", id);
@@ -154,8 +161,11 @@ export async function selectUneFormation(id: number) {
 }
 
 
+
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 //------------------------1.4 Fonction update one Formation  ----------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function updateUneFormation(id: number, formation: FormatEventInput) {
   console.log("1.4.0 dbQuery upDateUneFormation avec l'id= ", id);
@@ -175,7 +185,9 @@ export async function updateUneFormation(id: number, formation: FormatEventInput
 
 
 //---------------------------------------------------------------------
+//---------------------------------------------------------------------
 //------------------------1.5 Fonction delete one Formation  ----------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function deleteUneFormation(id: number) {
   console.log("1.5.0 dbQuery deleteUneFormation avec l'id= ", id);
@@ -213,7 +225,9 @@ export async function deleteUneFormation(id: number) {
 
 
 //---------------------------------------------------------------------
-//------------------------2.1 Fonction insertEvenment  ------------------
+//---------------------------------------------------------------------
+//------------------------2.1 Fonction insertEvenment  ----------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function insertEvenement(evenement: FormatEventInput) {
  console.log("2.1.0 dbQuery  insertEvenement : evenement= ", evenement);
@@ -230,9 +244,11 @@ export async function insertEvenement(evenement: FormatEventInput) {
 }
 
 
-//--------------------------------------------------------------------------------
-//------------------------2.2  Fonction selectFormation ----------------------------
-//--------------------------------------------------------------------------------
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+//------------------------2.2  Fonction selectFormation ---------------
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
 export async function selectEvenements() {
   console.log("2.2.0 dbQuery  selectEvenements");
   try {
@@ -249,10 +265,11 @@ export async function selectEvenements() {
 
 
 
-
-//--------------------------------------------------------------------------------
-//------------------------2.3  Fonction selectUnEvenement ------------------------
-//--------------------------------------------------------------------------------
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+//------------------------2.3  Fonction selectUnEvenement -------------
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
 export async function selectUnEvenement(id: number) {
   console.log("2.3.0  dbQuery selectUnEvenement avec l'id= ", id);
   try {
@@ -272,7 +289,9 @@ export async function selectUnEvenement(id: number) {
 
 
 //--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 //------------------------2.4  Fonction updateUnEvenement ------------------------
+//--------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------
 export async function updateUnEvenement(id: number, evenement: FormatEventInput) {
   console.log("2.4.0 dbQuery  updateUnEvenement avec l'id:", id);
@@ -293,9 +312,11 @@ export async function updateUnEvenement(id: number, evenement: FormatEventInput)
 
 
 
-//---------------------------------------------------------------------
-//------------------------2.5  Fonction deleteUnEvenement -------------
-//---------------------------------------------------------------------
+//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
+//------------------------2.5  Fonction deleteUnEvenement ------------------------
+//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 export async function deleteUnEvenement(id: number) {
   console.log("2.5.0 dbQuery  deleteUnEvenement avec l'id:", id);
 
@@ -327,51 +348,81 @@ export async function deleteUnEvenement(id: number) {
 
 
 
+
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 //------------------------3.1 Début insert user -----------------------
 //---------------------------------------------------------------------
+//---------------------------------------------------------------------
 export async function insertOneUser(user: FormatUserInput) {
   console.log("3.1.1 dbQuery insertOneUser, données:", user);
+
+
   try {
-    // Vérifier si un utilisateur avec cet email existe déjà
+    //-----------------------------------------------------------------
+    //------------------3.1.2 Vérifie si User existant ----------------
+    //-----------------------------------------------------------------
     console.log("3.1.2 dbQuery insertOneUser, contrôle si user existe");
     const existingUser = await db
       .select()
       .from(usersTable)
       .where(eq(usersTable.email, user.email));
 
+
+    //-----------------------------------------------------------------
+    //------------------3.1.3 User existant ---------------------------
+    //-----------------------------------------------------------------
     if (existingUser.length > 0) {
       console.log("3.1.3 dbQuery insertOneUser Utilisateur existant trouvé pour l'email:", user.email);
       const userFromDB = existingUser[0];
-      // Transformation de tous les champs potentiellement null pour respecter le type FormatUserInput
+
+
+      function isNullOrEmpty(value?: string): boolean {
+        return value == null || value === "";
+      }
+      
+
       const transformedUser: FormatUserInput = {
-        nom_entreprise: userFromDB.nom_entreprise ?? user.nom_entreprise,
-        personne_a_contacter: userFromDB.personne_a_contacter ?? user.personne_a_contacter,
-        ville: userFromDB.ville ?? user.ville,
-        code_postal: userFromDB.code_postal ?? user.code_postal,
-        telephone: userFromDB.telephone ?? "",
-        date_de_naissance: userFromDB.date_de_naissance ?? "",
-        date_creation: userFromDB.date_creation, // Supposé non nullable
-        email: userFromDB.email,
-        mot_de_passe: userFromDB.mot_de_passe ?? "",
-        username: userFromDB.username ?? "",
-        statut: userFromDB.statut ?? "",
-        domaine_activite: userFromDB.domaine_activite ?? "",
-        employeur: userFromDB.employeur ?? "",
-        statut_professionnel: userFromDB.statut_professionnel ?? "",
-        adresse: userFromDB.adresse ?? "",
-        imgUrl: userFromDB.imgUrl ?? "",
-        btnUrlInt: userFromDB.btnUrlInt ?? "",
-        btnUrlExt: userFromDB.btnUrlExt ?? "",
-        btnTexte: userFromDB.btnTexte ?? "",
-        btnModifUrl: userFromDB.btnModifUrl ?? "",
+        nom_entreprise: isNullOrEmpty(user.nom_entreprise)
+          ? (userFromDB.nom_entreprise ?? "")
+          : user.nom_entreprise,
+        personne_a_contacter: isNullOrEmpty(user.personne_a_contacter)
+          ? (userFromDB.personne_a_contacter ?? "")
+          : user.personne_a_contacter,
+        ville: isNullOrEmpty(user.ville)
+          ? (userFromDB.ville ?? "")
+          : user.ville,
+        code_postal: isNullOrEmpty(user.code_postal)
+          ? (userFromDB.code_postal ?? "")
+          : user.code_postal,
+        telephone: isNullOrEmpty(user.telephone) ? "" : user.telephone,
+        date_de_naissance: isNullOrEmpty(user.date_de_naissance) ? "" : user.date_de_naissance,
+        date_creation: user.date_creation, // Supposé non nullable
+        email: user.email,
+        mot_de_passe: isNullOrEmpty(user.mot_de_passe) ? "" : user.mot_de_passe,
+        username: isNullOrEmpty(user.username) ? "" : user.username,
+        statut: isNullOrEmpty(user.statut) ? "" : user.statut,
+        domaine_activite: isNullOrEmpty(user.domaine_activite) ? "" : user.domaine_activite,
+        employeur: isNullOrEmpty(user.employeur) ? "" : user.employeur,
+        statut_professionnel: isNullOrEmpty(user.statut_professionnel) ? "" : user.statut_professionnel,
+        adresse: isNullOrEmpty(user.adresse) ? "" : user.adresse,
+        imgUrl: isNullOrEmpty(user.imgUrl) ? "" : user.imgUrl,
+        btnUrlInt: isNullOrEmpty(user.btnUrlInt) ? "" : user.btnUrlInt,
+        btnUrlExt: isNullOrEmpty(user.btnUrlExt) ? "" : user.btnUrlExt,
+        btnTexte: isNullOrEmpty(user.btnTexte) ? "" : user.btnTexte,
+        btnModifUrl: isNullOrEmpty(user.btnModifUrl) ? "" : user.btnModifUrl,
       };
+      
+      
+      
       console.log("3.1.4 dbQuery insertOneUser User objet:", transformedUser);
       console.log("3.1.5 dbQuery insertOneUser userFromDB.id:", userFromDB.id);
       
       // Attendre la réponse de updateOneUser
+      console.log("3.1.6 dbQuery insertOneUser updateOneUser avant");
       const updateResponse = await updateOneUser(userFromDB.id, transformedUser);
       if (updateResponse.success) {
+        console.log("3.1.7 dbQuery insertOneUser updateOneUser après success:", updateResponse.success );
         return { 
           success: true, 
           message: "Un utilisateur existe déjà ; nous avons mis à jour son compte avec les informations fournies.", 
@@ -386,6 +437,10 @@ export async function insertOneUser(user: FormatUserInput) {
       }
     }
 
+
+    //-----------------------------------------------------------------
+    //------------------3.1.3 User NON existant -----------------------
+    //-----------------------------------------------------------------
     console.log("3.1.6 dbQuery insertOneUser try avant");
     const defaultDate = new Date().toISOString().slice(0, 10); // format "YYYY-MM-DD"
     const userToInsert = {
@@ -402,6 +457,7 @@ export async function insertOneUser(user: FormatUserInput) {
         : null,
     };
 
+    //------------------3.1.7 Inserer USER -----------------------
     const inserted = await db.insert(usersTable).values(userToInsert).returning();
     console.log("3.1.7 dbQuery insertOneUser try après", inserted);
     return { 
@@ -418,9 +474,10 @@ export async function insertOneUser(user: FormatUserInput) {
 
 
 
-
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 //------------------------3.2 Début select tout users -----------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectUsers() {
   console.log("3.2.0 dbQuery all selectUsers");
@@ -436,9 +493,10 @@ export async function selectUsers() {
 }
 
 
-
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 //------------------------3.3 Début select one users ------------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectOneUser(id: number) {
   console.log("3.3.0 dbQuery selectOneUsers avec l'id: ", id);
@@ -458,9 +516,10 @@ export async function selectOneUser(id: number) {
 }
 
 
-
 //---------------------------------------------------------------------
-//------------------------3.4 Début select one users with email et mot de passe 
+//---------------------------------------------------------------------
+//---------3.4 Début select one users with email et mot de passe 
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectUserWithEmailAndPassword(
   email: string,
@@ -505,10 +564,12 @@ export async function selectUserWithEmailAndPassword(
 
 
 //---------------------------------------------------------------------
-//------------------------3.4 Début update one user -------------------
+//---------------------------------------------------------------------
+//------------------------3.5 Début update one user -------------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function updateOneUser(id: number, user: FormatUserInput) {
-  console.log("3.4.0 dbQuery updateUsers avec l'id: ", id);
+  console.log("3.5.0 dbQuery updateUsers avec l'id: ", id);
   try {
     const defaultDate = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
     const userToUpdate = {
@@ -524,39 +585,216 @@ export async function updateOneUser(id: number, user: FormatUserInput) {
         ? (user.username.trim() === "" ? null : user.username)
         : null,
     };
-    console.log("3.4.1 dbQuery updateUsers try  user.date_creation:", user.date_creation);
-    console.log("3.4.2 dbQuery updateUsers try avant");
+    console.log("3.5.1 dbQuery updateUsers try  user.date_creation:", user.date_creation);
+    console.log("3.5.2 dbQuery updateUsers try avant");
     await db
       .update(usersTable)
       .set(userToUpdate)
       .where(eq(usersTable.id, id));
-    console.log("3.4.3 dbQuery updateUsers try après");
+    console.log("3.5.3 dbQuery updateUsers try après");
     return { success: true, message: "Utilisateur mis à jour avec succès !" };
   } catch (error) {
-    console.error("3.4.4 dbQuery updateUsers Erreur lors de la mise à jour de l'utilisateur :", error);
+    console.error("3.5.4 dbQuery updateUsers Erreur lors de la mise à jour de l'utilisateur :", error);
     return { success: false, message: "Une erreur est survenue lors de la mise à jour de l'utilisateur." };
   }
 }
 
 
 
-
 //---------------------------------------------------------------------
-//------------------------3.5 Début delete one users ------------------
+//---------------------------------------------------------------------
+//------------------------3.6 Début delete one users ------------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function deleteOneUser(id: number) {
-  console.log("3.5.0 dbQuery deleteUsers avec l'id: ", id);
+  console.log("3.6.0 dbQuery deleteUsers avec l'id: ", id);
  
   try {
-    console.log("3.5.1 dbQuery deleteUsers try avant");
+    console.log("3.6.1 dbQuery deleteUsers try avant");
     await db.delete(usersTable).where(eq(usersTable.id, id));
-    console.log("3.5.2 dbQuery deleteUsers try après");
+    console.log("3.6.2 dbQuery deleteUsers try après");
     return { success: true, message: "Utilisateur supprimé avec succès !" };
   } catch (error) {
-    console.error("3.5.2 dbQuery deleteUsers Erreur lors de la suppression de l'utilisateur :", error);
+    console.error("3.6.2 dbQuery deleteUsers Erreur lors de la suppression de l'utilisateur :", error);
     return { success: false, message: "Une erreur est survenue lors de la suppression de l'utilisateur." };
   }
 }
+
+
+
+
+
+
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+//------------------------3.7 Début insert user pour inscription -------
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+export async function insertOneUserInscription(user: FormatUserInput) {
+  console.log("3.7.1 dbQuery insertOneUserInscription, données:", user);
+
+  try {
+    //-----------------------------------------------------------------
+    //------------------3.7.2 Vérifie si User existant ----------------
+    //-----------------------------------------------------------------
+    console.log("3.7.2 dbQuery insertOneUserInscription, contrôle si user existe");
+    const existingUser = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.email, user.email));
+
+    //-----------------------------------------------------------------
+    //------------------3.7.3 User existant ? -------------------------
+    //-----------------------------------------------------------------
+    if (existingUser.length > 0) {
+      console.log(
+        "3.7.3 dbQuery insertOneUserInscription Utilisateur existant trouvé pour l'email:",
+        user.email
+      );
+
+      const userFromDB = existingUser[0];
+
+      // -------------------------------------------------------------------
+      // 3.7.3.a  Contrôle si userFromDB.email et userFromDB.mot_de_passe
+      // existent déjà (ni null, ni vide) => vous êtes déjà inscrit
+      // -------------------------------------------------------------------
+      if (
+        userFromDB.email &&
+        userFromDB.email.trim() !== "" &&
+        userFromDB.mot_de_passe &&
+        userFromDB.mot_de_passe.trim() !== ""
+      ) {
+        console.log(
+          "3.7.4 dbQuery insertOneUserInscription User existant avec 1x email et 1x mot de passe");
+        return {
+          success: false,
+          message: "Vous êtes déjà inscrit",
+          id: userFromDB.id,
+        };
+      }
+
+      // Sinon, on continue la mise à jour
+      function isNullOrEmpty(value?: string): boolean {
+        return value == null || value === "";
+      }
+
+      const transformedUser: FormatUserInput = {
+        nom_entreprise: isNullOrEmpty(user.nom_entreprise)
+          ? userFromDB.nom_entreprise ?? ""
+          : user.nom_entreprise,
+        personne_a_contacter: isNullOrEmpty(user.personne_a_contacter)
+          ? userFromDB.personne_a_contacter ?? ""
+          : user.personne_a_contacter,
+        ville: isNullOrEmpty(user.ville)
+          ? userFromDB.ville ?? ""
+          : user.ville,
+        code_postal: isNullOrEmpty(user.code_postal)
+          ? userFromDB.code_postal ?? ""
+          : user.code_postal,
+        telephone: isNullOrEmpty(user.telephone) ? "" : user.telephone,
+        date_de_naissance: isNullOrEmpty(user.date_de_naissance)
+          ? ""
+          : user.date_de_naissance,
+        date_creation: user.date_creation, // Supposé non nullable
+        email: user.email,
+        mot_de_passe: isNullOrEmpty(user.mot_de_passe)
+          ? ""
+          : user.mot_de_passe,
+        username: isNullOrEmpty(user.username) ? "" : user.username,
+        statut: isNullOrEmpty(user.statut) ? "" : user.statut,
+        domaine_activite: isNullOrEmpty(user.domaine_activite)
+          ? ""
+          : user.domaine_activite,
+        employeur: isNullOrEmpty(user.employeur) ? "" : user.employeur,
+        statut_professionnel: isNullOrEmpty(user.statut_professionnel)
+          ? ""
+          : user.statut_professionnel,
+        adresse: isNullOrEmpty(user.adresse) ? "" : user.adresse,
+        imgUrl: isNullOrEmpty(user.imgUrl) ? "" : user.imgUrl,
+        btnUrlInt: isNullOrEmpty(user.btnUrlInt) ? "" : user.btnUrlInt,
+        btnUrlExt: isNullOrEmpty(user.btnUrlExt) ? "" : user.btnUrlExt,
+        btnTexte: isNullOrEmpty(user.btnTexte) ? "" : user.btnTexte,
+        btnModifUrl: isNullOrEmpty(user.btnModifUrl) ? "" : user.btnModifUrl,
+      };
+
+      console.log("3.7.5 dbQuery insertOneUserInscription User objet:", transformedUser);
+      console.log("3.7.6 dbQuery insertOneUserInscription userFromDB.id:", userFromDB.id);
+
+      // Attendre la réponse de updateOneUser
+      console.log("3.7.7 dbQuery insertOneUserInscription updateOneUser avant");
+      const updateResponse = await updateOneUser(userFromDB.id, transformedUser);
+      if (updateResponse.success) {
+        console.log(
+          "3.7.8 dbQuery insertOneUserInscription updateOneUser après success:",
+          updateResponse.success
+        );
+        return {
+          success: true,
+          message:
+            "Un utilisateur existe déjà ; nous avons mis à jour son compte avec les informations fournies.",
+          id: userFromDB.id,
+        };
+      } else {
+        return {
+          success: false,
+          message:
+            "L'utilisateur existe déjà, mais la mise à jour a échoué : " +
+            updateResponse.message,
+          id: userFromDB.id,
+        };
+      }
+    }
+
+    //-----------------------------------------------------------------
+    //------------------3.7.6 User NON existant -----------------------
+    //-----------------------------------------------------------------
+    console.log("3.7.6 dbQuery insertOneUserInscription try avant");
+    const defaultDate = new Date().toISOString().slice(0, 10); // format "YYYY-MM-DD"
+    const userToInsert = {
+      ...user,
+      date_creation:
+        user.date_creation.trim() === "" ? defaultDate : user.date_creation,
+      date_de_naissance: user.date_de_naissance
+        ? user.date_de_naissance.trim() === ""
+          ? null
+          : user.date_de_naissance
+        : null,
+      telephone: user.telephone
+        ? user.telephone.trim() === ""
+          ? null
+          : user.telephone
+        : null,
+      username: user.username
+        ? user.username.trim() === ""
+          ? null
+          : user.username
+        : null,
+    };
+
+    //------------------3.7.7 Insérer USER -----------------------
+    const inserted = await db.insert(usersTable).values(userToInsert).returning();
+    console.log("3.7.7 dbQuery insertOneUserInscription try après", inserted);
+    return {
+      success: true,
+      message: "Utilisateur ajouté avec succès !",
+      id: inserted[0].id,
+    };
+  } catch (error) {
+    console.error(
+      "3.7.8 dbQuery insertOneUserInscription  Erreur lors de l'insertion de l'utilisateur :",
+      error
+    );
+    return {
+      success: false,
+      message: "Une erreur est survenue lors de l'ajout de l'utilisateur.",
+    };
+  }
+}
+
+
+
+
+
 
 
 
@@ -578,9 +816,10 @@ export async function deleteOneUser(id: number) {
 
 
 
-
 //---------------------------------------------------------------------
-//------------------------4.1Fonction selectMessage ---------------------
+//---------------------------------------------------------------------
+//------------------------4.1Fonction selectMessage -------------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectMessages() {
   console.log("4.1.0 dbQuery selectMessage: début");
@@ -594,8 +833,12 @@ export async function selectMessages() {
   }
 }
 
+
+
 //---------------------------------------------------------------------
-//------------------------4.2 Fonction selectOneMessage ------------------
+//---------------------------------------------------------------------
+//------------------------4.2 Fonction selectOneMessage ---------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectOneMessage(id: number) {
   console.log("4.2.0 dbQuery selectOneMessage avec l'id :", id);
@@ -613,8 +856,11 @@ export async function selectOneMessage(id: number) {
   }
 }
 
+
 //---------------------------------------------------------------------
-//------------------------4.3 Fonction updateOneMessage ------------------
+//---------------------------------------------------------------------
+//------------------------4.3 Fonction updateOneMessage ---------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function updateOneMessage(id: number, messageData: FormatMessageInput) {
   console.log("4.3.0 dbQuery updateOneMessage avec l'id :", id);
@@ -631,8 +877,12 @@ export async function updateOneMessage(id: number, messageData: FormatMessageInp
   }
 }
 
+
+
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 //------------------------4.4 Fonction deleteOneMessage ---------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function deleteOneMessage(id: number) {
   console.log("4.4.0 dbQuery deleteOneMessage avec l'id :", id);
@@ -647,11 +897,11 @@ export async function deleteOneMessage(id: number) {
 }
 
 
-
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 //------------------------4.5 Fonction insertOneMessage ---------------
 //---------------------------------------------------------------------
-
+//---------------------------------------------------------------------
 export async function insertOneMessage(messageData: FormatMessageInput) {
   console.log("4.5.0 dbQuery insertOneMessage, données:", messageData);
   try {
@@ -686,9 +936,10 @@ export async function insertOneMessage(messageData: FormatMessageInput) {
 
 
 
-
 //---------------------------------------------------------------------
-//------------------------5.0 Fonction insertSaas ------------------------
+//---------------------------------------------------------------------
+//------------------------5.0 Fonction insertSaas ---------------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function insertSaas(saas: FormatSaasInput) {
   console.log("5.0.1 insertSaas - Début, données:", saas);
@@ -702,8 +953,11 @@ export async function insertSaas(saas: FormatSaasInput) {
   }
 }
 
+
 //---------------------------------------------------------------------
-//------------------------5.2 Fonction selectSaas ------------------------
+//---------------------------------------------------------------------
+//------------------------5.2 Fonction selectSaas ---------------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectSaas() {
   console.log("5.2.1 selectSaas - Début");
@@ -717,8 +971,11 @@ export async function selectSaas() {
   }
 }
 
+
 //---------------------------------------------------------------------
-//------------------------5.3 Fonction selectUnSaas ----------------------
+//---------------------------------------------------------------------
+//------------------------5.3 Fonction selectUnSaas -------------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectUnSaas(id: number) {
   console.log("5.3.1 selectUnSaas - Début, id:", id);
@@ -736,8 +993,11 @@ export async function selectUnSaas(id: number) {
   }
 }
 
+
 //---------------------------------------------------------------------
-//------------------------5.4 Fonction updateUnSaas ----------------------
+//---------------------------------------------------------------------
+//------------------------5.4 Fonction updateUnSaas -------------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function updateUnSaas(id: number, saas: FormatSaasInput) {
   console.log("5.4.1 updateUnSaas - Début, id:", id);
@@ -754,8 +1014,11 @@ export async function updateUnSaas(id: number, saas: FormatSaasInput) {
   }
 }
 
+
 //---------------------------------------------------------------------
-//------------------------5.5 Fonction deleteUnSaas ----------------------
+//---------------------------------------------------------------------
+//------------------------5.5 Fonction deleteUnSaas -------------------
+//---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function deleteUnSaas(id: number) {
   console.log("5.5.1 deleteUnSaas - Début, id:", id);

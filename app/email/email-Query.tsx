@@ -1,22 +1,22 @@
-import { EmailTemplate4 } from '../components/email-template4';
+import { EmailTemplate5 } from '../components/email-template5';
 import { Resend } from 'resend';
 
-const resend = new Resend("re_NxZRa7bC_Q6DNSPB7y9fai8ZJLWAVrwYg");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 //---------------------------------------------------------------------
 //------------------------1.1 Fonction envoi d'un email  --------------
 //---------------------------------------------------------------------
-export async function emailInscription() {
+export async function emailInscription(emailProps: string) {
   console.log("1.1.0 email-Query envoi d'un email");
 
   try {
     console.log("1.1.2 email-Query try avant");
 
     // Attendre la résolution de EmailTemplate3 en passant un objet vide pour les props
-    const reactContent = await EmailTemplate4({firstName: "Leatitia Golliard"});
+    const reactContent = await EmailTemplate5({email: emailProps});
 
     const { data, error } = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
+      from: 'Nethelvetic <do-not-reply@test.nethelvetic.ch>',
       to: ['golliard73@gmail.com'],
       subject: 'Hello world',
       react: reactContent,

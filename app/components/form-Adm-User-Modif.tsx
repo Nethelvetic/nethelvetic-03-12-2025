@@ -9,9 +9,9 @@ import { useParams, useRouter } from "next/navigation";
 import fileStoreVercelBlob from "../util/fileStoreVercelBlob";
 
 type UserDataType = {
-  nom_entreprise: string;
-  personne_a_contacter: string;
-  ville: string;
+  nom_entreprise?: string;
+  personne_a_contacter?: string;
+  ville?: string;
   code_postal?: string;
   telephone?: string;
   date_de_naissance?: string;
@@ -27,7 +27,7 @@ type UserDataType = {
   imgUrl?: string;
   btnUrlInt?: string;
   btnUrlExt?: string;
-  btnTexte: string;
+  btnTexte?: string;
   btnModifUrl: string;
   // Champs supplémentaires utilisés dans le formulaire
   date?: string;
@@ -110,13 +110,13 @@ const FormAdmUserModif: React.FC = () => {
       if (data && data.length > 0) {
         const user = data[0];
         const fetchedUser: UserDataType = {
-          nom_entreprise: user.nom_entreprise,
-          personne_a_contacter: user.personne_a_contacter,
-          ville: user.ville,
+          nom_entreprise: user.nom_entreprise ?? "",
+          personne_a_contacter: user.personne_a_contacter ?? "",
+          ville: user.ville ?? "",
           code_postal: user.code_postal ?? "",
           telephone: user.telephone ?? "",
           date_de_naissance: user.date_de_naissance ?? "",
-          date_creation: user.date_creation ?? "",
+          date_creation: user.date_de_naissance ? user.date_de_naissance : "",
           email: user.email,
           mot_de_passe: user.mot_de_passe ?? "",
           username: user.username ?? "",
@@ -140,6 +140,7 @@ const FormAdmUserModif: React.FC = () => {
     fetchUser();
   }, [modifId, modif_id]);
 
+  
   //------------------------------------------------------------------------
   // fonction pour ajouter un user
   //------------------------------------------------------------------------
@@ -295,7 +296,7 @@ const FormAdmUserModif: React.FC = () => {
                       onChange={(e) =>
                         setUnUserData({ ...unUserData, nom_entreprise: e.target.value })
                       }
-                      className={`w-full border-b border-gray-300 shadow-sm mt-2 ${getInputClass(unUserData.nom_entreprise)}`}
+                      className={`w-full border-b border-gray-300 shadow-sm mt-2 ${getInputClass(unUserData.nom_entreprise ?? "")}`}
                     />
                   </div>
                   <div className="flex flex-col">
@@ -306,7 +307,7 @@ const FormAdmUserModif: React.FC = () => {
                       onChange={(e) =>
                         setUnUserData({ ...unUserData, personne_a_contacter: e.target.value })
                       }
-                      className={`w-full border-b border-gray-300 shadow-sm mt-2 ${getInputClass(unUserData.personne_a_contacter)}`}
+                      className={`w-full border-b border-gray-300 shadow-sm mt-2 ${getInputClass(unUserData.personne_a_contacter ?? "")}`}
                     />
                   </div>
                 </div>
@@ -332,7 +333,7 @@ const FormAdmUserModif: React.FC = () => {
                       onChange={(e) =>
                         setUnUserData({ ...unUserData, ville: e.target.value })
                       }
-                      className={`w-full border-b border-gray-300 shadow-sm mt-2 ${getInputClass(unUserData.ville)}`}
+                      className={`w-full border-b border-gray-300 shadow-sm mt-2 ${getInputClass(unUserData.ville ?? "")}`}
                     />
                   </div>
                 </div>

@@ -6,8 +6,7 @@ interface EmailTemplate4Props {
 }
 
 export const EmailTemplate4: React.FC<Readonly<EmailTemplate4Props>> = ({
-  firstName,
-}) => (
+  firstName }) => (
 
     <Tailwind>
  

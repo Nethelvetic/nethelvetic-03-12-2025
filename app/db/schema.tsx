@@ -29,16 +29,16 @@ import { sql as drizzleSql, relations } from "drizzle-orm";
 //---------------------------------------------------------------------
 export const usersTable = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  nom_entreprise: varchar({ length: 255 }).notNull(),
-  personne_a_contacter: varchar({ length: 255 }).notNull(),
-  ville: varchar({ length: 255 }).notNull(),
+  nom_entreprise: varchar({ length: 255 }),
+  personne_a_contacter: varchar({ length: 255 }),
+  ville: varchar({ length: 255 }),
   code_postal: varchar({ length: 20 }),
   telephone: varchar({ length: 20 }).unique(),
   date_de_naissance: date(),
   date_creation: date().notNull(), 
   email: varchar({ length: 255 }).notNull().unique(),
   mot_de_passe: varchar({ length: 255 }),
-  username: varchar({ length: 255 }).unique(),
+  username: varchar({ length: 255 }),
   statut: varchar({ length: 50 }), // ex: "actif", "inactif", "suspendu"
   domaine_activite: varchar({ length: 255 }),
   employeur: varchar({ length: 255 }),
@@ -47,7 +47,7 @@ export const usersTable = pgTable("users", {
   imgUrl: varchar({ length: 255 }),
   btnUrlInt: varchar({ length: 255 }),
   btnUrlExt: varchar({ length: 255 }),
-  btnTexte: varchar({ length: 255 }).notNull(),
+  btnTexte: varchar({ length: 255 }),
   btnModifUrl: varchar({ length: 255 }).notNull(),
 });
 

@@ -18,10 +18,10 @@ interface CarteData {
   mot_de_naissance?: string;
   mot_de_passe?: string;
   username?: string;
-  statut?: string;
+  status?: string;
   domaine_activite?: string;
   employeur?: string;
-  statut_professionnel?: string;
+  status_professionnel?: string;
   adresse?: string;
   imgUrl?: string;
   btnUrlInt?: string;
@@ -39,21 +39,25 @@ const ListHUsersBtnMBgGN: React.FC<ListHUsersBtnMBgGNProps> = ({ cards }) => {
   //------------------------1 Début data dynamique ----------------------
   //---------------------------------------------------------------------
   const router = useRouter();
-  console.log("1.0 debut ListHUsersBtnMBgGN => cards", cards);
+  console.log("1.0 ListHUsersBtnMBgGN debut => cards", cards);
 
   // Tri des cartes par ordre croissant en fonction du nom de l'entreprise
   const sortedCards = [...cards].sort((a, b) =>
     a.nom_entreprise.localeCompare(b.nom_entreprise)
   );
 
-
-
+  
   //---------------------------------------------------------------------
   //------------------------2 affichage ---------------------------------
   //---------------------------------------------------------------------
   return (
     <div>
       {sortedCards.map((card, index) => {
+
+        //------------------------------------------------------
+        // Définir l'URL par défaut sans l'utilisation de count et adm
+        const modifUrl = `${card.btnModifUrl}/${card.id}`;
+
         const content = (
           <div className="w-full">
             <div className="flex flex-row items-start p-1 md:p-3">
@@ -82,7 +86,7 @@ const ListHUsersBtnMBgGN: React.FC<ListHUsersBtnMBgGNProps> = ({ cards }) => {
                 </div>
                 {/* Bouton visible uniquement sur grand écran */}
                 <div className="pt-1 pb-1 md:pt-3 md:pb-3 hidden md:block">
-                  <BtnLgModifBgG modifUrl={`${card.btnModifUrl}/${card.id}`}>
+                  <BtnLgModifBgG modifUrl={modifUrl}>
                     modification
                   </BtnLgModifBgG>
                 </div>
@@ -96,7 +100,7 @@ const ListHUsersBtnMBgGN: React.FC<ListHUsersBtnMBgGNProps> = ({ cards }) => {
             {/* Version mobile : conteneur cliquable qui inclut le container */}
             <div
               className="md:hidden cursor-pointer"
-              onClick={() => router.push(`${card.btnModifUrl}/${card.id}`)}
+              onClick={() => router.push(modifUrl)}
             >
               <ContainerBgGN>{content}</ContainerBgGN>
             </div>

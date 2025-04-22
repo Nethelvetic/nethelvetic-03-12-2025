@@ -1,8 +1,9 @@
 import React from 'react';
-import PageGestion360 from '../components/page-Gestion360';
+import PageGestion360 from '../components/page-Gest360';
 
 
 export default function Gestion360() {
+  console.log("1.0 Gestion360 debut");
 
 
 //---------------------------------------------------------------------

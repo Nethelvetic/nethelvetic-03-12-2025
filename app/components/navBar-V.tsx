@@ -17,38 +17,32 @@ interface NavBarProps {
   items: NavItem[];
 }
 
-const NavBarV: React.FC<NavBarProps> = ({ items}) => {
-
-
+const NavBarV: React.FC<NavBarProps> = ({ items }) => {
   //---------------------------------------------------------------------
   //------------------------1 Début Data dynamique   --------------------
   //---------------------------------------------------------------------
+  console.log("2.0.0 NavBarV  debut");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-
-
 
   //---------------------------------------------------------------------
   //------------------------2 Début comportement   ----------------------
   //---------------------------------------------------------------------
-
   const toggleDropdown = (index: number) => {
     setOpenDropdown(openDropdown === index ? null : index);
   };
-
-
 
   //---------------------------------------------------------------------
   //------------------------3 Début affichage   -------------------------
   //---------------------------------------------------------------------
   return (
     <>
-      {/* Bouton hamburger pour mobile */}
+      {/* Bouton chevron pour mobile positionné au centre en haut */}
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="md:hidden fixed top-4 left-4 z-50 text-white text-3xl"
+        className="md:hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 text-white text-3xl"
       >
-        ☰
+        ▾
       </button>
 
       {/* SIDEBAR NAVIGATION */}
@@ -57,7 +51,7 @@ const NavBarV: React.FC<NavBarProps> = ({ items}) => {
           isMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
-        {/* Fermer la navbar en mobile */}
+        {/* Bouton pour fermer la navbar en mobile */}
         <button
           onClick={() => setIsMenuOpen(false)}
           className="md:hidden text-white text-3xl absolute top-4 right-4"

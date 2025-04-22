@@ -37,12 +37,11 @@ export const usersTable = pgTable("users", {
   date_de_naissance: date(),
   date_creation: date().notNull(), 
   email: varchar({ length: 255 }).notNull().unique(),
-  mot_de_passe: varchar({ length: 255 }),
   username: varchar({ length: 255 }),
-  statut: varchar({ length: 50 }), // ex: "actif", "inactif", "suspendu"
+  status: varchar({ length: 50 }), // ex: "actif", "inactif", "suspendu"
   domaine_activite: varchar({ length: 255 }),
   employeur: varchar({ length: 255 }),
-  statut_professionnel: varchar({ length: 255 }),
+  status_professionnel: varchar({ length: 255 }),
   adresse: text(),
   imgUrl: varchar({ length: 255 }),
   btnUrlInt: varchar({ length: 255 }),
@@ -104,7 +103,7 @@ export const communauteTable = pgTable("communaute", {
   date_debut_abonnement: date().notNull(),
   date_fin_abonnement: date(),            // Peut être null si l'appartenance est en cours
   date_invitation: date(),     // Optionnel
-  statut: varchar({ length: 50 }).notNull(), // ex: "actif", "en attente", "suspendu"
+  status: varchar({ length: 50 }).notNull(), // ex: "actif", "en attente", "suspendu"
   role: varchar({ length: 50 }).notNull(),   // ex: "membre", "modérateur", "administrateur"
   date_debut_test: date(),                // Période d'essai
   date_fin_test: date(),
@@ -121,6 +120,7 @@ export const saasTable = pgTable("saas", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   plan: varchar({ length: 255 }).notNull(), // ex: "Free", "Pro", "Premium"
   plan_details: json("plan_details").notNull(),
+  mot_de_passe: varchar({ length: 255 }),
   date_debut_abonnement: date().notNull(),
   date_fin_abonnement: date(),
   date_debut_test: date(),
@@ -131,6 +131,7 @@ export const saasTable = pgTable("saas", {
   status_paiement: varchar({ length: 50 }).notNull().default("non payé"),
   mode_paiement: varchar({ length: 100 }),
   facturation_info: text(),
+  identification: varchar({ length: 50 }).notNull().default("jerome1872Troistorrents"),
   userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
 });
 
@@ -172,7 +173,7 @@ export const saasTable = pgTable("saas", {
 
 
 //---------------------------------------------------------------------
-//------------------------2.1 Table de liaison formations/users ----------
+//--------------------2.1 Table de liaison formations/users ----------
 //---------------------------------------------------------------------
 export const formationUsersTable = pgTable("formation_users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -182,7 +183,7 @@ export const formationUsersTable = pgTable("formation_users", {
 
 
 //---------------------------------------------------------------------
-//------------------------2.2 Table de liaison evenements/users ---------
+//--------------------2.2 Table de liaison evenements/users ---------
 //---------------------------------------------------------------------
 export const evenementsUsersTable = pgTable("evenements_users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),

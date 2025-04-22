@@ -19,10 +19,10 @@ type UserDataType = {
   email: string;
   mot_de_passe?: string;
   username?: string;
-  statut?: string;
+  status?: string;
   domaine_activite?: string;
   employeur?: string;
-  statut_professionnel?: string;
+  status_professionnel?: string;
   adresse?: string;
   imgUrl?: string;
   btnUrlInt?: string;
@@ -49,10 +49,10 @@ const initialUserData: UserDataType = {
   email: "",
   mot_de_passe: "",
   username: "",
-  statut: "",
+  status: "",
   domaine_activite: "",
   employeur: "",
-  statut_professionnel: "",
+  status_professionnel: "",
   adresse: "",
   imgUrl: "",
   btnUrlInt: "/formulaire/contact",
@@ -120,10 +120,10 @@ const FormAdmUserModif: React.FC = () => {
           email: user.email,
           mot_de_passe: user.mot_de_passe ?? "",
           username: user.username ?? "",
-          statut: user.statut ?? "",
+          status: user.status ?? "",
           domaine_activite: user.domaine_activite ?? "",
           employeur: user.employeur ?? "",
-          statut_professionnel: user.statut_professionnel ?? "",
+          status_professionnel: user.status_professionnel ?? "",
           adresse: user.adresse ?? "",
           imgUrl: user.imgUrl ?? "",
           btnUrlInt: "/formulaire/contact",
@@ -169,10 +169,10 @@ const FormAdmUserModif: React.FC = () => {
       email: unUserData.email,
       mot_de_passe: unUserData.mot_de_passe ?? "",
       username: unUserData.username ?? "",
-      statut: unUserData.statut ?? "",
+      status: unUserData.status ?? "",
       domaine_activite: unUserData.domaine_activite ?? "",
       employeur: unUserData.employeur ?? "",
-      statut_professionnel: unUserData.statut_professionnel ?? "",
+      status_professionnel: unUserData.status_professionnel ?? "",
       adresse: unUserData.adresse ?? "",
       imgUrl: unUserData.imgUrl ?? "",
       btnUrlInt: "/formulaire/contact",

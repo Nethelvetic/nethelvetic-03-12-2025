@@ -3,14 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { selectionUsers } from "../db/dbQuery-Users";
 import CartVTitreTxtBgGN from './cart-V-Titre-Txt-BgGN';
-import ListHUserBtnMBgG from './list-H-Users-btnM-bgG';
 import ListHUserBtnMBgGN from './list-H-Users-btnM-bgGN';
-import BtnLgBgG from './btn-Lg-BgG';
+import BtnLgNoEffetBgG from './btn-Lg-NoEffect-BgG';
 
 
 
 
 const PageAdmUser: React.FC = () => {
+  console.log("1.0 PageAdmUser debut" )
 
 //---------------------------------------------------------------------
 //------------------------2 Début data dynamique ----------------------
@@ -23,12 +23,15 @@ const PageAdmUser: React.FC = () => {
 //------------------------2 Début comportement ------------------------
 //---------------------------------------------------------------------
   useEffect(() => {
-    console.log("PageAdmUser useEffect debut" )
+    console.log("2.0.0 PageAdmUser useEffect debut" )
     async function fetchUsers() {
       const data = await selectionUsers ();
-      console.log("PageAdmUser useEffect selectionUsers users =>", data )
-      setCardData(data);
-    }
+      console.log("2.0.1 PageAdmUser useEffect selectionUsers users =>", data )
+
+      //---------------------------------------------------------------------
+      //2.0.1 PageAdmUser useEffect selectionUsers => set user Zustand
+      setCardData(data.user ?? []);
+      }
     fetchUsers();
   }, []);
 
@@ -48,9 +51,9 @@ const PageAdmUser: React.FC = () => {
 
          {/*-----------------------------1 DEBUT CONTENEUR carte-H-Img-Titre-BgN */}
          <div className='p-6'>
-            <BtnLgBgG interneUrl='/admin/users/add' >
+            <BtnLgNoEffetBgG  interneUrl='/admin/users/add' >
               Creer
-            </BtnLgBgG >
+            </BtnLgNoEffetBgG  >
         </div>
 
 

@@ -20,10 +20,10 @@ type UserDataType = {
   email: string;                           
   mot_de_passe: string;                
   username: string;                    
-  statut: string;                      
+  status: string;                      
   domaine_activite: string;            
   employeur: string;                   
-  statut_professionnel: string;        
+  status_professionnel: string;        
   adresse: string;                     
   imgUrl: string;                      
   btnUrlInt: string;                   
@@ -51,10 +51,10 @@ const initialUserData: UserDataType = {
   email: "",
   mot_de_passe: "",
   username: "",
-  statut: "",
+  status: "",
   domaine_activite: "",
   employeur: "",
-  statut_professionnel: "",
+  status_professionnel: "",
   adresse: "",
   imgUrl: "/singeCalculateur.webp",
   btnUrlInt: "/formulaire/contact",

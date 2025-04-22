@@ -19,10 +19,10 @@ interface CarteData {
   mot_de_naissance?: string;
   mot_de_passe?: string;
   username?: string;
-  statut?: string;
+  status?: string;
   domaine_activite?: string;
   employeur?: string;
-  statut_professionnel?: string;
+  status_professionnel?: string;
   adresse?: string;
   imgUrl?: string;
   btnUrlInt?: string;

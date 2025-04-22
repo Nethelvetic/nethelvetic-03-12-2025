@@ -6,7 +6,8 @@ import {
   selectOneUser, 
   updateOneUser, 
   deleteOneUser,
-  selectUserWithEmailAndPassword
+  selectUserWithEmailAndPassword,
+  selectUserWithActiveSaas
 } from "./dbQuery";
 
   type UserInput = {
@@ -20,10 +21,10 @@ import {
     email: string;                       // varchar(255) non null, unique
     mot_de_passe: string;               // varchar(255), optionnel
     username: string;                   // varchar(255), unique, optionnel
-    statut: string;                     // varchar(50), optionnel (ex: "actif", "inactif", "suspendu")
+    status: string;                     // varchar(50), optionnel (ex: "actif", "inactif", "suspendu")
     domaine_activite: string;           // varchar(255), optionnel (anciennement "profession")
     employeur: string;                  // varchar(255), optionnel
-    statut_professionnel: string;       // varchar(255), optionnel
+    status_professionnel: string;       // varchar(255), optionnel
     adresse: string;                    // text(), optionnel
     imgUrl: string;                     // varchar(255), optionnel (URL de l'image de profil)
     btnUrlInt: string;                  // varchar(255), optionnel
@@ -77,9 +78,20 @@ export async function suppOneUser(id: number) {
 
 
 //--------------------------------------------------------------------------------
-//------------------------6  Fonction select user with email et passWord --------
+//-------------6  Fonction select user with email et passWord --------------------
 //--------------------------------------------------------------------------------
 export async function selectionUserWithEmailAndPassword(email: string, motDePasse: string ) {
   console.log("6.0 selectionUserWithEmailAndPassword pour l'email =", email);
   return await selectUserWithEmailAndPassword(email, motDePasse );
+}
+selectUserWithActiveSaas
+
+
+
+//--------------------------------------------------------------------------------
+//-------------6 Fonction select user with active Saas --------------------
+//--------------------------------------------------------------------------------
+export async function selectionUserWithActiveSaas(email: string, motDePasse: string ) {
+  console.log("6.0 selectionUserWithEmailAndPassword pour l'email =", email);
+  return await selectUserWithActiveSaas(email, motDePasse );
 }

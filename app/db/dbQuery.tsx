@@ -1,8 +1,18 @@
 import "dotenv/config"; 
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from "drizzle-orm/neon-http";
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNotNull, not } from "drizzle-orm";
 import { formationTable, evenementsTable, usersTable, messageTable, saasTable } from "./schema";
+
+
+// 90   TABLES FORMATION
+// 219  TABLES EVENEMENT
+// 352  TABLES USER
+// 668    - select User With Active Saas 
+// 809    - insert user pour inscription 
+// 971  TABLES MESSAGE
+// 1066 TABLES SAAS
+
 
 
 const sql = neon(process.env.DATABASE_URL!);
@@ -33,12 +43,11 @@ type FormatUserInput = {
   date_de_naissance: string;
   date_creation: string;
   email: string;
-  mot_de_passe: string;
   username: string;
-  statut: string;
+  status: string;
   domaine_activite: string;
   employeur: string;
-  statut_professionnel: string;
+  status_professionnel: string;
   adresse: string;
   imgUrl: string;
   btnUrlInt: string;
@@ -75,8 +84,12 @@ export type FormatSaasInput = {
   status_paiement: string;                // ex: "non payé" (valeur par défaut)
   mode_paiement?: string;                 // ex: "carte bancaire", etc.
   facturation_info?: string;              // texte libre
+  mot_de_passe?: string;
+  identification: string;
   userId: number;                         // référence à usersTable.id
 };
+
+
 
 
 
@@ -246,7 +259,7 @@ export async function insertEvenement(evenement: FormatEventInput) {
 
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
-//------------------------2.2  Fonction selectFormation ---------------
+//------------------------2.2  Fonction selectEvenement ---------------
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectEvenements() {
@@ -373,7 +386,7 @@ export async function insertOneUser(user: FormatUserInput) {
     //------------------3.1.3 User existant ---------------------------
     //-----------------------------------------------------------------
     if (existingUser.length > 0) {
-      console.log("3.1.3 dbQuery insertOneUser Utilisateur existant trouvé pour l'email:", user.email);
+      console.log("3.1.3 dbQuery insertOneUser Utilisateur USER EXISTANT trouvé pour l'email:", user.email);
       const userFromDB = existingUser[0];
 
 
@@ -381,7 +394,6 @@ export async function insertOneUser(user: FormatUserInput) {
         return value == null || value === "";
       }
       
-
       const transformedUser: FormatUserInput = {
         nom_entreprise: isNullOrEmpty(user.nom_entreprise)
           ? (userFromDB.nom_entreprise ?? "")
@@ -395,44 +407,79 @@ export async function insertOneUser(user: FormatUserInput) {
         code_postal: isNullOrEmpty(user.code_postal)
           ? (userFromDB.code_postal ?? "")
           : user.code_postal,
-        telephone: isNullOrEmpty(user.telephone) ? "" : user.telephone,
-        date_de_naissance: isNullOrEmpty(user.date_de_naissance) ? "" : user.date_de_naissance,
-        date_creation: user.date_creation, // Supposé non nullable
-        email: user.email,
-        mot_de_passe: isNullOrEmpty(user.mot_de_passe) ? "" : user.mot_de_passe,
-        username: isNullOrEmpty(user.username) ? "" : user.username,
-        statut: isNullOrEmpty(user.statut) ? "" : user.statut,
-        domaine_activite: isNullOrEmpty(user.domaine_activite) ? "" : user.domaine_activite,
-        employeur: isNullOrEmpty(user.employeur) ? "" : user.employeur,
-        statut_professionnel: isNullOrEmpty(user.statut_professionnel) ? "" : user.statut_professionnel,
-        adresse: isNullOrEmpty(user.adresse) ? "" : user.adresse,
-        imgUrl: isNullOrEmpty(user.imgUrl) ? "" : user.imgUrl,
-        btnUrlInt: isNullOrEmpty(user.btnUrlInt) ? "" : user.btnUrlInt,
-        btnUrlExt: isNullOrEmpty(user.btnUrlExt) ? "" : user.btnUrlExt,
-        btnTexte: isNullOrEmpty(user.btnTexte) ? "" : user.btnTexte,
-        btnModifUrl: isNullOrEmpty(user.btnModifUrl) ? "" : user.btnModifUrl,
+        telephone: isNullOrEmpty(user.telephone)
+          ? (userFromDB.telephone ?? "")
+          : user.telephone,
+        date_de_naissance: isNullOrEmpty(user.date_de_naissance)
+          ? (userFromDB.date_de_naissance ?? "")
+          : user.date_de_naissance,
+        date_creation: isNullOrEmpty(user.date_creation)
+          ? (userFromDB.date_creation ?? "")
+          : user.date_creation,
+        email: isNullOrEmpty(user.email)
+          ? (userFromDB.email ?? "")
+          : user.email,
+        username: isNullOrEmpty(user.username)
+          ? (userFromDB.username ?? "")
+          : user.username,
+        status: isNullOrEmpty(user.status)
+          ? (userFromDB.status ?? "")
+          : user.status,
+        domaine_activite: isNullOrEmpty(user.domaine_activite)
+          ? (userFromDB.domaine_activite ?? "")
+          : user.domaine_activite,
+        employeur: isNullOrEmpty(user.employeur)
+          ? (userFromDB.employeur ?? "")
+          : user.employeur,
+        status_professionnel: isNullOrEmpty(user.status_professionnel)
+          ? (userFromDB.status_professionnel ?? "")
+          : user.status_professionnel,
+        adresse: isNullOrEmpty(user.adresse)
+          ? (userFromDB.adresse ?? "")
+          : user.adresse,
+        imgUrl: isNullOrEmpty(user.imgUrl)
+          ? (userFromDB.imgUrl ?? "")
+          : user.imgUrl,
+        btnUrlInt: isNullOrEmpty(user.btnUrlInt)
+          ? (userFromDB.btnUrlInt ?? "")
+          : user.btnUrlInt,
+        btnUrlExt: isNullOrEmpty(user.btnUrlExt)
+          ? (userFromDB.btnUrlExt ?? "")
+          : user.btnUrlExt,
+        btnTexte: isNullOrEmpty(user.btnTexte)
+          ? (userFromDB.btnTexte ?? "")
+          : user.btnTexte,
+        btnModifUrl: isNullOrEmpty(user.btnModifUrl)
+          ? (userFromDB.btnModifUrl ?? "")
+          : user.btnModifUrl,
       };
       
       
       
-      console.log("3.1.4 dbQuery insertOneUser User objet:", transformedUser);
-      console.log("3.1.5 dbQuery insertOneUser userFromDB.id:", userFromDB.id);
+      console.log("3.1.4 dbQuery insertOneUser USER EXISTANT :", transformedUser);
+      console.log("3.1.5 dbQuery insertOneUser USER EXISTANT  userFromDB.id:", userFromDB.id);
       
       // Attendre la réponse de updateOneUser
-      console.log("3.1.6 dbQuery insertOneUser updateOneUser avant");
-      const updateResponse = await updateOneUser(userFromDB.id, transformedUser);
-      if (updateResponse.success) {
-        console.log("3.1.7 dbQuery insertOneUser updateOneUser après success:", updateResponse.success );
+      console.log("3.1.6 dbQuery insertOneUser USER EXISTANT  updateOneUser avant");
+      const updateUserResult = await updateOneUser(userFromDB.id, transformedUser);
+      if (updateUserResult.success) {
+        console.log("3.1.7 dbQuery insertOneUser USER EXISTANT  updateOneUser success:");
+
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        //////////////          STOP 1        ////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
         return { 
           success: true, 
           message: "Un utilisateur existe déjà ; nous avons mis à jour son compte avec les informations fournies.", 
-          id: userFromDB.id 
+          user: userFromDB
         };
       } else {
         return { 
           success: false, 
-          message: "L'utilisateur existe déjà, mais la mise à jour a échoué : " + updateResponse.message, 
-          id: userFromDB.id 
+          message: "L'utilisateur existe déjà, mais la mise à jour a échoué : " + updateUserResult.message, 
+          user: userFromDB
         };
       }
     }
@@ -441,7 +488,7 @@ export async function insertOneUser(user: FormatUserInput) {
     //-----------------------------------------------------------------
     //------------------3.1.3 User NON existant -----------------------
     //-----------------------------------------------------------------
-    console.log("3.1.6 dbQuery insertOneUser try avant");
+    console.log("3.1.6 dbQuery insertOneUser USER NON EXISTANT insertUser debut");
     const defaultDate = new Date().toISOString().slice(0, 10); // format "YYYY-MM-DD"
     const userToInsert = {
       ...user,
@@ -458,16 +505,26 @@ export async function insertOneUser(user: FormatUserInput) {
     };
 
     //------------------3.1.7 Inserer USER -----------------------
-    const inserted = await db.insert(usersTable).values(userToInsert).returning();
-    console.log("3.1.7 dbQuery insertOneUser try après", inserted);
+    const insertUserResult = await db.insert(usersTable).values(userToInsert).returning();
+    console.log("3.1.7 dbQuery insertOneUser USER NON EXISTANT insertUser try après");
+
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////          STOP 1        ////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
     return { 
       success: true, 
       message: "Utilisateur ajouté avec succès !",
-      id: inserted[0].id 
+      user: insertUserResult[0]
     };
   } catch (error) {
-    console.error("3.1.8 dbQuery insertUser Erreur lors de l'insertion de l'utilisateur :", error);
-    return { success: false, message: "Une erreur est survenue lors de l'ajout de l'utilisateur." };
+    console.error("3.1.8 dbQuery insertUser USER NON EXISTANT insertUser Erreur:", error);
+    return { 
+      success: false, 
+      message: "Une erreur est survenue lors de l'ajout de l'utilisateur.",
+      user: null
+     };
   }
 }
 
@@ -485,10 +542,24 @@ export async function selectUsers() {
     console.log("3.2.1 dbQuery all selectUsers try avant");
     const users = await db.select().from(usersTable);
     console.log("3.2.2 dbQuery all selectUsers try après => users:", users);
-    return users;
+
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////          STOP 1        ////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    return { 
+      success: true, 
+      message: "selection des users avec Success.",
+      user: users
+     };;
   } catch (error) {
     console.error("3.2.3 dbQuery all selectUsers Erreur lors de la sélection des utilisateurs :", error);
-    throw error;
+    return { 
+      success: false, 
+      message: "selection des users Erreur",
+      user: null
+     };
   }
 }
 
@@ -508,10 +579,24 @@ export async function selectOneUser(id: number) {
       .where(eq(usersTable.id, id))
       .limit(1);
       console.log("3.3.2 dbQuery selectOneUsers try après => user: ", user);
-    return user;
+
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////          STOP 1        ////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    return { 
+      success: false, 
+      message: "selection de un user Success",
+      user: user[0]
+     };
   } catch (error) {
     console.error("3.3.3 dbQuery selectOneUsers Erreur lors de la sélection de l'utilisateur :", error);
-    throw error;
+    return { 
+      success: false, 
+      message: "selection de un user Erreur",
+      user: null
+     };
   }
 }
 
@@ -526,39 +611,82 @@ export async function selectUserWithEmailAndPassword(
   motDePasse: string
 ): Promise<{ success: boolean; message: string; user: any }> {
   console.log("3.4.1 selectUserWithEmailAndPassword avec l'email:", email);
+
   try {
-    const user = await db
+    //-----------------------------------------------------------------
+    // 3.4.2 Vérifie si User existant 
+    //-----------------------------------------------------------------
+    console.log("3.4.2 dbQuery selectUserWithEmailAndPassword, contrôle si user existe");
+    const existingUser = await db
       .select()
       .from(usersTable)
-      .where(
-        and(
-          eq(usersTable.email, email),
-          eq(usersTable.mot_de_passe, motDePasse)
-        )
-      )
+      .where(eq(usersTable.email, email))
       .limit(1);
 
-  
-    if (user.length > 0) {
-      console.log("3.4.2 selectUserWithEmailAndPassword user existant:", user);
-      return {
-        success: true,
-        message: "Authentification réussie.",
-        user: user[0],
-      };
-    } else {
-      console.log("3.4.3 selectUserWithEmailAndPassword user non existant:");
+    if (existingUser.length === 0) {
+      console.log("3.4.3 selectUserWithEmailAndPassword user non existant pour cet email");
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////          STOP 1        ////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
       return {
         success: false,
         message: "Identifiants incorrects.",
         user: null,
       };
     }
+
+    //-----------------------------------------------------------------
+    // 3.4.4 Rechercher User+SaaS avec mot de passe et abonnement actif
+    //-----------------------------------------------------------------
+    const result = await db
+      .select()
+      .from(usersTable)
+      .innerJoin(saasTable, eq(usersTable.id, saasTable.userId))
+      .where(
+        and(
+          eq(usersTable.email, email),
+          eq(saasTable.mot_de_passe, motDePasse),
+          eq(saasTable.status_abonnement, "actif")
+        )
+      )
+      .limit(1);
+
+    //-----------------------------------------------------------------
+    // 3.4.5 Authentification réussie ou non
+    //-----------------------------------------------------------------
+    if (result.length > 0) {
+      console.log("3.4.6 selectUserWithEmailAndPassword authentification réussie :", result[0]);
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////          STOP 2        ////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+      return {
+        success: true,
+        message: "Authentification réussie.",
+        user: result[0],
+      };
+    } else {
+      console.log("3.4.7 selectUserWithEmailAndPassword mot de passe incorrect ou SaaS inactif");
+      return {
+        success: false,
+        message: "Identifiants incorrects ou abonnement inactif.",
+        user: null,
+      };
+    }
+
   } catch (error) {
-    console.error("Erreur lors de la sélection de l'utilisateur :", error);
-    throw error;
+    console.error("3.4.8 Erreur lors de la sélection de l'utilisateur :", error);
+    return {
+      success: false,
+      message: `Une erreur est survenue : ${error}`,
+      user: null,
+    };
   }
 }
+
 
 
 
@@ -574,7 +702,6 @@ export async function updateOneUser(id: number, user: FormatUserInput) {
     const defaultDate = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
     const userToUpdate = {
       ...user,
-      date_creation: user.date_creation.trim() === "" ? defaultDate : user.date_creation,
       date_de_naissance: user.date_de_naissance 
         ? (user.date_de_naissance.trim() === "" ? null : user.date_de_naissance)
         : null,
@@ -585,17 +712,30 @@ export async function updateOneUser(id: number, user: FormatUserInput) {
         ? (user.username.trim() === "" ? null : user.username)
         : null,
     };
-    console.log("3.5.1 dbQuery updateUsers try  user.date_creation:", user.date_creation);
     console.log("3.5.2 dbQuery updateUsers try avant");
-    await db
+    const updateOneUserResult = await db
       .update(usersTable)
       .set(userToUpdate)
-      .where(eq(usersTable.id, id));
+      .where(eq(usersTable.id, id)
+    );
     console.log("3.5.3 dbQuery updateUsers try après");
-    return { success: true, message: "Utilisateur mis à jour avec succès !" };
+
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////          STOP 1        ////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    return { 
+      success: true, 
+      message: "Utilisateur mis à jour avec succès !",
+      user: userToUpdate
+    };
   } catch (error) {
     console.error("3.5.4 dbQuery updateUsers Erreur lors de la mise à jour de l'utilisateur :", error);
-    return { success: false, message: "Une erreur est survenue lors de la mise à jour de l'utilisateur." };
+    return { 
+      success: false, 
+      message: "Une erreur est survenue lors de la mise à jour de l'utilisateur.",
+      user: null };
   }
 }
 
@@ -613,10 +753,79 @@ export async function deleteOneUser(id: number) {
     console.log("3.6.1 dbQuery deleteUsers try avant");
     await db.delete(usersTable).where(eq(usersTable.id, id));
     console.log("3.6.2 dbQuery deleteUsers try après");
-    return { success: true, message: "Utilisateur supprimé avec succès !" };
+
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////          STOP 1        ////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    return { 
+      success: true, 
+      message: "Utilisateur supprimé avec succès !",
+      user: id };
   } catch (error) {
     console.error("3.6.2 dbQuery deleteUsers Erreur lors de la suppression de l'utilisateur :", error);
-    return { success: false, message: "Une erreur est survenue lors de la suppression de l'utilisateur." };
+    return { 
+      success: false, 
+      message: "Une erreur est survenue lors de la suppression de l'utilisateur.",
+      user: null };
+  }
+}
+
+
+
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+//---------3.7 Début select User With Active Saas 
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+export async function selectUserWithActiveSaas(
+  email: string,
+  motDePasse: string
+): Promise<{ success: boolean; message: string; user?: any }> {
+  console.log("3.7.0 dbQuery selectUserWithActiveSaas:");
+
+  try {
+    // Effectuer la jointure entre users et saas ,
+    // et filtre sur user.email / user.MotdePass / saas.status le status 
+    const selectUserWithSaasResult = await db
+      .select()
+      .from(usersTable)
+      .innerJoin(saasTable, eq(usersTable.id, saasTable.userId))
+      .where(
+        and(
+          eq(usersTable.email, email),
+          eq(saasTable.status_abonnement, "actif")
+        )
+      )
+      .limit(1);
+
+    if (selectUserWithSaasResult.length > 0) {
+      console.log("3.7.1 dbQuery selectUserWithActiveSaas abonnement actif:")
+
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////          STOP 1        ////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+      return { 
+        success: true, 
+        message: "Client trouvé avec abonnement actif", 
+        user: selectUserWithSaasResult[0],
+      };
+    } else {
+      console.log("3.7.2 dbQuery deleteUsers selectUserWithActiveSaas non abonnement actif:");
+      return { 
+        success: false, 
+        message: "Aucun client trouvé ou abonnement non actif", 
+        user: null };
+    }
+  } catch (error: any) {
+    console.log("3.7.3 dbQuery deleteUsers selectUserWithActiveSaas erreur:", error);
+    return { 
+      success: false, 
+      message: "Une erreur est survenue lors de la recherche du client.",
+      user: null };
   }
 }
 
@@ -627,161 +836,220 @@ export async function deleteOneUser(id: number) {
 
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
-//------------------------3.7 Début insert user pour inscription -------
+//---------------------------------------------------------------------
+//-------------3.8 Début insert user pour inscription -----------------
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
-export async function insertOneUserInscription(user: FormatUserInput) {
-  console.log("3.7.1 dbQuery insertOneUserInscription, données:", user);
+//---------------------------------------------------------------------
+export async function insertOneUserInscription(user: FormatUserInput, saasMotdePasse: string) {
+  console.log("3.8.1 dbQuery insertOneUserInscription, user:", user);
 
   try {
     //-----------------------------------------------------------------
-    //------------------3.7.2 Vérifie si User existant ----------------
+    // 3.8.2 Vérifie si User existant 
     //-----------------------------------------------------------------
-    console.log("3.7.2 dbQuery insertOneUserInscription, contrôle si user existe");
+    console.log("3.8.2 dbQuery inOneUserInscri, contrôle si user existe");
     const existingUser = await db
       .select()
       .from(usersTable)
       .where(eq(usersTable.email, user.email));
 
-    //-----------------------------------------------------------------
-    //------------------3.7.3 User existant ? -------------------------
-    //-----------------------------------------------------------------
+    ///////////////////////////////////////////////////////////////////
+    // 3.8.3 DEBUT USER EXISTANT
+    ///////////////////////////////////////////////////////////////////
     if (existingUser.length > 0) {
       console.log(
-        "3.7.3 dbQuery insertOneUserInscription Utilisateur existant trouvé pour l'email:",
+        "3.8.3 dbQuery inOneUserInscri USER EXIST trouvé pour l'email:",
         user.email
       );
+      
+      //-----------------------------------------------------------------
+      // 3.8.4 USER EXISTANT => Rechercher User avec mot de passe dans table Saas
+      //-----------------------------------------------------------------
+      const result = await db
+        .select()
+        .from(usersTable)
+        .innerJoin(saasTable, eq(usersTable.id, saasTable.userId))
+        .where(
+          and(
+            eq(usersTable.email, user.email),
+            eq(saasTable.status_abonnement, "actif")
+          )
+        )
+        .limit(1);
 
-      const userFromDB = existingUser[0];
-
-      // -------------------------------------------------------------------
-      // 3.7.3.a  Contrôle si userFromDB.email et userFromDB.mot_de_passe
-      // existent déjà (ni null, ni vide) => vous êtes déjà inscrit
-      // -------------------------------------------------------------------
-      if (
-        userFromDB.email &&
-        userFromDB.email.trim() !== "" &&
-        userFromDB.mot_de_passe &&
-        userFromDB.mot_de_passe.trim() !== ""
-      ) {
+      //-----------------------------------------------------------------
+      // 3.8.5 USER EXISTANT => User avec mot de passe dans table Saas existe
+      if (result.length > 0) {
         console.log(
-          "3.7.4 dbQuery insertOneUserInscription User existant avec 1x email et 1x mot de passe");
+          "3.8.5 dbQuery inOneUserInscri USER EXIST avec email et mot_de_passe."
+        );
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        //////////////          STOP 1        //////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
         return {
           success: false,
           message: "Vous êtes déjà inscrit",
-          id: userFromDB.id,
+          user: result[0].users,
+          saas: result[0].saas
         };
       }
 
-      // Sinon, on continue la mise à jour
-      function isNullOrEmpty(value?: string): boolean {
-        return value == null || value === "";
-      }
-
-      const transformedUser: FormatUserInput = {
-        nom_entreprise: isNullOrEmpty(user.nom_entreprise)
-          ? userFromDB.nom_entreprise ?? ""
-          : user.nom_entreprise,
-        personne_a_contacter: isNullOrEmpty(user.personne_a_contacter)
-          ? userFromDB.personne_a_contacter ?? ""
-          : user.personne_a_contacter,
-        ville: isNullOrEmpty(user.ville)
-          ? userFromDB.ville ?? ""
-          : user.ville,
-        code_postal: isNullOrEmpty(user.code_postal)
-          ? userFromDB.code_postal ?? ""
-          : user.code_postal,
-        telephone: isNullOrEmpty(user.telephone) ? "" : user.telephone,
-        date_de_naissance: isNullOrEmpty(user.date_de_naissance)
-          ? ""
-          : user.date_de_naissance,
-        date_creation: user.date_creation, // Supposé non nullable
-        email: user.email,
-        mot_de_passe: isNullOrEmpty(user.mot_de_passe)
-          ? ""
-          : user.mot_de_passe,
-        username: isNullOrEmpty(user.username) ? "" : user.username,
-        statut: isNullOrEmpty(user.statut) ? "" : user.statut,
-        domaine_activite: isNullOrEmpty(user.domaine_activite)
-          ? ""
-          : user.domaine_activite,
-        employeur: isNullOrEmpty(user.employeur) ? "" : user.employeur,
-        statut_professionnel: isNullOrEmpty(user.statut_professionnel)
-          ? ""
-          : user.statut_professionnel,
-        adresse: isNullOrEmpty(user.adresse) ? "" : user.adresse,
-        imgUrl: isNullOrEmpty(user.imgUrl) ? "" : user.imgUrl,
-        btnUrlInt: isNullOrEmpty(user.btnUrlInt) ? "" : user.btnUrlInt,
-        btnUrlExt: isNullOrEmpty(user.btnUrlExt) ? "" : user.btnUrlExt,
-        btnTexte: isNullOrEmpty(user.btnTexte) ? "" : user.btnTexte,
-        btnModifUrl: isNullOrEmpty(user.btnModifUrl) ? "" : user.btnModifUrl,
+      //-----------------------------------------------------------------
+      // 3.8.6 USER EXISTANT => Création new Saas
+      const saasDataForExistingUser: FormatSaasInput = {
+        plan: "Free",
+        plan_details: {},
+        date_debut_abonnement: new Date().toISOString().slice(0, 10), // format "YYYY-MM-DD"
+        status_abonnement: "actif",
+        status_paiement: "non payé",
+        mot_de_passe:  saasMotdePasse,
+        identification: user.email  === "golliard73@gmail.com"? "jerome1872Troistorrents": "user2025Nethelvetic",
+        userId: existingUser[0].id,
       };
+      const saasInsertResult = await insertSaas(saasDataForExistingUser);
 
-      console.log("3.7.5 dbQuery insertOneUserInscription User objet:", transformedUser);
-      console.log("3.7.6 dbQuery insertOneUserInscription userFromDB.id:", userFromDB.id);
-
-      // Attendre la réponse de updateOneUser
-      console.log("3.7.7 dbQuery insertOneUserInscription updateOneUser avant");
-      const updateResponse = await updateOneUser(userFromDB.id, transformedUser);
-      if (updateResponse.success) {
-        console.log(
-          "3.7.8 dbQuery insertOneUserInscription updateOneUser après success:",
-          updateResponse.success
-        );
+      //-----------------------------------------------------------------
+      // 3.8.6 USER EXISTANT => Création new Saas
+      //////////////////////////////////////////////////////////////////
+      //////////////////////////////////////////////////////////////////
+      //////////////          STOP 2        //////////////////////////////
+      //////////////////////////////////////////////////////////////////
+      //////////////////////////////////////////////////////////////////
+      if (saasInsertResult.success) {
+        console.log("3.8.6 dbQuery inOneUserInscri USER EXIST => insSaas SUCCES");
         return {
           success: true,
-          message:
-            "Un utilisateur existe déjà ; nous avons mis à jour son compte avec les informations fournies.",
-          id: userFromDB.id,
+          message: "Client inscrit",
+          user: existingUser,
+          saas: saasInsertResult.saas
         };
       } else {
+        console.log("3.8.7 dbQuery inOneUserInscri USER EXIST => insSaas NO SUCCES");
         return {
           success: false,
-          message:
-            "L'utilisateur existe déjà, mais la mise à jour a échoué : " +
-            updateResponse.message,
-          id: userFromDB.id,
+          message: "Client non inscrit",
+          user: existingUser,
+          saas: null
+        };
+      }
+
+    } else {
+      ///////////////////////////////////////////////////////////////////
+      // FIN FIN FIN USER EXISTANT
+      ///////////////////////////////////////////////////////////////////
+
+      ///////////////////////////////////////////////////////////////////
+      // DEBUT USER NON EXISTANT
+      ///////////////////////////////////////////////////////////////////
+
+      //-----------------------------------------------------------------
+      // 3.8.8 USER NON EXISTANT => Définir une var pour le data USER
+      console.log("3.8.8 dbQuery inOneUserInscri USER NO EXIST ");
+      const defaultDate = new Date().toISOString().slice(0, 10); // format "YYYY-MM-DD"
+      const userToInsert = {
+        ...user,
+        date_creation:
+          user.date_creation.trim() === "" ? defaultDate : user.date_creation,
+        date_de_naissance: user.date_de_naissance
+          ? user.date_de_naissance.trim() === ""
+            ? null
+            : user.date_de_naissance
+          : null,
+        telephone: user.telephone
+          ? user.telephone.trim() === ""
+            ? null
+            : user.telephone
+          : null,
+        username: user.username
+          ? user.username.trim() === ""
+            ? null
+            : user.username
+          : null,
+        imgUrl: user.imgUrl
+          ? user.imgUrl.trim() === ""
+            ? "/singeCalculateur.webp"
+            : user.imgUrl
+          : "/singeCalculateur.webp",
+      };
+
+      //-----------------------------------------------------------------
+      // 3.8.9 USER NON EXISTANT => creation user
+      const userInserted = await db
+        .insert(usersTable)
+        .values(userToInsert)
+        .returning();
+      console.log("3.8.9 dbQuery inOneUserInscri USER NO EXIST => inUser SUCCES");
+
+      //-----------------------------------------------------------------
+      // 3.8.10 USER NON EXISTANT => creation user success
+      if (userInserted) {
+        //-----------------------------------------------------------------
+        // 3.8.11 USER NON EXISTANT => creation user success => Création new Saas avec User.Id
+        console.log("3.8.10 dbQuery inOneUserInscri USER NO EXIST => inUser SUCCES => insSaas ");
+
+        const saasData: FormatSaasInput = {
+          plan: "Free",
+          plan_details: {},
+          date_debut_abonnement: new Date().toISOString().slice(0, 10), // format "YYYY-MM-DD"
+          status_abonnement: "actif",
+          status_paiement: "non payé",
+          mot_de_passe: saasMotdePasse,
+          identification: user.email  === "golliard73@gmail.com"? "jerome1872Troistorrents": "user2025Nethelvetic",
+          userId: userInserted[0].id,
+        };
+        const saasInsertResult = await insertSaas(saasData);
+
+        //-----------------------------------------------------------------
+        // 3.8.12 USER NON EXISTANT => creation user success => Creation Saas
+        if (saasInsertResult.success) {
+          console.log("3.8.12 dbQuery inOneUserInscri USER NO EXIST => inUser SUCCES => inSaas SUCCES");
+
+          //////////////////////////////////////////////////////////////////
+           //////////////////////////////////////////////////////////////////
+           //////////////          STOP 3        ////////////////////////////
+           //////////////////////////////////////////////////////////////////
+           //////////////////////////////////////////////////////////////////
+          return {
+            success: true,
+            message: "Utilisateur ajouté avec succès !",
+            user: userInserted[0],
+            saas: saasInsertResult.saas,
+          };
+        } else {
+          console.log("3.8.13 dbQuery inOneUserInscri USER NO EXIST => inUser SUCCES=> inSaas NO success");
+          return {
+            success: false,
+            message: "Utilisateur non inscrit !",
+            user: userInserted[0],
+            saas: saasInsertResult.saas,
+          };
+        }
+      } else {
+        console.log("3.8.14 dbQuery inOneUserInscri USER NO EXIST => inUser NO SUCCES");
+
+      //////////////////////////////////////////////////////////////////
+      //////////////////////////////////////////////////////////////////
+      //////////////          STOP 4        ////////////////////////////
+      //////////////////////////////////////////////////////////////////
+      //////////////////////////////////////////////////////////////////
+        return {
+          success: false,
+          message: "erreur d'inscription !",
+          user: null,
+          saas: null
         };
       }
     }
+    ///////////////////////////////////////////////////////////////////
+    // FIN FIN FIN USER NON EXISTANT
+    ///////////////////////////////////////////////////////////////////
 
-    //-----------------------------------------------------------------
-    //------------------3.7.6 User NON existant -----------------------
-    //-----------------------------------------------------------------
-    console.log("3.7.6 dbQuery insertOneUserInscription try avant");
-    const defaultDate = new Date().toISOString().slice(0, 10); // format "YYYY-MM-DD"
-    const userToInsert = {
-      ...user,
-      date_creation:
-        user.date_creation.trim() === "" ? defaultDate : user.date_creation,
-      date_de_naissance: user.date_de_naissance
-        ? user.date_de_naissance.trim() === ""
-          ? null
-          : user.date_de_naissance
-        : null,
-      telephone: user.telephone
-        ? user.telephone.trim() === ""
-          ? null
-          : user.telephone
-        : null,
-      username: user.username
-        ? user.username.trim() === ""
-          ? null
-          : user.username
-        : null,
-    };
-
-    //------------------3.7.7 Insérer USER -----------------------
-    const inserted = await db.insert(usersTable).values(userToInsert).returning();
-    console.log("3.7.7 dbQuery insertOneUserInscription try après", inserted);
-    return {
-      success: true,
-      message: "Utilisateur ajouté avec succès !",
-      id: inserted[0].id,
-    };
   } catch (error) {
     console.error(
-      "3.7.8 dbQuery insertOneUserInscription  Erreur lors de l'insertion de l'utilisateur :",
+      "3.8.14 dbQuery insertOneUserInscription erreur",
       error
     );
     return {
@@ -790,7 +1058,6 @@ export async function insertOneUserInscription(user: FormatUserInput) {
     };
   }
 }
-
 
 
 
@@ -944,12 +1211,32 @@ export async function insertOneMessage(messageData: FormatMessageInput) {
 export async function insertSaas(saas: FormatSaasInput) {
   console.log("5.0.1 insertSaas - Début, données:", saas);
   try {
-    await db.insert(saasTable).values(saas);
-    console.log("5.0.2 insertSaas - SaaS record inséré avec succès");
-    return { success: true, message: "SaaS record inserted successfully" };
+    const saasTableInsertResult = await db.insert(saasTable).values(saas).returning();
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        //////////////          STOP 1        ////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+    return { 
+      success: true, 
+      message: "SaaS record inserted successfully", 
+      user: null,
+      saas: saasTableInsertResult
+    };
   } catch (error) {
-    console.error("5.0.3 insertSaas - Erreur lors de l'insertion :", error);
-    return { success: false, message: "Error inserting SaaS record" };
+    console.error("5.0.3 dbQuery insertSaas - No succès", error);
+
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        //////////////          STOP 2        ////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+    return { 
+      success: false, 
+      message: "Error inserting SaaS record",
+      user: null,
+      saas: null
+    };
   }
 }
 
@@ -1031,3 +1318,11 @@ export async function deleteUnSaas(id: number) {
     return { success: false, message: "Error deleting SaaS record" };
   }
 }
+
+
+
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+//---------5.5 Fonction selectionSaasWithEmailAndPassword -------------
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------

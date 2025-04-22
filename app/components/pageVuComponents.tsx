@@ -8,6 +8,7 @@ import FormUser from './form-User';
 import Calendar from './calendar';
 import BtnLgBgG from './btn-Lg-BgG';
 import BtnSmBgG from './btn-Sm-BgG';
+import PageTest from './test';
 
 
 
@@ -47,6 +48,11 @@ const cardData = [
 //---------------------------------------------------------------------
   return (
     <div>
+
+      {/*-----------------------------1 DEBUT CONTENEUR calendar */}
+      <div className=" p-6 ">
+        <PageTest />
+      </div>
 
 
       {/*-----------------------------1 DEBUT CONTENEUR calendar */}

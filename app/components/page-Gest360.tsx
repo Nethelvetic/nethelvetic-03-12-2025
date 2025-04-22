@@ -1,3 +1,6 @@
+"use client";
+
+
 import React from 'react';
 import CarteVImgTitreBgN from './cart-V-Img-Titre-BgN';
 import CarteVTitreTxtBgGN from './cart-V-Titre-Txt-BgGN';
@@ -5,6 +8,7 @@ import CarteHImgTxtBgG from './cart-H-Img-Txt-BgG';
 import CarteHxxBdG from './cart-H-xxCarte-BdG';
 import CarteVTitreTxtBgN from './cart-V-Titre-Txt-BgGN';
 import BtnSmBgG from './btn-Sm-BgG';
+import Counter from '../util/zustand';
 
 
 const PageGestion360: React.FC = () => {
@@ -78,6 +82,10 @@ const cardDataOffre = [
 ];
 
 
+
+  // Récupère la valeur count de suzstand
+  const { count, setCount } = Counter();
+  console.log("1.0.0 PageGestion360 var suzstand count= ", count)
 
 
 //---------------------------------------------------------------------

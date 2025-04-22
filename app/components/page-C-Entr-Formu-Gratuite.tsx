@@ -44,7 +44,7 @@ const PageCreerEntrGratuite: React.FC = () => {
             <CarteVTitreTxtBgGN title="Remplissez le dossier officiel en ligne">
             <p>Rassemblez vos infos (identité, adresse, activité, un relevé des revenus et des dépenses, copies de factures, assurances…) pour le questionnaire officiel</p>
             <br></br>
-            <p>Veuillez noter qu'une affiliation à l'avance n'est pas possible. Inscrivez-vous seulement à partir du moment où vous avez commencé votre activité et que vous pouvez prouver votre statut d'indépendant·e.</p>
+            <p>Veuillez noter qu'une affiliation à l'avance n'est pas possible. Inscrivez-vous seulement à partir du moment où vous avez commencé votre activité et que vous pouvez prouver votre status d'indépendant·e.</p>
             <br></br>
             <p>Tous/tes les indépendant·e·s doivent s'inscrire auprès de la caisse de compensation cantonale du siège de l'entreprise.</p>
             </CarteVTitreTxtBgGN>

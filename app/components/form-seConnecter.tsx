@@ -1,129 +1,114 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import CarteVImgTxtBgGN from "./cart-V-Img-Txt-BgGN";
 import ContBtnLgNoEffetBgG from "./cont-Btn-Lg-NoEffet-BgG";
-import { selectionUserWithActiveSaas } from "../db/dbQuery-Users"; 
+import { selectionUserWithEmailAndPassword } from "../db/dbQuery-Users";
 import VarZustand from '../util/zustand';
 import Cookies from "js-cookie";
+import courrielPw from "../email/email-Pw";
 
 const FormSeConnecter: React.FC = () => {
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique   --------------------
   //---------------------------------------------------------------------
-  console.log("1.0 FormSeConnecter debut");
+  console.log("1.0 Front FormConnect debut");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { setUserAdmin } = VarZustand();
 
   const router = useRouter();
-
-  //------------------------------------------------------------
-  //    1.0.2 Data dynamique de zustand 
-  //------------------------------------------------------------
-  const {setUserAdmin } = VarZustand ();
-
-
-
 
   //---------------------------------------------------------------------
   //------------------------2 Début comportement   ----------------------
   //---------------------------------------------------------------------
-  
   //------------------------------------------------------------
   //  useEffect pour vérifier le cookie JSON à l'ouverture du composant
   //------------------------------------------------------------
   useEffect(() => {
-    console.log("2.0.0 FormSeConnecter useEffect debut");
+    console.log("2.0.0 Front FormConnect useEffect debut");
     const cookieStr = Cookies.get('myData');
     const cookieData = cookieStr ? JSON.parse(cookieStr) : undefined;
-    console.log("2.0.1 FormSeConnecter useEffect Cookie=", cookieData);
-  
+    console.log("2.0.1 Front FormConnect useE Cookie=", cookieData);
+
     if (cookieData) {
       if (cookieData.userAdmin === "jerome1872Troistorrents") {
-        console.log("2.0.2 FormSeConnecter useEffect: userAdmin = jerome1872Troistorrents");
-
-        //------------------------------------------------------------
-        // 2.0.3 FormSeConnecter useEffect: userAdmin = jerome1872Troistorrents => set Zustand
-        setUserAdmin("jerome1872Troistorrents")
+        console.log("2.0.2 Front FormConnect useE => userAdmin = jerome1872Troistorrents");
+        setUserAdmin("jerome1872Troistorrents");
         router.push("/admin/users");
-
       } else if (cookieData.userAdmin === "user2025Nethelvetic") {
-        console.log("2.0.3 FormSeConnecter useEffect: userAdmin = user2025Nethelvetic");
-
-        //------------------------------------------------------------
-        // 2.0.3 FormSeConnecter useEffect: userAdmin = user2025Nethelvetic => set Zustand
-        setUserAdmin("user2025Nethelvetic")
+        console.log("2.0.3 Front FormConnect useE =>  = user2025Nethelvetic");
+        setUserAdmin("user2025Nethelvetic");
         router.push("/gestion360/identifier");
-
-
       } else {
-        console.log("2.0.4 FormSeConnecter useEffect: userAdmin = vide ");
+        console.log("2.0.4 Front FormConnect useE =>  userAdmin = vide ");
         router.push("/formulaire/seConnecter");
       }
     }
-  }, [router]);
-  
+  }, [router, setUserAdmin]);
+
   //---------------------------------------------------------------------
   //    2.1.0 handleSubmit si le cookie est non présent 
   //---------------------------------------------------------------------
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("2.1.3 FormSeConnecter handleSubmit debut");
+    console.log("2.1.3 Front FormConnect handleSubmit debut");
     e.preventDefault();
 
     if (!username || !password) {
       alert("Veuillez remplir tous les champs.");
       return;
     }
-    console.log("2.1.4 FormSeConnecter handleSubmit Connexion avec :", { username, password });
+    console.log("2.1.4 Front FormConnect handleSubmit Connect avec :", { username, password });
 
-    
-    //---------------------------------------------------------
-    // 2.1.5 FormSeConnecter handleSubmit selectUserWithActiveSaas debut
+    //---------------------------------------------------------------------
+   //    2.1.0 handleSubmit => selectionUserWithEmailAndPw
     try {
-      console.log("2.1.5 FormSeConnecter handleSubmit selectUserWithActiveSaas try avant");
-      const result = await selectionUserWithActiveSaas(username, password);
+      console.log("2.1.5 Back FormConnect handleSubmit => selectionUserWithEmailAndPw");
+      const result = await selectionUserWithEmailAndPassword(username, password);
 
-      
+      //------------------------------------------------------------
+      // 2.1.6 Front FormConnect handleSubmit  => selectionUserWithEmailAndPw SUCCES => set Zustand & cookies
       if (result && result.success) {
-        console.log("2.1.6 FormSeConnecter handleSubmit selectUserWithActiveSaas SUCCESS");
+        console.log("2.1.6 Front FormConnect handleSubmit => selectionUserWithEmailAndPw SUCCESS");
+        const { user, saas } = result;
+        
+        // 2.1.7 set Zustand
+        setUserAdmin(saas.identification);
 
-        //--------------------------------------------------------
-        // 2.1.6 FormSeConnecter handleSubmit selectUserWithActiveSaas SUCCESS => set Zustand
-         setUserAdmin(result.user.saas.identification);
-
-        //--------------------------------------------------------
-        // 2.1.7 FormSeConnecter handleSubmit selectUserWithActiveSaas SUCCESS => set Coockies
+        //2.1.8 set cookies
+        console.log("2.1.6 Front FormConnect handleSubmit => selectionUserWithEmailAndPw SUCCESS => set cookies");
         const myData = {
-          userAdmin: result.user.saas.identification,
-          userImgUrl: result.user.users.imgUrl,
-          userEmail: result.user.users.email,
+          userAdmin: saas.identification,
+          userImgUrl: user.imgUrl,
+          userEmail: user.email,
         };
-
-        // Stocke l'objet JSON dans le cookie "myData"
         Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
 
-        //--------------------------------------------------------
-        // 2.1.8 FormSeConnecter handleSubmit selectUserWithActiveSaas SUCCESS => page admin/user ou getion360
-        if (result.user.saas.identification  === "jerome1872Troistorrents") {
+        //2.1.9 route push
+        if (saas.identification === "jerome1872Troistorrents") {
           router.push("/admin/users");
-        } else if (result.user.saas.identification === "user2025Nethelvetic") {     
+        } else if (saas.identification === "user2025Nethelvetic") {
           router.push("/gestion360/identifier");
         } else {
           router.push("/formulaire/seConnecter");
         }
-
-      //--------------------------------------------------------
-      // 2.1.6 FormSeConnecter handleSubmit selectUserWithActiveSaas NO SUCCESS
       } else {
-        console.log("2.1.9 Résultat incorrect dans handleSubmit");
-        alert("Identifiants incorrects.");
-      }
+        //------------------------------------------------------------
+        // 2.1.7 Front FormConnect handleSubmit  => selectionUserWithEmailAndPw NO SUCCES
+        console.log("2.1.10 Front FormConnect handleSubmit selectionUserWithEmailAndPw NO SUCCESS: ", result);
 
-    //---------------------------------------------------------
-    // 2.1.10 FormSeConnecter handleSubmit selectUserWithActiveSaas catch(error)
+        // 2.1.8 set cookies
+        const myData = {
+          userAdmin: result.user?.email === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
+          userImgUrl: result.user?.imgUrl || "",
+          userEmail: result.user?.email || "",
+        };
+        Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
+        alert(result.message);
+      }
     } catch (error) {
-      console.log("2.1.10 FormSeConnecter handleSubmit selectUserWithActiveSaas Erreur", error);
+      console.error("2.1.8 Front FormConnect handleSubmit Erreur:", error);
       alert("Une erreur est survenue lors de la connexion.");
     }
   };
@@ -132,16 +117,39 @@ const FormSeConnecter: React.FC = () => {
   //    2.2.0 handleForgotPassword sur clic du bouton "mot de passe oublié"
   //---------------------------------------------------------------------
   const handleForgotPassword = async () => {
-    console.log("2.2.0 FormSeConnecter handleForgotPassword debut, username:", username);
+    console.log("2.2.0 Front FormConnect handleForgotPassword debut");
     if (!username) {
       alert("Veuillez renseigner votre email pour réinitialiser votre mot de passe.");
       return;
     }
+
+    //------------------------------------------------------------
+    // 2.2.1 Front FormConnect handleSubmit  => selectionUserWithEmailAndPw NO SUCCES
+     console.log("2.2.1 Front FormConnect handleForgotPassword => set Cookies ");
+
+    // 2.2.2 set cookies
+     const myData = {
+       userAdmin: username === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
+       userImgUrl: "",
+       userEmail: username || "",
+     };
+     Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
+
     try {
-      console.log("2.2.1 FormSeConnecter handleForgotPassword try avant");
-      alert("Un email de réinitialisation a été envoyé à " + username);
+      console.log("2.2.3 Back FormConnect handleForgotPassword => courrielPw() ");
+      const courrielPeResult = await courrielPw(username);
+
+      // 2.2.4 Back FormConnect handleForgotPassword => courrielPw() SUCESS
+      if (courrielPeResult && courrielPeResult.success) {
+        alert("Un email de réinitialisation a été envoyé à " + username);
+      } else {
+        alert(
+          courrielPeResult?.message ||
+            "Une erreur est survenue lors de l'envoi de l'email de réinitialisation."
+        );
+      }
     } catch (error) {
-      console.error("2.2.2 Erreur dans handleForgotPassword:", error);
+      console.error("2.2.4 Front FormConnect handleForgotPassword erreur: ", error);
       alert("Erreur lors de l'envoi de l'email.");
     }
   };
@@ -149,8 +157,8 @@ const FormSeConnecter: React.FC = () => {
   //---------------------------------------------------------------------
   //    2.3.0 handleInscription sur clic du bouton "Inscription"
   //---------------------------------------------------------------------
-  const handleInscription = async () => {
-    console.log("2.3.0 FormSeConnecter handleInscription debut");
+  const handleInscription = () => {
+    console.log("2.3.0 Front FormConnect  handleInscription debut");
     router.push("/formulaire/inscription");
   };
 
@@ -171,27 +179,35 @@ const FormSeConnecter: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4 p-4 mx-auto max-w-md">
           {/* Champ Email */}
           <div className="w-full">
-            <label className="block text-sm md:text-xl font-medium text-left">
+            <label htmlFor="email" className="block text-sm md:text-xl font-medium text-left">
               Email
             </label>
             <input
+              id="email"
+              name="email"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className={`mt-1 block w-full border-b border-gray-300 shadow-sm ${getInputClass(username)}`}
+              autoComplete="username"
+              required
             />
           </div>
 
           {/* Champ Mot de passe */}
           <div className="w-full">
-            <label className="block text-sm md:text-xl font-medium text-left">
+            <label htmlFor="password" className="block text-sm md:text-xl font-medium text-left">
               Mot de passe
             </label>
             <input
+              id="password"
+              name="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className={`mt-1 block w-full border-b border-gray-300 shadow-sm ${getInputClass(password)}`}
+              autoComplete="current-password"
+              required
             />
           </div>
 

@@ -26,11 +26,13 @@ const PageAdmUser: React.FC = () => {
     console.log("2.0.0 PageAdmUser useEffect debut" )
     async function fetchUsers() {
       const data = await selectionUsers ();
-      console.log("2.0.1 PageAdmUser useEffect selectionUsers users =>", data )
+      console.log("2.0.1 PageAdmUser useEffect selectionUsers SUCESS =>", data )
 
-      //---------------------------------------------------------------------
-      //2.0.1 PageAdmUser useEffect selectionUsers => set user Zustand
-      setCardData(data.user ?? []);
+          //---------------------------------------------------------------------
+          //2.0.1 PageAdmUser useEffect selectionUsers SUCCES => set useState
+        if (data.success) {
+          setCardData(data.user ?? []) 
+        }
       }
     fetchUsers();
   }, []);

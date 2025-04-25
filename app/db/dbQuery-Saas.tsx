@@ -2,21 +2,23 @@
 import { insertSaas, selectSaas, selectUnSaas, updateUnSaas, deleteUnSaas   } from "./dbQuery";
 
 type SaasInput = {
-    plan: string;                           // ex: "Free", "Pro", "Premium"
-    plan_details: any;                      // données au format JSON
-    date_debut_abonnement: string;          // format "YYYY-MM-DD"
-    date_fin_abonnement?: string;           // format "YYYY-MM-DD"
-    date_debut_test?: string;               // format "YYYY-MM-DD"
-    date_fin_test?: string;                 // format "YYYY-MM-DD"
-    status_abonnement: string;              // ex: "actif", "en période d'essai", etc.
-    date_dernier_payment?: string;          // format "YYYY-MM-DD"
-    date_prochain_payment?: string;         // format "YYYY-MM-DD"
-    status_paiement: string;                // ex: "non payé" (valeur par défaut)
-    mode_paiement?: string;                 // ex: "carte bancaire", etc.
-    facturation_info?: string;              // texte libre
-    userId: number;                     
+  plan: string;                           // ex: "Free", "Pro", "Premium"
+  plan_details: any;                      // données au format JSON
+  date_debut_abonnement: string;          // format "YYYY-MM-DD"
+  date_fin_abonnement?: string;           // format "YYYY-MM-DD"
+  date_debut_test?: string;               // format "YYYY-MM-DD"
+  date_fin_test?: string;                 // format "YYYY-MM-DD"
+  status_abonnement: string;              // ex: "actif", "en période d'essai", etc.
+  date_dernier_payment?: string;          // format "YYYY-MM-DD"
+  date_prochain_payment?: string;         // format "YYYY-MM-DD"
+  status_paiement: string;                // ex: "non payé" (valeur par défaut)
+  mode_paiement?: string;                 // ex: "carte bancaire", etc.
+  facturation_info?: string;              // texte libre
+  mot_de_passe?: string;
+  identification: string;
+  userId: number;                         // référence à usersTable.id
+            
 };
-
 
 //--------------------------------------------------------------------------------
 //------------------------1.1  Fonction insert Saas ------------------------------

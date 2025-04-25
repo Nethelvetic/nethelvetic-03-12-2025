@@ -8,8 +8,9 @@ import { formationTable, evenementsTable, usersTable, messageTable, saasTable } 
 // 90   TABLES FORMATION
 // 219  TABLES EVENEMENT
 // 352  TABLES USER
+// 607    - select one users with email et mot de passe 
 // 668    - select User With Active Saas 
-// 809    - insert user pour inscription 
+// 856    - insert user pour inscription 
 // 971  TABLES MESSAGE
 // 1066 TABLES SAAS
 
@@ -609,83 +610,98 @@ export async function selectOneUser(id: number) {
 export async function selectUserWithEmailAndPassword(
   email: string,
   motDePasse: string
-): Promise<{ success: boolean; message: string; user: any }> {
-  console.log("3.4.1 selectUserWithEmailAndPassword avec l'email:", email);
+): Promise<{ success: boolean; message: string; user: any; saas: any }> {
+  console.log("3.4.1 dbQuery selectUserWithEmailAndPw avec l'email:", email);
 
   try {
-    //-----------------------------------------------------------------
-    // 3.4.2 Vérifie si User existant 
-    //-----------------------------------------------------------------
-    console.log("3.4.2 dbQuery selectUserWithEmailAndPassword, contrôle si user existe");
+    // 3.4.2 selectUserWithEmailAndPw User existant ou Non existant
+    console.log("3.4.2 dbQuery selectUserWithEmailAndPw, contrôle si user existe");
     const existingUser = await db
       .select()
       .from(usersTable)
       .where(eq(usersTable.email, email))
       .limit(1);
 
+    // 3.4.3 selectUserWithEmailAndPw User existant 
     if (existingUser.length === 0) {
-      console.log("3.4.3 selectUserWithEmailAndPassword user non existant pour cet email");
-    //////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////
-    //////////////          STOP 1        ////////////////////////////
-    //////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////
+      console.log("3.4.3 dbQuery selectUserWithEmailAndPw USER NO EXIST pour cet email");
       return {
         success: false,
         message: "Identifiants incorrects.",
         user: null,
+        saas: null
       };
     }
 
-    //-----------------------------------------------------------------
-    // 3.4.4 Rechercher User+SaaS avec mot de passe et abonnement actif
-    //-----------------------------------------------------------------
-    const result = await db
-      .select()
-      .from(usersTable)
-      .innerJoin(saasTable, eq(usersTable.id, saasTable.userId))
-      .where(
-        and(
-          eq(usersTable.email, email),
-          eq(saasTable.mot_de_passe, motDePasse),
-          eq(saasTable.status_abonnement, "actif")
+    // 3.4.4 selectUserWithEmailAndPw USER EXISTANT  => select User+SaaS avec Pw
+    console.log("3.4.4 dbQuery selectUserWithEmailAndPw USER EXIST");
+    try {
+      const result = await db
+        .select()
+        .from(usersTable)
+        .innerJoin(saasTable, eq(usersTable.id, saasTable.userId))
+        .where(
+          and(
+            eq(usersTable.email, email),
+            eq(saasTable.mot_de_passe, motDePasse),
+            eq(saasTable.status_abonnement, "actif")
+          )
         )
-      )
-      .limit(1);
+        .limit(1);
 
-    //-----------------------------------------------------------------
-    // 3.4.5 Authentification réussie ou non
-    //-----------------------------------------------------------------
-    if (result.length > 0) {
-      console.log("3.4.6 selectUserWithEmailAndPassword authentification réussie :", result[0]);
-    //////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////
-    //////////////          STOP 2        ////////////////////////////
-    //////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////
-      return {
-        success: true,
-        message: "Authentification réussie.",
-        user: result[0],
-      };
-    } else {
-      console.log("3.4.7 selectUserWithEmailAndPassword mot de passe incorrect ou SaaS inactif");
+      // 3.4.5 selectUserWithEmailAndPw USER EXISTANT => select User+SaaS avec Pw SUCCES  
+      if (result.length > 0) {
+        console.log(
+          "3.4.6 dbQuery selectUserWithEmailAndPw USER EXISTANT => select User+SaaS SUCCES",
+          result[0]
+        );
+        return {
+          success: true,
+          message: "Authentification réussie.",
+          user: result[0].users,
+          saas: result[0].saas
+        };
+      }
+
+      // 3.4.8 selectUserWithEmailAndPw USER EXISTANT => select User+SaaS avec Pw NO SUCCES 
+      console.log("3.4.8 dbQuery selectUserWithEmailAndPw USER EXISTANT => select User+SaaS NO SUCCES");
       return {
         success: false,
-        message: "Identifiants incorrects ou abonnement inactif.",
-        user: null,
+        message: "Identifiants corrects, mot de passe invalide ou non inscrit.",
+        user: existingUser[0],
+        saas: null
+      };
+
+    // 3.4.9 selectUserWithEmailAndPw USER EXISTANT  => select User+SaaS avec Pw NO SUCCES
+    } catch (error) {
+      console.error(
+        "3.4.9 dbQuery selectUserWithEmailAndPw USER EXISTANT => select User+SaaS avec Pw NO SUCCES",
+        error
+      );
+      return {
+        success: false,
+        message: `Une erreur est survenue : ${error}`,
+        user: existingUser[0],
+        saas: null
       };
     }
 
+  // 3.4.10 selectUserWithEmailAndPw USER NO EXISTANT => erreur globale
   } catch (error) {
-    console.error("3.4.8 Erreur lors de la sélection de l'utilisateur :", error);
+    console.error(
+      "3.4.10 dbQuery selectUserWithEmailAndPw USER NO EXISTANT",
+      error
+    );
     return {
       success: false,
       message: `Une erreur est survenue : ${error}`,
       user: null,
+      saas: null
     };
   }
 }
+
+//---------3.4 Fin select one users with email et mot de passe 
 
 
 
@@ -776,7 +792,7 @@ export async function deleteOneUser(id: number) {
 
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
-//---------3.7 Début select User With Active Saas 
+//---------3.7 Début sIdentifiants corrects mais abonnement inactif.elect User With Active Saas 
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectUserWithActiveSaas(
@@ -846,27 +862,26 @@ export async function insertOneUserInscription(user: FormatUserInput, saasMotdeP
 
   try {
     //-----------------------------------------------------------------
-    // 3.8.2 Vérifie si User existant 
+    // 3.8.2 .?/         DEBUT USER EXISTANT ou NO
     //-----------------------------------------------------------------
-    console.log("3.8.2 dbQuery inOneUserInscri, contrôle si user existe");
+    console.log("3.8.2 dbQuery inOneUserInscri, USER EXIST ou NO");
     const existingUser = await db
       .select()
       .from(usersTable)
       .where(eq(usersTable.email, user.email));
 
     ///////////////////////////////////////////////////////////////////
-    // 3.8.3 DEBUT USER EXISTANT
+    ///////////////////////////////////////////////////////////////////
+    // 3.8.3 ../         DEBUT USER EXISTANT
+    ///////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////
     if (existingUser.length > 0) {
-      console.log(
-        "3.8.3 dbQuery inOneUserInscri USER EXIST trouvé pour l'email:",
-        user.email
-      );
+      console.log( "3.8.4 ../         dbQuery inOneUserInscri USER EXIST: ", user.email);
+      console.log( "3.8.5 ../../      dbQuery inOneUserInscri USER EXIST => saas ACTIF ou NO ");
       
       //-----------------------------------------------------------------
-      // 3.8.4 USER EXISTANT => Rechercher User avec mot de passe dans table Saas
-      //-----------------------------------------------------------------
-      const result = await db
+      // 3.8.6 ../.?/      USER EXISTANT => saas actif ou pas
+      const userSaasResult = await db
         .select()
         .from(usersTable)
         .innerJoin(saasTable, eq(usersTable.id, saasTable.userId))
@@ -878,27 +893,96 @@ export async function insertOneUserInscription(user: FormatUserInput, saasMotdeP
         )
         .limit(1);
 
-      //-----------------------------------------------------------------
-      // 3.8.5 USER EXISTANT => User avec mot de passe dans table Saas existe
-      if (result.length > 0) {
-        console.log(
-          "3.8.5 dbQuery inOneUserInscri USER EXIST avec email et mot_de_passe."
-        );
-        //////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////
-        //////////////          STOP 1        //////////////////////////////
-        //////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////
-        return {
-          success: false,
-          message: "Vous êtes déjà inscrit",
-          user: result[0].users,
-          saas: result[0].saas
-        };
-      }
+      ///////////////////////////////////////////////////////////////////
+      // 3.8.7 ../../   USER EXISTANT => Saas ACTIF
+      ///////////////////////////////////////////////////////////////////
+      if (userSaasResult.length > 0) {
+        console.log("3.8.7 ../../     dbQuery inOneUserInscri USER EXIST => saas ACTIF");
+        console.log("3.8.8 ../../../  dbQuery inOneUserInscri USER EXIST => saas ACTIF => saas Pw ou NO");
 
-      //-----------------------------------------------------------------
-      // 3.8.6 USER EXISTANT => Création new Saas
+        //-----------------------------------------------------------------
+        // 3.8.9 ../../.?/   USER EXISTANT => Saas ACTIF => saas Pw ou NO
+        const userSaasPwResult = await db
+        .select()
+        .from(usersTable)
+        .innerJoin(saasTable, eq(usersTable.id, saasTable.userId))
+        .where(
+          and(
+            eq(usersTable.email, user.email),
+            eq(saasTable.mot_de_passe, saasMotdePasse),
+            eq(saasTable.status_abonnement, "actif")
+          )
+        )
+        .limit(1);
+
+        //-----------------------------------------------------------------
+        // 3.8.10 ../../../USER EXISTANT => Saas ACTIF => saas Pw YES
+        //-----------------------------------------------------------------
+        if (userSaasPwResult.length > 0) {
+          console.log("3.8.10 ../../../   dbQuery inOneUserInscri USER EXIST => saas ACTIF => saas Pw YES");
+            //////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////
+            //////////////          STOP 1        //////////////////////////////
+            //////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////
+            return {
+              success: false,
+              message: "Vous êtes déjà inscrit",
+              user: userSaasPwResult[0].users,
+              saas: userSaasPwResult[0].saas
+            };
+        } 
+
+        //-----------------------------------------------------------------
+        // 3.8.10 ../../../.? USER EXISTANT => Saas ACTIF => saas Pw NO => update saas Pw ou NO
+        //-----------------------------------------------------------------
+        const saasUpdate: FormatSaasInput = {
+          plan:                  userSaasResult[0].saas.plan,
+          plan_details:          userSaasResult[0].saas.plan_details,
+          date_debut_abonnement: userSaasResult[0].saas.date_debut_abonnement,
+          date_fin_abonnement:   userSaasResult[0].saas.date_fin_abonnement ?? undefined,
+          date_debut_test:       userSaasResult[0].saas.date_debut_test     ?? undefined,
+          date_fin_test:         userSaasResult[0].saas.date_fin_test       ?? undefined,
+          status_abonnement:     userSaasResult[0].saas.status_abonnement,
+          date_dernier_payment:  userSaasResult[0].saas.date_dernier_payment?? undefined,
+          date_prochain_payment: userSaasResult[0].saas.date_prochain_payment?? undefined,
+          status_paiement:       userSaasResult[0].saas.status_paiement,
+          mode_paiement:         userSaasResult[0].saas.mode_paiement       ?? undefined,
+          facturation_info:      userSaasResult[0].saas.facturation_info    ?? undefined,
+          mot_de_passe:          saasMotdePasse,
+          identification:        userSaasResult[0].saas.identification,
+          userId:                userSaasResult[0].saas.userId!,
+        };
+        
+
+        const userSaasPwUpdateResult = await updateUnSaas(
+          userSaasResult[0].saas.id,
+          saasUpdate
+        );
+
+        //-----------------------------------------------------------------
+        // 3.8.11 ../../../.. USER EXISTANT => Saas ACTIF => saas Pw NO => update saas Pw SUCCES
+        //-----------------------------------------------------------------
+        if (userSaasPwUpdateResult.success) {
+          console.log(
+            "3.8.11 ../../../../dbQuery inOneUserInscri USER EXIST => saas ACTIF => saas Pw NO => update Pw SUCCES"
+          );
+          return {
+            success: true,
+            message: "Mot de passe SaaS mis à jour avec succès.",
+            user:        userSaasResult[0].users,
+            saas:        saasUpdate,
+          };
+        }
+      }
+      ///////////////////////////////////////////////////////////////////
+      // 3.8.7 ../../ FIN   USER EXISTANT => Saas ACTIF
+      ///////////////////////////////////////////////////////////////////
+
+
+      ///////////////////////////////////////////////////////////////////
+      // 3.8.11 ../../ DEBUT   USER EXISTANT => Saas ACTIF NO
+      ///////////////////////////////////////////////////////////////////
       const saasDataForExistingUser: FormatSaasInput = {
         plan: "Free",
         plan_details: {},
@@ -909,40 +993,48 @@ export async function insertOneUserInscription(user: FormatUserInput, saasMotdeP
         identification: user.email  === "golliard73@gmail.com"? "jerome1872Troistorrents": "user2025Nethelvetic",
         userId: existingUser[0].id,
       };
-      const saasInsertResult = await insertSaas(saasDataForExistingUser);
+
+      console.log("3.8.11 ../../.?  dbQuery inOneUserInscri USER EXIST => saas ACTIF NO => insertSaas()"
+      );
 
       //-----------------------------------------------------------------
-      // 3.8.6 USER EXISTANT => Création new Saas
+      // 3.8.11 ../../.?   USER EXISTANT => Saas ACTIF NO => insert saas ou NO
+      const saasInsertResult = await insertSaas(saasDataForExistingUser);
       //////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////
       //////////////          STOP 2        //////////////////////////////
       //////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////
       if (saasInsertResult.success) {
-        console.log("3.8.6 dbQuery inOneUserInscri USER EXIST => insSaas SUCCES");
+        console.log("3.8.12 ../../../  dbQuery inOneUserInscri USER EXIST => saas ACTIF NO => insertSaas() SUCESS");
         return {
           success: true,
           message: "Client inscrit",
           user: existingUser,
           saas: saasInsertResult.saas
         };
-      } else {
-        console.log("3.8.7 dbQuery inOneUserInscri USER EXIST => insSaas NO SUCCES");
-        return {
-          success: false,
-          message: "Client non inscrit",
-          user: existingUser,
-          saas: null
-        };
-      }
-
+        } else {
+          console.log("3.8.11 ../../  dbQuery inOneUserInscri USER EXIST => saas ACTIF NO => insertSaas() NO SUCCES");
+          return {
+            success: false,
+            message: "Client non inscrit",
+            user: existingUser,
+            saas: null
+          };
+        }
     } else {
       ///////////////////////////////////////////////////////////////////
-      // FIN FIN FIN USER EXISTANT
+      ///////////////////////////////////////////////////////////////////
+      // 3.8.3 ../         FIN USER EXISTANT
+      ///////////////////////////////////////////////////////////////////
       ///////////////////////////////////////////////////////////////////
 
+
+      
       ///////////////////////////////////////////////////////////////////
-      // DEBUT USER NON EXISTANT
+      ///////////////////////////////////////////////////////////////////
+      // 3.8.3 ../         DEBUT USER EXISTANT NO
+      ///////////////////////////////////////////////////////////////////
       ///////////////////////////////////////////////////////////////////
 
       //-----------------------------------------------------------------
@@ -1029,7 +1121,6 @@ export async function insertOneUserInscription(user: FormatUserInput, saasMotdeP
         }
       } else {
         console.log("3.8.14 dbQuery inOneUserInscri USER NO EXIST => inUser NO SUCCES");
-
       //////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////
       //////////////          STOP 4        ////////////////////////////
@@ -1043,9 +1134,11 @@ export async function insertOneUserInscription(user: FormatUserInput, saasMotdeP
         };
       }
     }
-    ///////////////////////////////////////////////////////////////////
-    // FIN FIN FIN USER NON EXISTANT
-    ///////////////////////////////////////////////////////////////////
+      ///////////////////////////////////////////////////////////////////
+      ///////////////////////////////////////////////////////////////////
+      // 3.8.3 ../         FIN USER EXISTANT NO
+      ///////////////////////////////////////////////////////////////////
+      ///////////////////////////////////////////////////////////////////
 
   } catch (error) {
     console.error(
@@ -1209,7 +1302,7 @@ export async function insertOneMessage(messageData: FormatMessageInput) {
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function insertSaas(saas: FormatSaasInput) {
-  console.log("5.0.1 insertSaas - Début, données:", saas);
+  console.log("5.0.1 dbQuery insertSaas - Début, données:", saas);
   try {
     const saasTableInsertResult = await db.insert(saasTable).values(saas).returning();
         //////////////////////////////////////////////////////////////////
@@ -1247,13 +1340,13 @@ export async function insertSaas(saas: FormatSaasInput) {
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectSaas() {
-  console.log("5.2.1 selectSaas - Début");
+  console.log("5.2.1 dbQuery selectSaas - Début");
   try {
     const records = await db.select().from(saasTable);
-    console.log("5.2.2 selectSaas - SaaS records récupérés :", records);
+    console.log("5.2.2 dbQuery selectSaas - SaaS records récupérés :", records);
     return records;
   } catch (error) {
-    console.error("5.2.3 selectSaas - Erreur lors de la sélection :", error);
+    console.error("5.2.3 dbQuery selectSaas - Erreur lors de la sélection :", error);
     throw error;
   }
 }
@@ -1265,17 +1358,17 @@ export async function selectSaas() {
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function selectUnSaas(id: number) {
-  console.log("5.3.1 selectUnSaas - Début, id:", id);
+  console.log("5.3.1 dbQuery selectUnSaas - Début, id:", id);
   try {
     const record = await db
       .select()
       .from(saasTable)
       .where(eq(saasTable.id, id))
       .limit(1);
-    console.log("5.3.2 selectUnSaas - SaaS record récupéré :", record);
+    console.log("5.3.2 dbQuery selectUnSaas - SaaS record récupéré :", record);
     return record;
   } catch (error) {
-    console.error("5.3.3 selectUnSaas - Erreur lors de la sélection :", error);
+    console.error("5.3.3 dbQuery selectUnSaas - Erreur lors de la sélection :", error);
     throw error;
   }
 }
@@ -1287,16 +1380,16 @@ export async function selectUnSaas(id: number) {
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function updateUnSaas(id: number, saas: FormatSaasInput) {
-  console.log("5.4.1 updateUnSaas - Début, id:", id);
+  console.log("5.4.1 dbQuery updateUnSaas - Début, id:", id);
   try {
     await db
       .update(saasTable)
       .set(saas)
       .where(eq(saasTable.id, id));
-    console.log("5.4.2 updateUnSaas - SaaS record mis à jour avec succès");
+    console.log("5.4.2 dbQuery updateUnSaas - SaaS record mis à jour avec succès");
     return { success: true, message: "SaaS record updated successfully" };
   } catch (error) {
-    console.error("5.4.3 updateUnSaas - Erreur lors de la mise à jour :", error);
+    console.error("5.4.3 dbQuery updateUnSaas - Erreur lors de la mise à jour :", error);
     return { success: false, message: "Error updating SaaS record" };
   }
 }
@@ -1308,21 +1401,16 @@ export async function updateUnSaas(id: number, saas: FormatSaasInput) {
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function deleteUnSaas(id: number) {
-  console.log("5.5.1 deleteUnSaas - Début, id:", id);
+  console.log("5.5.1 dbQuery deleteUnSaas - Début, id:", id);
   try {
     await db.delete(saasTable).where(eq(saasTable.id, id));
-    console.log("5.5.2 deleteUnSaas - SaaS record supprimé avec succès");
+    console.log("5.5.2 dbQuery deleteUnSaas - SaaS record supprimé avec succès");
     return { success: true, message: "SaaS record deleted successfully" };
   } catch (error) {
-    console.error("5.5.3 deleteUnSaas - Erreur lors de la suppression :", error);
+    console.error("5.5.3 dbQuery deleteUnSaas - Erreur lors de la suppression :", error);
     return { success: false, message: "Error deleting SaaS record" };
   }
 }
 
 
 
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------
-//---------5.5 Fonction selectionSaasWithEmailAndPassword -------------
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------

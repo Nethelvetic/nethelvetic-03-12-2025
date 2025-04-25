@@ -78,10 +78,12 @@ const FormInscri: React.FC = () => {
 
   const router = useRouter();
 
+
   //------------------------------------------------------------
   //    1.0.2 varibale globale zustand 
   //------------------------------------------------------------
   const {  setUserAdmin } = VarZustand();
+
 
   //------------------------------------------------------------
   //    1.0.3 background du formulaire
@@ -97,11 +99,11 @@ const FormInscri: React.FC = () => {
   //------------------------2 Début comportement   ----------------------
   //---------------------------------------------------------------------
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("2.1.0 FormInscri HandleSubmit debut");
+    console.log("2.1.0 Front FormInscri HandleSubmit debut");
     e.preventDefault();
 
     //-------------------------------------------------------------------
-    // 2.1.0 Contrôle : tous les champs sont remplis et les mots de passe identiques
+    // 2.1.0 .?/handleSubmit => usename/password ok ou No
     //-------------------------------------------------------------------
     if (!username || !password || !confirmPassword) {
       alert("Veuillez remplir tous les champs.");
@@ -112,10 +114,10 @@ const FormInscri: React.FC = () => {
       alert("Les mots de passe ne correspondent pas.");
       return;
     }
-    console.log("2.1.1 F.H. Connexion avec :", { username, password, confirmPassword });
+    console.log("2.1.1 ../ Front F.H. => usename/Pw ok :", { username, password, confirmPassword });
     
     //-------------------------------------------------------------------
-    // 2.2.0 FormInscri handleSubmit => createOneUserInscription
+    // 2.2.0 /../.? F.H. => usename/Pw ok => createOneUserInscription
     //-------------------------------------------------------------------
     try {
       const userToInsert = {
@@ -141,12 +143,13 @@ const FormInscri: React.FC = () => {
         btnModifUrl: "/admin/users",
       };
 
-      const createOneUserInscResult = await createOneUserInscription(userToInsert);
+      console.log("2.1.2 ../.?/ Back F.H. => usename/Pw ok => creeOneUserInscri ou NO");
+      const createOneUserInscResult = await createOneUserInscription(userToInsert, password);
 
       //-------------------------------------------------------------------
-      // 2.2.1 F.H. => createOneUserInscri No success
+      // 2.2.1 ../../ F.H. => usename/Pw ok => createOneUserInscri No OK
       if (!createOneUserInscResult) {
-        console.error("2.2.1 F.H.=> createOneUserInscri No success");
+        console.error("2.2.1 ../../Front F.H. => usename/Pw ok => creeOneUserInscri NO OK");
         alert("Une erreur est survenue lors de la création de votre compte.");
         //////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////
@@ -158,24 +161,24 @@ const FormInscri: React.FC = () => {
 
 
       ///////////////////////////////////////////////////////////////////////
-      // 2.2.2 FormInscri handleSubmit => createOneUserInscription SUCESS
+      // 2.2.2 ../../ F.H. => usename/Pw ok => createOneUserInscri OK
       ///////////////////////////////////////////////////////////////////////
       if (createOneUserInscResult.success) {
-        console.log("2.2.2 F.H. => createOneUserInscri SUCCESS");
+        console.log("2.2.2 ../../ Front F.H. => usename/Pw ok => creeOneUserInscri OK");
+
         
         //------------------------------------------------------------
-        // 2.2.4 F.H. => createOneUserInscri success => set Zustand & coockies
+        // 2.2.4 ../../.? F.H. => usename/Pw ok => creeOneUserInscri OK => set Zust/coock 
         if (createOneUserInscResult.user) {
-          console.log("2.2.4 F.H. => createOneUserInscri SUCCESS => set Zustand & coockies");
-
+          console.log("2.2.4 ../../.?/ Front F.H. => usename/Pw ok => creeOneUserInscri OK => set Zust/coock ");
           const userObj = Array.isArray(createOneUserInscResult.user)
             ? createOneUserInscResult.user[0]   // si c’est un tableau, on prend le premier élément
             : createOneUserInscResult.user;     // sinon, c’est déjà un objet
 
             //------------------------------------------------------------
-            // 2.2.5 F.H => createOneUserInscri success => set Zustand & coockie => email = golliard73@gmail
-            if (userObj.email = "golliard73@gmail.com") {
-              console.log("2.2.5 F.H. => createOneUserInscri SUCCESS => set Zustand/coockies => email = golliard73@gmail");
+            // 2.2.5 ../../../ F.H. => usename/Pw ok => creeOneUserInscri OK => set Zust/coock email = golliard73@gmail
+            if (userObj.email === "golliard73@gmail.com") {
+              console.log("2.2.5 ../../../ Front F.H. => creeOneUserInscri OK => set Zust/coock  email = golliard73@gm");
 
               setUserAdmin("jerome1872Troistorrents")
 
@@ -187,9 +190,9 @@ const FormInscri: React.FC = () => {
               Cookies.set('myData', JSON.stringify(myCookieData), { expires: 1, path: '/' });
 
             //------------------------------------------------------------
-            // 2.2.6 F.H => createOneUserInscri success => set Zustand & coockie => email != golliard73@gmail.com
+            // 2.2.6 ../../../ F.H. => usename/Pw ok => creeOneUserInscri OK => set Zust/coock email = !golliard73@gm
             }  else  if (createOneUserInscResult.saas) {
-              console.log("2.2.6 F.H. => createOneUserInscri SUCCESS => set Zustand/coockies => emai != golliard73gmail.com");
+              console.log("2.2.6 ../../../ Front F.H. => usename/Pw ok => creeOneUserInscri OK => set Zust/coock email=!golliard73@gm");
     
               const saasObj = Array.isArray(createOneUserInscResult.saas)
                 ? createOneUserInscResult.saas[0]  
@@ -207,11 +210,11 @@ const FormInscri: React.FC = () => {
         }
 
 
-      ///////////////////////////////////////////////////////////////////////
-      // 2.2.8 FormInscri handleSubmit => createOneUserInscri No SUCESS
-      //////////////////////////// NO  SUCESS  //////////////////////////////
+        ///////////////////////////////////////////////////////////////////////
+        // 2.2.8 ./../ Front F.H. => usename/Pw ok => creeOneUserInscri NO OK
+        //////////////////////////////////////////////////////////////////////
       } else {
-        console.log("2.2.8 F.H. => createOneUserInscri NO SUCCES");
+        console.log("2.2.8 ../../ Front F.H. => usename/Pw ok => creeOneUserInscri NO OK");
         alert(createOneUserInscResult.message);
       
         router.push("/formulaire/seConnecter");
@@ -221,19 +224,19 @@ const FormInscri: React.FC = () => {
      //----------------------------------------------------------------------
      // 2.2.9 FormInscri handleSubmit => createOneUserInscri await erreur
     } catch (error) {
-      console.error("2.2.9 F.H. => createOneUserInscri await erreur");
+      console.error("2.2.9 Front F.H. => creeOneUserInscri await erreur");
       alert(`Erreur lors de la création du compte ${error}`);
       return;
     }
 
     //-------------------------------------------------------------------
-    //    2.3.0 Envoi d'un email
+    //    2.3.0  ../../../ F.H. => usename/Pw ok => createOneUserInscri OK => send email
     //-------------------------------------------------------------------
     try {
-      console.log("2.3.1 F.H. => createOneUserInscri SUCCESS => set Zustand/coockies => send email");
+      console.log("2.3.1 ../../../ Back F.H. => usename/Pw ok => createOneUserInscri OK => send email");
       const result = await courrielInscription(username);
       if (result && result.success) {
-        console.log("2.3.2 F.H. => createOneUserInscri SUCCESS => set Zustand/coockies => send email SUCCES");
+        console.log("2.3.2 ../../../ Front Back F.H. => usename/Pw ok => createOneUserInscri OK => email OK");
 
         // Redirection vers la page de gestion en cas de succès
         //////////////////////////////////////////////////////////////////
@@ -245,11 +248,11 @@ const FormInscri: React.FC = () => {
         return;
         
       } else {
-        console.log("2.3.3 F.H. => createOneUserInscri SUCCESS => set Zustand/coockies => send mail NO SUCCES");
+        console.log("2.3.3 ../../../ Front Back F.H. => usename/Pw ok => createOneUserInscri OK => email NO OK");
         alert("Identifiants incorrects.");
       }
     } catch (error) {
-      console.error("2.3.4 F.H. => createOneUserInscri SUCCESS => set Zustand/coockies => send email ERROR");
+      console.error("2.3.4 ../../../ Front Back F.H. => usename/Pw ok => createOneUserInscri OK => email OK");
       alert("Une erreur est survenue lors de l'envoi de l'email.");
     }
   };

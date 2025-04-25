@@ -30,7 +30,7 @@ import { insertOneUserInscription} from "./dbQuery";
 //--------------------------------------------------------------------------------
 //------------------------1  Fonction createUser ---------------------------------
 //--------------------------------------------------------------------------------
-export async function createOneUserInscription(user: UserInput) {
+export async function createOneUserInscription(user: UserInput, saasMotdePasse: string ) {
   console.log("1.0 createOneUserInscription Début");
-  return await insertOneUserInscription(user);
+  return await insertOneUserInscription(user, saasMotdePasse);
 }

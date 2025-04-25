@@ -52,6 +52,7 @@ export default function Gestion360Identifier() {
       // Admin
       console.log("2.0.4 gestion360/identifier => useE => get cookies SUCCES => get userAdmin1 =", cookieData.useradmin );
       router.push("/admin/users");
+      return
     } else if (cookieData.useradmin === "user2025Nethelvetic") {
       // Utilisateur normal : on reste ici, on ne fait rien
       console.log("2.0.5 gestion360/identifier => useE => get cookies NO SUCCES => get userAdmin2 =", cookieData.useradmin );;

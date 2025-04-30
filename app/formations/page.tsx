@@ -1,5 +1,5 @@
 import React from 'react';
-import PageFormation from '../components/page-formations';
+import PageFormation from '../components/p-formations';
 
 export default function Formation() {
   return (

@@ -1,7 +1,7 @@
 "use server"; 
 
 
-import { insertFormation, selectFormation, selectUneFormation, updateUneFormation, deleteUneFormation } from "./dbQuery";
+import { insertFormation, selectAllFormations, selectUneFormation, updateUneFormation, deleteUneFormation } from "./dbQuery";
 
 type FormationInput = {
   titre: string;
@@ -31,9 +31,9 @@ export async function createFormation(formation: FormationInput) {
 //--------------------------------------------------------------------------------
 //------------------------2  Fonction selectFormation ----------------------------
 //--------------------------------------------------------------------------------
-export async function selectionFormation() {
-  console.log("3.1 debut selectFormation");
-  return await selectFormation();
+export async function selectionAllFormations() {
+  console.log("3.1 BACK debut selectFormation");
+  return await  selectAllFormations();
 }
 
 

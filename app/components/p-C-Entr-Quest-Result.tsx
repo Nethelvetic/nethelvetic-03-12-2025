@@ -1,8 +1,8 @@
 // ClientPageResultatQuestion.tsx
 "use client";
 
-import PageCrEntrFormuPremium from "./page-C-Entr-Formu_Premium";
-import PageCrEntrFormuGratuite from "./page-C-Entr-Formu-Gratuite";
+import PageCrEntrFormuPremium from "./p-C-Entr-Formu_Premium";
+import PageCrEntrFormuGratuite from "./p-C-Entr-Formu-Gratuite";
 import { useSearchParams } from "next/navigation";
 
 export default function PageResultatQuestion() {

@@ -38,9 +38,8 @@ const FormAdmFormaModif: React.FC = () => {
   //---------------------------------------------------------------------
   //------------------------1 Début Data dynamique   --------------------
   //---------------------------------------------------------------------
-  console.log("1.0 FormAdmFormaModif Début ");
+  console.log("1.0.0 Front FormAdmFormaModif Début ");
   const [formData, setFormData] = useState<FormDataType>(initialFormData);
-  const [uneFormData, setUneFormData] = useState<FormDataType>(initialFormData);
   const { modif_id } = useParams();
   const router = useRouter();
 
@@ -52,17 +51,36 @@ const FormAdmFormaModif: React.FC = () => {
   //------------------------2 Début comportement ------------------------
   //---------------------------------------------------------------------
   useEffect(() => {
-    console.log("2.1 FormAdmFormaModif useEffect Début ");
+    console.log("2.0.1 ../ Front FormAdmFormaModif => useEffect Début ");
+
     async function fetchFormations() {
-      console.log("2.2 FormAdmFormaModif fetchFormations Début ");
+      console.log("2.0.2 ../.?/ Front FormAdmFormaModif => useE => modifId Ok ou NO ok ");
       if (isNaN(modifId)) {
-        console.error("2.3 FormAdmFormaModif fetchFormations modif_id non valide :", modif_id);
+        console.error("2.0.3 ../../ Front FormAdmFormaModif => useE => modifId  NO ok ", modif_id);
+        //////////////////////////////////////////
+        //////            STOP 1        //////////
+        //////////////////////////////////////////
         return;
       }
+
+      //---------------------------------------------------------------------
+      //2.0.4 ../../.?/ BACK FormAdmFormaModif => useE => modifId ok => selectUneFormation Ok ou NO 
+      console.log("2.0.4 ../../.?/ BACK FormAdmFormaModif => useE => modifId ok => selectUneFormation Ok ou No OK ");
       const data = await selectionUneFormation(modifId);
-      console.log("2.4 FormAdmFormaModif selectionUneFormation après réponse data = ", data);
-      if (data && data.length > 0) {
-        const formation = data[0];
+    
+
+      if (data.success && data.formation) {
+        console.log("2.0.4 ../../.?/ FRONT FormAdmFormaModif => useE => modifId ok => selectUneFormation Ok ");
+        // Assurer qu'on a un tableau
+        const formationsArray = Array.isArray(data.formation)
+          ? data.formation
+          : [data.formation];
+        if (formationsArray.length === 0) {
+          console.error("2.6 FormAdmFormaModif aucun id  :", modifId);
+          return;
+        }
+        const formation = formationsArray[0];
+
         // Transformation pour garantir que btnUrlInt et btnUrlExt ne soient pas null
         const fetchedFormation: FormDataType = {
           titre: formation.titre,
@@ -77,12 +95,13 @@ const FormAdmFormaModif: React.FC = () => {
           btnTexte: formation.btnTexte,
           btnModifUrl: formation.btnModifUrl,
         };
-        setUneFormData(fetchedFormation);
-        // Mise à jour de formData pour afficher directement les données dans les champs
+
+        //---------------------------------------------------------------------
+       //2.0.5 ../../../../ FRONT FormAdmFormaModif => useE => modifId ok => selectUneFormation Ok => set useState
         setFormData(fetchedFormation);
-        console.log("2.5 FormAdmFormaModif formation :", formation);
+        console.log("2.0.5 ../../../../ FRONT FormAdmFormaModif => useE => modifId ok => selectUneFormation Ok => set useState");
       } else {
-        console.error("2.6 FormAdmFormaModif aucun id  :", modifId);
+        console.error("2.0.5 ../../../../ FRONT FormAdmFormaModif => useE => modifId NO OK ", modifId);
       }
     }
     fetchFormations();
@@ -229,7 +248,7 @@ const FormAdmFormaModif: React.FC = () => {
                     }
                     className="block w-full border-b border-gray-300 shadow-sm mt-4"
                     rows={4}
-                  ></textarea>
+                  />
                 </div>
                 {/* Champ Prix */}
                 <div className="w-full mt-4">
@@ -242,7 +261,7 @@ const FormAdmFormaModif: React.FC = () => {
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        prix: parseInt(e.target.value),
+                        prix: parseInt(e.target.value, 10),
                       })
                     }
                     className="mt-1 block w-full border-b border-gray-300 shadow-sm"

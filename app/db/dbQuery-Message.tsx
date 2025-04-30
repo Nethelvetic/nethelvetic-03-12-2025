@@ -23,7 +23,7 @@ type MessageInput = {
 //------------------------ 1  Fonction createMessage ---------------------------
 //--------------------------------------------------------------------------------
 export async function createOneMessage(message: MessageInput) {
-  console.log("1.0 createMessage Début");
+  console.log("1.0 BACK createMessage Début");
   return await insertOneMessage(message);
 }
 

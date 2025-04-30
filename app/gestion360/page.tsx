@@ -1,5 +1,5 @@
 import React from 'react';
-import PageGestion360 from '../components/page-Gest360';
+import PageGestion360 from '../components/p-Gest360';
 
 
 export default function Gestion360() {

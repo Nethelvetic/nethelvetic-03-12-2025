@@ -1,9 +1,9 @@
 import React from 'react';
-import FormAdmUserAdd from '../../../components/form-Adm-User-Add';
+import From360CrmUserAdd from '../../../components/form-360-CRM-User-Add';
 
 
 
-export default function AdminUserAdd() {
+export default function CrmUserAdd() {
 
 
 //---------------------------------------------------------------------
@@ -11,7 +11,7 @@ export default function AdminUserAdd() {
 //--------------------------------------------------------------------- 
   return (
     <div className="w-full md:w-5xl mx-auto">
-      <FormAdmUserAdd />
+      <From360CrmUserAdd />
     </div>
   );
 }

@@ -67,11 +67,11 @@ const initialUserData: UserDataType = {
   lieu: ""
 };
 
-const FormInscri: React.FC = () => {
+const FormIns: React.FC = () => {
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique   --------------------
   //---------------------------------------------------------------------
-  console.log("1.0.0 FormInscri debut");
+  console.log("1.0.0 FormIns debut");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -99,12 +99,13 @@ const FormInscri: React.FC = () => {
   //------------------------2 Début comportement   ----------------------
   //---------------------------------------------------------------------
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("2.1.0 Front FormInscri HandleSubmit debut");
+    console.log("2.1.0 Front FormIns HandleSubmit debut");
     e.preventDefault();
 
     //-------------------------------------------------------------------
-    // 2.1.0 .?/handleSubmit => usename/password ok ou No
+    // 2.1.1 ../.?/ FormIns => H.S.=> name/password ok ou No
     //-------------------------------------------------------------------
+    console.log("2.1.2 ../.?/ FRONT FormIns => H.S. => usename/Pw ok ou No OK :")
     if (!username || !password || !confirmPassword) {
       alert("Veuillez remplir tous les champs.");
       return;
@@ -114,10 +115,10 @@ const FormInscri: React.FC = () => {
       alert("Les mots de passe ne correspondent pas.");
       return;
     }
-    console.log("2.1.1 ../ Front F.H. => usename/Pw ok :", { username, password, confirmPassword });
+    console.log("2.1.3 ../../ FRONT FormIns => H.S. => usename/Pw ok ", { username, password, confirmPassword });
     
     //-------------------------------------------------------------------
-    // 2.2.0 /../.? F.H. => usename/Pw ok => createOneUserInscription
+    // 2.1.4 ../../.?/ FormIns => H.S. => name/Pw ok=> creerUserIns
     //-------------------------------------------------------------------
     try {
       const userToInsert = {
@@ -143,13 +144,13 @@ const FormInscri: React.FC = () => {
         btnModifUrl: "/admin/users",
       };
 
-      console.log("2.1.2 ../.?/ Back F.H. => usename/Pw ok => creeOneUserInscri ou NO");
+      console.log("2.1.5 ../../.?/ Back FormIns => H.S. => name/Pw => creerUserIns Ok/NO");
       const createOneUserInscResult = await createOneUserInscription(userToInsert, password);
 
       //-------------------------------------------------------------------
-      // 2.2.1 ../../ F.H. => usename/Pw ok => createOneUserInscri No OK
+      // 2.1.6 ../../.?/ FRONT FormIns => H.S. => name/Pw ok => creerUserIns NO OK
       if (!createOneUserInscResult) {
-        console.error("2.2.1 ../../Front F.H. => usename/Pw ok => creeOneUserInscri NO OK");
+        console.error("2.1.6 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns NO OK");
         alert("Une erreur est survenue lors de la création de votre compte.");
         //////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////
@@ -161,38 +162,39 @@ const FormInscri: React.FC = () => {
 
 
       ///////////////////////////////////////////////////////////////////////
-      // 2.2.2 ../../ F.H. => usename/Pw ok => createOneUserInscri OK
+      // 2.2.7 ../../../ FormIns => H.S. => name/Pw => creerOneUserInscrit OK 
       ///////////////////////////////////////////////////////////////////////
       if (createOneUserInscResult.success) {
-        console.log("2.2.2 ../../ Front F.H. => usename/Pw ok => creeOneUserInscri OK");
+        console.log("2.2.7 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns");
 
         
         //------------------------------------------------------------
-        // 2.2.4 ../../.? F.H. => usename/Pw ok => creeOneUserInscri OK => set Zust/coock 
+        // 2.2.8 ../../../.?/ FormIns => H.S. => name/Pw => creerUserIns => set Zust/coock  
         if (createOneUserInscResult.user) {
-          console.log("2.2.4 ../../.?/ Front F.H. => usename/Pw ok => creeOneUserInscri OK => set Zust/coock ");
+          console.log("2.2.8 ../../../.?/ FRONT FormIns => H.S. => name/Pw => creerUserIns => set Zust/coock");
           const userObj = Array.isArray(createOneUserInscResult.user)
             ? createOneUserInscResult.user[0]   // si c’est un tableau, on prend le premier élément
             : createOneUserInscResult.user;     // sinon, c’est déjà un objet
 
             //------------------------------------------------------------
-            // 2.2.5 ../../../ F.H. => usename/Pw ok => creeOneUserInscri OK => set Zust/coock email = golliard73@gmail
+            // 2.2.9 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns => set Zust/coock  email = golliard73@g
             if (userObj.email === "golliard73@gmail.com") {
-              console.log("2.2.5 ../../../ Front F.H. => creeOneUserInscri OK => set Zust/coock  email = golliard73@gm");
+              console.log(" 2.2.9 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns => set Zust/coock >golliard73@g");
 
               setUserAdmin("jerome1872Troistorrents")
 
               const myCookieData = {
                 userAdmin: "jerome1872Troistorrents",  
                 userImgUrl: userObj.imgUrl,
-                userAdminEmail: username,             
+                userAdminEmail: username,  
+                userId: userObj.id           
               };
               Cookies.set('myData', JSON.stringify(myCookieData), { expires: 1, path: '/' });
 
             //------------------------------------------------------------
-            // 2.2.6 ../../../ F.H. => usename/Pw ok => creeOneUserInscri OK => set Zust/coock email = !golliard73@gm
+            // 2.2.10 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns => set Zust/coock  email = !golliard73@g
             }  else  if (createOneUserInscResult.saas) {
-              console.log("2.2.6 ../../../ Front F.H. => usename/Pw ok => creeOneUserInscri OK => set Zust/coock email=!golliard73@gm");
+              console.log("2.2.10 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns => set Zust/coock  >!golliard73@g");
     
               const saasObj = Array.isArray(createOneUserInscResult.saas)
                 ? createOneUserInscResult.saas[0]  
@@ -203,7 +205,8 @@ const FormInscri: React.FC = () => {
               const myCookieData = {
                 userAdmin: "user2025Nethelvetic",  
                 userImgUrl: userObj.imgUrl, 
-                userAdminEmail: username,             
+                userAdminEmail: username, 
+                userId: userObj.id           
               };
               Cookies.set('myData', JSON.stringify(myCookieData), { expires: 1, path: '/' });
             }
@@ -211,32 +214,35 @@ const FormInscri: React.FC = () => {
 
 
         ///////////////////////////////////////////////////////////////////////
-        // 2.2.8 ./../ Front F.H. => usename/Pw ok => creeOneUserInscri NO OK
+        // 2.2.11 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns NO OK
         //////////////////////////////////////////////////////////////////////
       } else {
-        console.log("2.2.8 ../../ Front F.H. => usename/Pw ok => creeOneUserInscri NO OK");
+        console.log("2.2.11 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns NO OK");
         alert(createOneUserInscResult.message);
       
         router.push("/formulaire/seConnecter");
+        ///////////////////////////////////////////
+        /////////    STOP              ////////////
+        ///////////////////////////////////////////
         return;
       }
 
      //----------------------------------------------------------------------
-     // 2.2.9 FormInscri handleSubmit => createOneUserInscri await erreur
+     // 2.2.12 ../../.?/ FormIns => H.S. => name/Pw => creerUserIns NO OK
     } catch (error) {
-      console.error("2.2.9 Front F.H. => creeOneUserInscri await erreur");
+      console.error("2.2.12 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns NO OK");
       alert(`Erreur lors de la création du compte ${error}`);
       return;
     }
 
     //-------------------------------------------------------------------
-    //    2.3.0  ../../../ F.H. => usename/Pw ok => createOneUserInscri OK => send email
+    //    2.3.0  ../../../ F.H. => name/Pw => creerUserIns=> send email
     //-------------------------------------------------------------------
     try {
-      console.log("2.3.1 ../../../ Back F.H. => usename/Pw ok => createOneUserInscri OK => send email");
+      console.log("2.3.1 ../../.?/ BACK FormIns => H.S. => name/Pw => creerUserIns => send email OK/NO");
       const result = await courrielInscription(username);
       if (result && result.success) {
-        console.log("2.3.2 ../../../ Front Back F.H. => usename/Pw ok => createOneUserInscri OK => email OK");
+        console.log("2.3.2 ../../../ BACK FormIns => H.S. => name/Pw => creerUserIns => send email OK");
 
         // Redirection vers la page de gestion en cas de succès
         //////////////////////////////////////////////////////////////////
@@ -248,11 +254,11 @@ const FormInscri: React.FC = () => {
         return;
         
       } else {
-        console.log("2.3.3 ../../../ Front Back F.H. => usename/Pw ok => createOneUserInscri OK => email NO OK");
+        console.log("2.3.3 ../../../ Front Back F.H. => name/Pw => creerUserIns => email NO OK");
         alert("Identifiants incorrects.");
       }
     } catch (error) {
-      console.error("2.3.4 ../../../ Front Back F.H. => usename/Pw ok => createOneUserInscri OK => email OK");
+      console.error("2.3.4 ../../../ Front Back F.H. => name/Pw => creerUserIns => email ERREUR");
       alert("Une erreur est survenue lors de l'envoi de l'email.");
     }
   };
@@ -314,4 +320,4 @@ const FormInscri: React.FC = () => {
   );
 };
 
-export default FormInscri;
+export default FormIns;

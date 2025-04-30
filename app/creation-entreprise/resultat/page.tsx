@@ -1,6 +1,6 @@
 // page.tsx (dans app/creation-entreprise/resultat/)
 import { Suspense } from "react";
-import PageCrEntrResultQues from "../../components/page-C-Entr-Quest-Result";
+import PageCrEntrResultQues from "../../components/p-C-Entr-Quest-Result";
 
 export default function PageResultatQuestion() {
   return (

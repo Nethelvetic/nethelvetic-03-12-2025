@@ -21,7 +21,7 @@ type EvenementInput = {
 //------------------------1.1  Fonction insert Formation ---------------------------
 //--------------------------------------------------------------------------------
 export async function createEvenement(evenement: EvenementInput) {
-  console.log("1.0 dbQuery-Evenements createEvenement ");
+  console.log("1.0 BACK Page dbQuery-Evenements createEvenement ");
   return await insertEvenement(evenement);
 }
 

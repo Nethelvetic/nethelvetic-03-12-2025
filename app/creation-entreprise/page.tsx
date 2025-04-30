@@ -1,5 +1,5 @@
 import React from 'react';
-import PageCreerEntreprise from '../components/page-C-Entr';
+import PageCreerEntreprise from '../components/p-C-Entr';
 
 
 export default function CreationEntreprise() {

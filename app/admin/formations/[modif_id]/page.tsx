@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import PageAdmFormaModif from '../../../components/page-Adm-Forma-Modif';
+import PageAdmFormaModif from '../../../components/p-Adm-Forma-Modif';
 
 
 export default function ModificationFormation() {

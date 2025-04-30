@@ -51,8 +51,38 @@ export const usersTable = pgTable("users", {
 });
 
 
+
 //---------------------------------------------------------------------
-//------------------------1.2 Début Table formation ---------------------
+//------------------------1.2 Début Table userrs_CRM_users ------------
+//---------------------------------------------------------------------
+export const usersCrmUsersTable = pgTable("users_CRM_users", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  nom_entreprise: varchar({ length: 255 }),
+  personne_a_contacter: varchar({ length: 255 }),
+  ville: varchar({ length: 255 }),
+  code_postal: varchar({ length: 20 }),
+  telephone: varchar({ length: 20 }).unique(),
+  date_de_naissance: date(),
+  date_creation: date().notNull(), 
+  email: varchar({ length: 255 }).notNull().unique(),
+  username: varchar({ length: 255 }),
+  status: varchar({ length: 50 }), // ex: "actif", "inactif", "suspendu"
+  domaine_activite: varchar({ length: 255 }),
+  employeur: varchar({ length: 255 }),
+  status_professionnel: varchar({ length: 255 }),
+  adresse: text(),
+  imgUrl: varchar({ length: 255 }),
+  btnUrlInt: varchar({ length: 255 }),
+  btnUrlExt: varchar({ length: 255 }),
+  btnTexte: varchar({ length: 255 }),
+  btnModifUrl: varchar({ length: 255 }).notNull(),
+  userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
+});
+
+
+
+//---------------------------------------------------------------------
+//------------------------2.0 Début Table formation ---------------------
 //---------------------------------------------------------------------
 export const formationTable = pgTable("formations", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -74,7 +104,7 @@ export const formationTable = pgTable("formations", {
 
 
 //---------------------------------------------------------------------
-//------------------------1.3 Début Table evenements --------------------
+//------------------------3.0 Début Table evenements --------------------
 //---------------------------------------------------------------------
 export const evenementsTable = pgTable("evenements", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -96,7 +126,7 @@ export const evenementsTable = pgTable("evenements", {
 
 
 //---------------------------------------------------------------------
-//------------------------1.4 Début Table communaute --------------------
+//------------------------4.0 Début Table communaute --------------------
 //---------------------------------------------------------------------
 export const communauteTable = pgTable("communaute", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -114,7 +144,7 @@ export const communauteTable = pgTable("communaute", {
 
 
 //---------------------------------------------------------------------
-//------------------------1.5 Début Table Saas --------------------------
+//------------------------5.0 Début Table Saas --------------------------
 //---------------------------------------------------------------------
 export const saasTable = pgTable("saas", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -138,7 +168,7 @@ export const saasTable = pgTable("saas", {
 
 
 //---------------------------------------------------------------------
-//------------------------1.6 Début Table message ---------------------
+//------------------------6.0 Début Table message ---------------------
 //---------------------------------------------------------------------
   export const messageTable = pgTable("messages", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),

@@ -1,5 +1,5 @@
 import React from 'react';
-import PageCrEntrFormGratuite from '../../components/page-C-Entr-Formu-Gratuite';
+import PageCrEntrFormGratuite from '../../components/p-C-Entr-Formu-Gratuite';
 
 
 export default function CreationEntreprise() {

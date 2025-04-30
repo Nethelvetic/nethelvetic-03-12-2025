@@ -1,5 +1,5 @@
 import React from 'react';
-import PageCrEntrQuest from '../../components/page-C-Entr-Quest';
+import PageCrEntrQuest from '../../components/p-C-Entr-Quest';
 
 
 export default function CreationEntreprise() {

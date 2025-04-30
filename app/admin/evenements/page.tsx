@@ -1,5 +1,5 @@
 import React from 'react';
-import PageAdmEvent from '../../components/page-Adm-Evenements';
+import PageAdmEvent from '../../components/p-Adm-Evenements';
 
 
 

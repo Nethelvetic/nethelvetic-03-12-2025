@@ -2,17 +2,22 @@ import "dotenv/config";
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from "drizzle-orm/neon-http";
 import { and, eq, isNotNull, not } from "drizzle-orm";
-import { formationTable, evenementsTable, usersTable, messageTable, saasTable } from "./schema";
+import { formationTable, evenementsTable, usersTable, messageTable, saasTable, usersCrmUsersTable } from "./schema";
 
 
-// 90   TABLES FORMATION
+// 105  TABLES FORMATION
+// 119    - insert one Formation
+// 142    - select all Formation
 // 219  TABLES EVENEMENT
-// 352  TABLES USER
-// 607    - select one users with email et mot de passe 
+// 357  TABLES USER
+// 369    - insert user
+// 572    - select one users
+// 632    - select one users with email et mot de passe 
 // 668    - select User With Active Saas 
 // 856    - insert user pour inscription 
 // 971  TABLES MESSAGE
 // 1066 TABLES SAAS
+// 1421 TABLE users_CRM_users 
 
 
 
@@ -57,6 +62,31 @@ type FormatUserInput = {
   btnModifUrl: string;
 };
 
+
+
+
+type FormatUserCrmInput = {
+  nom_entreprise: string;
+  personne_a_contacter: string;
+  ville: string;
+  code_postal: string ;
+  telephone: string;
+  date_de_naissance: string;
+  date_creation: string;
+  email: string;
+  username: string;
+  status: string;
+  domaine_activite: string;
+  employeur: string;
+  status_professionnel: string;
+  adresse: string;
+  imgUrl: string;
+  btnUrlInt: string;
+  btnUrlExt: string;
+  btnTexte: string;
+  btnModifUrl: string;
+  userId: number; 
+};
 
 
 // Typage  messages
@@ -124,10 +154,14 @@ export async function insertFormation(formation: FormatEventInput) {
     console.log("1.1.1 dbQuery insertFormation try avant");
     await db.insert(formationTable).values(formation);
     console.log("1.1.2 dbQuery insertFormation try await après");
-    return { success: true, message: "4.3 Formation ajoutée avec succès !" };
+    return { 
+      success: true, 
+      message: "4.3 Formation ajoutée avec succès !" };
   } catch (error) {
     console.error("1.1.4 dbQuery Erreur lors de l'insertion de la formation :", error);
-    return { success: false, message: "Une erreur est survenue lors de l'ajout de la formation." };
+    return { 
+      success: false, 
+      message: "Une erreur est survenue lors de l'ajout de la formation." };
   }
 }
 
@@ -138,15 +172,23 @@ export async function insertFormation(formation: FormatEventInput) {
 //------------------------1.2 Fonction select all Formation  ----------
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
-export async function selectFormation() {
+export async function selectAllFormations() {
   try {
     console.log("1.2.1 dbQuery selectFormation try avant");
     const formations = await db.select().from(formationTable);
     console.log("1.2.1 dbQuery selectFormation try après => formations", formations);
-    return formations;
+    return { 
+      success: true, 
+      message: "La sélection de toutes les formations a été effectuée avec succès.", 
+      formations: formations
+    };
+    
   } catch (error) {
-    console.error("1.2.2 dbQuery Erreur lors de la sélection des formations :", error);
-    throw error;
+    return { 
+      success: false, 
+      message: "La sélection de toutes les formations a échoué.", 
+      erreur: error
+    };
   }
 }
 
@@ -160,17 +202,25 @@ export async function selectFormation() {
 export async function selectUneFormation(id: number) {
   console.log("1.3.0 dbQuery selectUneFormation avec l'id= ", id);
   try {
-    console.log("1.3.1 dbQuery selectUneFormation avant");
+    console.log("1.3.1 dbQuery selectUneFormation OK ou NO OK");
     const uneFormation = await db
       .select()
       .from(formationTable)
       .where(eq(formationTable.id, id))
       .limit(1); // Optionnel : pour limiter le résultat à un seul enregistrement
-   console.log("1.3.2 dbQuery selectUneFormation après => uneFormation:", uneFormation);
-    return uneFormation;
+   console.log("1.3.2 dbQuery selectUneFormation OK: ", uneFormation);
+    return { 
+      success: true, 
+      message: "La sélection d'une formation a été effectuée avec succès.", 
+      formation: uneFormation
+    };
+    
   } catch (error) {
-    console.error("1.3.3 dbQuery selectUneFormation erreur: ", error);
-    throw error;
+    return { 
+      success: false, 
+      message: "La sélection d'une formation a été effectuée avec succès.", 
+      erreur: error
+    };
   }
 }
 
@@ -365,32 +415,33 @@ export async function deleteUnEvenement(id: number) {
 
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
-//------------------------3.1 Début insert user -----------------------
+//------------------------3.1  Début insert user-----------------------
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
 export async function insertOneUser(user: FormatUserInput) {
   console.log("3.1.1 dbQuery insertOneUser, données:", user);
 
 
+  //--------------------------------------------------------------
+  // 3.1.2 .?/ dbQuery insertOneUser => User exist OK/NO
+  //--------------------------------------------------------------
   try {
-    //-----------------------------------------------------------------
-    //------------------3.1.2 Vérifie si User existant ----------------
-    //-----------------------------------------------------------------
-    console.log("3.1.2 dbQuery insertOneUser, contrôle si user existe");
+    console.log("3.1.2 .?/ dbQuery insertOneUser => User exist OK/NO");
     const existingUser = await db
       .select()
       .from(usersTable)
       .where(eq(usersTable.email, user.email));
 
 
-    //-----------------------------------------------------------------
-    //------------------3.1.3 User existant ---------------------------
-    //-----------------------------------------------------------------
+    //--------------------------------------------------------------
+    // 3.1.3 ../ dbQuery insertOneCrmUser => User exist OK
+    //--------------------------------------------------------------
     if (existingUser.length > 0) {
-      console.log("3.1.3 dbQuery insertOneUser Utilisateur USER EXISTANT trouvé pour l'email:", user.email);
+      console.log("3.1.3 ../ dbQuery insertOneUser => User exist", user.email);
       const userFromDB = existingUser[0];
 
-
+    //--------------------------------------------------------------
+    // 3.1.3 ../.? dbQuery insertOneUser => USER exist => upDate User OK/NO
       function isNullOrEmpty(value?: string): boolean {
         return value == null || value === "";
       }
@@ -455,22 +506,20 @@ export async function insertOneUser(user: FormatUserInput) {
           : user.btnModifUrl,
       };
       
-      
-      
-      console.log("3.1.4 dbQuery insertOneUser USER EXISTANT :", transformedUser);
-      console.log("3.1.5 dbQuery insertOneUser USER EXISTANT  userFromDB.id:", userFromDB.id);
-      
-      // Attendre la réponse de updateOneUser
-      console.log("3.1.6 dbQuery insertOneUser USER EXISTANT  updateOneUser avant");
+      console.log("3.1.4 ../.?/ dbQuery insertOneUser => USER exist => upDate User OK/NO", transformedUser);
+   
       const updateUserResult = await updateOneUser(userFromDB.id, transformedUser);
-      if (updateUserResult.success) {
-        console.log("3.1.7 dbQuery insertOneUser USER EXISTANT  updateOneUser success:");
 
-        //////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////
-        //////////////          STOP 1        ////////////////////////////
-        //////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////
+      //------------------------------------------------------------
+      // 3.1.5 ../.. dbQuery insertOneUser => USER OK => upDate OK
+      if (updateUserResult.success) {
+        console.log("3.1.5 ../../ dbQuery insertOneUser => USER exist => upDate OK");
+
+        /////////////////////////////////////////////
+         /////////////////////////////////////////////
+         //////        STOP 1        /////////////////
+         /////////////////////////////////////////////
+         /////////////////////////////////////////////
         return { 
           success: true, 
           message: "Un utilisateur existe déjà ; nous avons mis à jour son compte avec les informations fournies.", 
@@ -486,41 +535,68 @@ export async function insertOneUser(user: FormatUserInput) {
     }
 
 
-    //-----------------------------------------------------------------
-    //------------------3.1.3 User NON existant -----------------------
-    //-----------------------------------------------------------------
-    console.log("3.1.6 dbQuery insertOneUser USER NON EXISTANT insertUser debut");
-    const defaultDate = new Date().toISOString().slice(0, 10); // format "YYYY-MM-DD"
-    const userToInsert = {
-      ...user,
-      date_creation: user.date_creation.trim() === "" ? defaultDate : user.date_creation,
-      date_de_naissance: user.date_de_naissance 
-        ? (user.date_de_naissance.trim() === "" ? null : user.date_de_naissance)
-        : null,
-      telephone: user.telephone 
-        ? (user.telephone.trim() === "" ? null : user.telephone)
-        : null,
-      username: user.username 
-        ? (user.username.trim() === "" ? null : user.username)
-        : null,
-    };
+    //-------------------------------------------------------------
+    //3.1.6 ../ dbQuery insertOneUser => USER no exist
+    //--------------------------------------------------------------
+    console.log("3.1.6 ../ dbQuery insertOneUser => USER no exist");
 
-    //------------------3.1.7 Inserer USER -----------------------
-    const insertUserResult = await db.insert(usersTable).values(userToInsert).returning();
-    console.log("3.1.7 dbQuery insertOneUser USER NON EXISTANT insertUser try après");
+    //--------------------------------------------------------------
+    // 3.1.7 ../.? dbQuery insertOneUser => USER no exist => insert User OK/NO
 
-    //////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////
-    //////////////          STOP 1        ////////////////////////////
-    //////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////
-    return { 
-      success: true, 
-      message: "Utilisateur ajouté avec succès !",
-      user: insertUserResult[0]
-    };
+    try {
+      
+      const defaultDate = new Date().toISOString().slice(0, 10); // format "YYYY-MM-DD"
+      const userToInsert = {
+        ...user,
+        date_creation: user.date_creation.trim() === "" ? defaultDate : user.date_creation,
+        date_de_naissance: user.date_de_naissance 
+          ? (user.date_de_naissance.trim() === "" ? null : user.date_de_naissance)
+          : null,
+        telephone: user.telephone 
+          ? (user.telephone.trim() === "" ? null : user.telephone)
+          : null,
+        username: user.username 
+          ? (user.username.trim() === "" ? null : user.username)
+          : null,
+      };
+  
+      console.log("3.1.7 ../.?/ dbQuery insertOneUser => USER no exist => insert User OK/NO", userToInsert);
+      const insertUserRes = await db
+      .insert(usersTable)
+      .values(userToInsert)
+      .returning();
+  
+  
+      //--------------------------------------------------------------
+      // 3.1.8 ../.. dbQuery insertOneUser => USER no exist => insert User OK
+      console.log("3.1.8 ../../ dbQuery insertOneUser => USER no exist => insert User OK");
+  
+      /////////////////////////////////////////////
+      /////////////////////////////////////////////
+      //////        STOP 1,2,3        /////////////
+      /////////////////////////////////////////////
+      /////////////////////////////////////////////
+      return { 
+        success: true, 
+        message: "Utilisateur ajouté avec succès !",
+        user: insertUserRes[0]
+      };
+
+  //--------------------------------------------------------------
+  // 3.1.9 ../../ dbQuery insertOneUser => USER no exist => insert User erreur" 
+    } catch (error) {
+      console.error("3.1.9 ../../ dbQuery insertOneUser => USER no exist => insert User NO OK", error);
+      return {
+        success: false,
+        message: "Nouvel enregistrement CRM utilisateur créé.",
+        user: null,
+      };   
+    }
+
+  //--------------------------------------------------------------
+  // 3.1.9 ../ dbQuery insertCrmUser => USER Ok/NO erreur" 
   } catch (error) {
-    console.error("3.1.8 dbQuery insertUser USER NON EXISTANT insertUser Erreur:", error);
+    console.error("3.1.9 ../ dbQuery insertOneUser => USER OK/NO erreur", error);
     return { 
       success: false, 
       message: "Une erreur est survenue lors de l'ajout de l'utilisateur.",
@@ -579,7 +655,7 @@ export async function selectOneUser(id: number) {
       .from(usersTable)
       .where(eq(usersTable.id, id))
       .limit(1);
-      console.log("3.3.2 dbQuery selectOneUsers try après => user: ", user);
+      console.log("3.3.2 dbQuery selectOneUsers OK:  ", user);
 
     //////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////
@@ -587,12 +663,12 @@ export async function selectOneUser(id: number) {
     //////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////
     return { 
-      success: false, 
-      message: "selection de un user Success",
+      success: true, 
+      message: "selection de un user Ok",
       user: user[0]
      };
   } catch (error) {
-    console.error("3.3.3 dbQuery selectOneUsers Erreur lors de la sélection de l'utilisateur :", error);
+    console.error("3.3.3 dbQuery selectOneUsers NO OK:  ", error);
     return { 
       success: false, 
       message: "selection de un user Erreur",
@@ -611,20 +687,22 @@ export async function selectUserWithEmailAndPassword(
   email: string,
   motDePasse: string
 ): Promise<{ success: boolean; message: string; user: any; saas: any }> {
-  console.log("3.4.1 dbQuery selectUserWithEmailAndPw avec l'email:", email);
+  console.log("3.4.1 dbQuery selectUserEmail-Pw avec l'email:", email);
 
+  //---------------------------------------------------------------------
+  // 3.4.2 .?/ selectUserEmail-Pw => User OK/NO
   try {
-    // 3.4.2 selectUserWithEmailAndPw User existant ou Non existant
-    console.log("3.4.2 dbQuery selectUserWithEmailAndPw, contrôle si user existe");
+    console.log("3.4.2 .?/ dbQuery selectUserEmail-Pw => user existe OK/NO");
     const existingUser = await db
       .select()
       .from(usersTable)
       .where(eq(usersTable.email, email))
       .limit(1);
 
-    // 3.4.3 selectUserWithEmailAndPw User existant 
+    //---------------------------------------------------------------------
+    // 3.4.3 ../ selectUserEmail-Pw => User NO OK
     if (existingUser.length === 0) {
-      console.log("3.4.3 dbQuery selectUserWithEmailAndPw USER NO EXIST pour cet email");
+      console.log("3.4.3 ../ dbQuery selectUserEmail-Pw => USER NO OK");
       return {
         success: false,
         message: "Identifiants incorrects.",
@@ -633,8 +711,8 @@ export async function selectUserWithEmailAndPassword(
       };
     }
 
-    // 3.4.4 selectUserWithEmailAndPw USER EXISTANT  => select User+SaaS avec Pw
-    console.log("3.4.4 dbQuery selectUserWithEmailAndPw USER EXIST");
+    // 3.4.4 ../.?/ selectUserEmail-Pw =>  USER OK => select User+SaaS avec Pw
+    console.log("3.4.4 ../.?/ dbQuery selectUserEmail-Pw => USER OK=> select User+SaaS-Pw OK/NO");
     try {
       const result = await db
         .select()
@@ -649,12 +727,10 @@ export async function selectUserWithEmailAndPassword(
         )
         .limit(1);
 
-      // 3.4.5 selectUserWithEmailAndPw USER EXISTANT => select User+SaaS avec Pw SUCCES  
+      //---------------------------------------------------------------------
+      // 3.4.5 ../.?/ dbQuery selectUserEmail-Pw => USER OK => select User+SaaS-Pw OK/NO  
       if (result.length > 0) {
-        console.log(
-          "3.4.6 dbQuery selectUserWithEmailAndPw USER EXISTANT => select User+SaaS SUCCES",
-          result[0]
-        );
+        console.log("3.4.5 ../../ dbQuery selectUserEmail-Pw => USER OK=> select User+SaaS-Pw OK",result[0]);
         return {
           success: true,
           message: "Authentification réussie.",
@@ -663,8 +739,8 @@ export async function selectUserWithEmailAndPassword(
         };
       }
 
-      // 3.4.8 selectUserWithEmailAndPw USER EXISTANT => select User+SaaS avec Pw NO SUCCES 
-      console.log("3.4.8 dbQuery selectUserWithEmailAndPw USER EXISTANT => select User+SaaS NO SUCCES");
+      // 3.4.6 selectUserWithEmailAndPw USER EXISTANT => select User+SaaS avec Pw NO SUCCES 
+      console.log("3.4.6 ../../ dbQuery selectUserEmail-Pw => USER OK=> select User+SaaS-Pw NO OK");
       return {
         success: false,
         message: "Identifiants corrects, mot de passe invalide ou non inscrit.",
@@ -672,10 +748,10 @@ export async function selectUserWithEmailAndPassword(
         saas: null
       };
 
-    // 3.4.9 selectUserWithEmailAndPw USER EXISTANT  => select User+SaaS avec Pw NO SUCCES
+    // 3.4.7 selectUserWithEmailAndPw USER EXISTANT  => select User+SaaS avec Pw NO SUCCES
     } catch (error) {
       console.error(
-        "3.4.9 dbQuery selectUserWithEmailAndPw USER EXISTANT => select User+SaaS avec Pw NO SUCCES",
+        "3.4.7 ../../ dbQuery selectUserEmail-Pw => USER OK => select User+SaaS-Pw NO OK",
         error
       );
       return {
@@ -686,10 +762,10 @@ export async function selectUserWithEmailAndPassword(
       };
     }
 
-  // 3.4.10 selectUserWithEmailAndPw USER NO EXISTANT => erreur globale
+  // 3.4.8 selectUserWithEmailAndPw USER NO EXISTANT => erreur globale
   } catch (error) {
     console.error(
-      "3.4.10 dbQuery selectUserWithEmailAndPw USER NO EXISTANT",
+      "3.4.8 dbQuery selectUserEmail-Pw => USER NO OK ",
       error
     );
     return {
@@ -707,51 +783,47 @@ export async function selectUserWithEmailAndPassword(
 
 
 
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------
-//------------------------3.5 Début update one user -------------------
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------
+//------------------------------------------------------------------
+//--------------------------------------------------------------------
+//------------------------3.5 Début update one user -----------------
+//------------------------------------------------------------------
+//------------------------------------------------------------------
 export async function updateOneUser(id: number, user: FormatUserInput) {
   console.log("3.5.0 dbQuery updateUsers avec l'id: ", id);
   try {
-    const defaultDate = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
-    const userToUpdate = {
+    // On remplace les chaînes vides par `undefined` (Drizzle accepte undefined mais pas null)
+    const userToUpdateRaw = {
       ...user,
-      date_de_naissance: user.date_de_naissance 
-        ? (user.date_de_naissance.trim() === "" ? null : user.date_de_naissance)
-        : null,
-      telephone: user.telephone 
-        ? (user.telephone.trim() === "" ? null : user.telephone)
-        : null,
-      username: user.username 
-        ? (user.username.trim() === "" ? null : user.username)
-        : null,
+      date_de_naissance:
+        user.date_de_naissance?.trim() === "" ? undefined : user.date_de_naissance,
+      date_creation:
+        user.date_creation?.trim() === "" ? undefined : user.date_creation,
+      telephone:
+        user.telephone?.trim() === "" ? undefined : user.telephone,
+      username:
+        user.username?.trim() === "" ? undefined : user.username,
     };
-    console.log("3.5.2 dbQuery updateUsers try avant");
-    const updateOneUserResult = await db
-      .update(usersTable)
-      .set(userToUpdate)
-      .where(eq(usersTable.id, id)
-    );
-    console.log("3.5.3 dbQuery updateUsers try après");
 
-    //////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////
-    //////////////          STOP 1        ////////////////////////////
-    //////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////
-    return { 
-      success: true, 
+
+    console.log("3.5.2 dbQuery updateUsers OK/NO");
+    const updateOneUserRes = await db
+      .update(usersTable)
+      .set(userToUpdateRaw)
+      .where(eq(usersTable.id, id));
+    console.log("3.5.3 dbQuery updateUsers OK");
+
+    return {
+      success: true,
       message: "Utilisateur mis à jour avec succès !",
-      user: userToUpdate
+      user: userToUpdateRaw
     };
   } catch (error) {
-    console.error("3.5.4 dbQuery updateUsers Erreur lors de la mise à jour de l'utilisateur :", error);
-    return { 
-      success: false, 
+    console.error("3.5.4 dbQuery updateUsers NO OK", error);
+    return {
+      success: false,
       message: "Une erreur est survenue lors de la mise à jour de l'utilisateur.",
-      user: null };
+      user: null
+    };
   }
 }
 
@@ -1387,10 +1459,14 @@ export async function updateUnSaas(id: number, saas: FormatSaasInput) {
       .set(saas)
       .where(eq(saasTable.id, id));
     console.log("5.4.2 dbQuery updateUnSaas - SaaS record mis à jour avec succès");
-    return { success: true, message: "SaaS record updated successfully" };
+    return { 
+      success: true, 
+      message: "SaaS record updated successfully" };
   } catch (error) {
     console.error("5.4.3 dbQuery updateUnSaas - Erreur lors de la mise à jour :", error);
-    return { success: false, message: "Error updating SaaS record" };
+    return { 
+      success: false, 
+      message: "Error updating SaaS record" };
   }
 }
 
@@ -1412,5 +1488,293 @@ export async function deleteUnSaas(id: number) {
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+//                        DEFINR TABLES users_CRM_users
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+//--------------6.0 Début select tout users_CRM_users -----------------
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+
+
+export async function selectUsersCrmUsers(id: string) {
+  console.log("6.0.0 dbQuery selectUsersCRM pour userId =", id);
+
+  const userId = parseInt(id, 10);
+  if (isNaN(userId)) {
+    console.error("6.0.2 dbQuery selectUsersCRM => parse id NO OK");
+    return { success: false, message: "Identifiant utilisateur invalide.", users: null };
+  }
+
+  try {
+    console.log("6.0.3 dbQuery selectUsersCRM => sélection...");
+    const users = await db
+      .select()
+      .from(usersCrmUsersTable)
+      .where(eq(usersCrmUsersTable.userId, userId));
+    console.log("6.0.4 dbQuery selectUsersCRM => OK, nb=", users.length);
+    return { success: true, message: "Sélection CRM réussie.", users };
+  } catch (error) {
+    console.error("6.0.5 dbQuery selectUsersCRM => erreur:", error);
+    return { success: false, message: "Erreur lors de la sélection CRM.", users: null };
+  }
+}
+
+
+
+
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+//--------------7.0 Début insert one User Crm -----------------
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+
+
+export async function insertOneCrmUser(user: FormatUserCrmInput) {
+  console.log("7.0.1 dbQuery insertOneCrmUser, user =", user);
+
+  //--------------------------------------------------------------
+  // 7.0.3 .?/ dbQuery insertOneCrmUser => User exist OK/NO 
+  //--------------------------------------------------------------
+  try {
+    console.log("7.0.3 .?/ dbQuery insertOneCrmUser => User exist OK/NO ");
+    const existingUser = await db
+      .select()
+      .from(usersCrmUsersTable)
+      .where(
+        and(
+          eq(usersCrmUsersTable.email, user.email)
+        )
+      );
+
+    //--------------------------------------------------------------
+    // 7.0.4 ../ dbQuery insertOneCrmUser => User exist
+    //--------------------------------------------------------------
+    if (existingUser.length > 0) {
+      console.log("6.1.4 ../ dbQuery insertOneCrmUser => User exist", existingUser[0].id);
+      const userFromDB = existingUser[0];
+
+      //--------------------------------------------------------------
+      // 7.0.5 ../.?/ dbQuery insertOneCrmUser => USER exist => upDate User OK/NO
+      function isNullOrEmpty(value?: string): boolean {
+        return value == null || value === "";
+      }
+      
+      const transformedUser: FormatUserCrmInput = {
+        nom_entreprise: isNullOrEmpty(user.nom_entreprise)
+          ? (userFromDB.nom_entreprise ?? "")
+          : user.nom_entreprise,
+        personne_a_contacter: isNullOrEmpty(user.personne_a_contacter)
+          ? (userFromDB.personne_a_contacter ?? "")
+          : user.personne_a_contacter,
+        ville: isNullOrEmpty(user.ville)
+          ? (userFromDB.ville ?? "")
+          : user.ville,
+        code_postal: isNullOrEmpty(user.code_postal)
+          ? (userFromDB.code_postal ?? "")
+          : user.code_postal,
+        telephone: isNullOrEmpty(user.telephone)
+          ? (userFromDB.telephone ?? "")
+          : user.telephone,
+        date_de_naissance: isNullOrEmpty(user.date_de_naissance)
+          ? (userFromDB.date_de_naissance ?? "")
+          : user.date_de_naissance,
+        date_creation: isNullOrEmpty(user.date_creation)
+          ? (userFromDB.date_creation ?? "")
+          : user.date_creation,
+        email: isNullOrEmpty(user.email)
+          ? (userFromDB.email ?? "")
+          : user.email,
+        username: isNullOrEmpty(user.username)
+          ? (userFromDB.username ?? "")
+          : user.username,
+        status: isNullOrEmpty(user.status)
+          ? (userFromDB.status ?? "")
+          : user.status,
+        domaine_activite: isNullOrEmpty(user.domaine_activite)
+          ? (userFromDB.domaine_activite ?? "")
+          : user.domaine_activite,
+        employeur: isNullOrEmpty(user.employeur)
+          ? (userFromDB.employeur ?? "")
+          : user.employeur,
+        status_professionnel: isNullOrEmpty(user.status_professionnel)
+          ? (userFromDB.status_professionnel ?? "")
+          : user.status_professionnel,
+        adresse: isNullOrEmpty(user.adresse)
+          ? (userFromDB.adresse ?? "")
+          : user.adresse,
+        imgUrl: isNullOrEmpty(user.imgUrl)
+          ? (userFromDB.imgUrl ?? "")
+          : user.imgUrl,
+        btnUrlInt: isNullOrEmpty(user.btnUrlInt)
+          ? (userFromDB.btnUrlInt ?? "")
+          : user.btnUrlInt,
+        btnUrlExt: isNullOrEmpty(user.btnUrlExt)
+          ? (userFromDB.btnUrlExt ?? "")
+          : user.btnUrlExt,
+        btnTexte: isNullOrEmpty(user.btnTexte)
+          ? (userFromDB.btnTexte ?? "")
+          : user.btnTexte,
+        btnModifUrl: isNullOrEmpty(user.btnModifUrl)
+          ? (userFromDB.btnModifUrl ?? "")
+          : user.btnModifUrl,
+        userId: user.userId,  // unchanged, always number
+      };
+
+      console.log("7.0.6 ../.? dbQuery insertOneCrmUser=> USER exist => upDate User OK/NO", transformedUser);
+
+        const updateUserResult = await updateOneCrmUser(userFromDB.id, transformedUser);
+
+        //------------------------------------------------------------
+        // 7.0.7 ../.. dbQuery insertOneCrmUser => USER OK => upDate OK
+        if (updateUserResult.success) {
+          console.log("7.0.7 ../../ dbQuery insertOneCrmUser => USER exist => upDate OK");
+          /////////////////////////////////////////////
+          /////////////////////////////////////////////
+          //////        STOP 1        /////////////////
+          /////////////////////////////////////////////
+          /////////////////////////////////////////////
+          return { 
+            success: true, 
+            message: "Un utilisateur existe déjà ; nous avons mis à jour son compte avec les informations fournies.", 
+            user: userFromDB
+          } ;
+        } else {
+          return { 
+            success: false, 
+            message: "L'utilisateur existe déjà, mais la mise à jour a échoué : " + updateUserResult.message, 
+            user: userFromDB
+          };
+        }
+    }
+
+    //-----------------------------------------------------------------
+    // 7.0.6 ../ dbQuery insertOneCrmUser => USER no exist 
+    //-----------------------------------------------------------------
+    console.log("7.0.6 ../ dbQuery insertOneCrmUser => USER no exist");
+
+    //--------------------------------------------------------------
+    // 7.0.7 ../.? dbQuery insertOneCrmUser => USER no exist => insert User OK/NO
+    try {
+      const defaultDate = new Date().toISOString().slice(0, 10); // format "YYYY-MM-DD"
+      const userToInsert = {
+        ...user,
+        date_creation: user.date_creation.trim() === "" ? defaultDate : user.date_creation,
+        date_de_naissance: user.date_de_naissance 
+          ? (user.date_de_naissance.trim() === "" ? null : user.date_de_naissance)
+          : null,
+        telephone: user.telephone 
+          ? (user.telephone.trim() === "" ? null : user.telephone)
+          : null,
+        username: user.username 
+          ? (user.username.trim() === "" ? null : user.username)
+          : null,
+      };
+  
+      console.log("7.0.8 ../.?/ dbQuery insertOneCrmUser => USER no exist => insert User OK/NO", userToInsert);
+      const insertUserRes = await db
+        .insert(usersCrmUsersTable)
+        .values(userToInsert)
+        .returning();
+
+      //--------------------------------------------------------------
+      // 7.0.9 ../.. dbQuery insertOneCrmUser => USER no exist => insert User OK
+      console.log("7.0.9 ../.,/ FRONT dbQuery insertOneCrmUser => USER no exist => insert User OK");
+      /////////////////////////////////////////////
+      /////////////////////////////////////////////
+      //////        STOP 1,2,3        /////////////
+      /////////////////////////////////////////////
+      /////////////////////////////////////////////
+      return {
+        success: true,
+        message: "Nouvel enregistrement CRM utilisateur créé.",
+        user: insertUserRes[0],
+      };
+
+    //--------------------------------------------------------------
+    // 7.0.10 ../../ dbQuery insertOneCrmUser => USER no exist => insert User erreur" 
+    } catch (error) {
+      console.error("7.0.10 ../../ dbQuery insertOneCrmUser => USER no exist => insert User NO OK", error);
+      return {
+        success: false,
+        message: "Nouvel enregistrement CRM utilisateur créé.",
+        user: null,
+      };  
+    }
+
+  //--------------------------------------------------------------
+  // 7.0.11 ../ dbQuery insertOneCrmUser => USER OK/NO erreur" 
+  } catch (error) {
+    console.error("7.0.11 ../ dbQuery insertOneCrmUser => USER OK/NO erreur", error);
+    return {
+      success: false,
+      message: "Erreur lors de l’insertion ou mise à jour CRM utilisateur.",
+      user: null,
+    };
+  }
+}
+
+//------------------------------------------------------------------
+//
+// updateOneCrmUser remains unchanged below
+//------------------------------------------------------------------
+export async function updateOneCrmUser(id: number, user: FormatUserCrmInput) {
+  console.log("7.1.0 dbQuery updateOneCrmUser avec l'id: ", id);
+  try {
+    const userToUpdateRaw = {
+      ...user,
+      date_de_naissance:
+        user.date_de_naissance?.trim() === "" ? undefined : user.date_de_naissance,
+      date_creation:
+        user.date_creation?.trim() === "" ? undefined : user.date_creation,
+      telephone:
+        user.telephone?.trim() === "" ? undefined : user.telephone,
+      username:
+        user.username?.trim() === "" ? undefined : user.username,
+    };
+
+    console.log("7.1.2 ../ dbQuery updateOneCrmUser OK/NO");
+    const updateOneUserCrmRes = await db
+      .update(usersCrmUsersTable)
+      .set(userToUpdateRaw)
+      .where(eq(usersCrmUsersTable.id, id));
+    console.log("7.1.3 dbQuery updateOneCrmUser OK ");
+
+    return {
+      success: true,
+      message: "Utilisateur mis à jour avec succès !",
+      user: userToUpdateRaw
+    };
+  } catch (error) {
+    console.error("7.1.4 dbQuery updateOneCrmUser NO OK:", error);
+    return {
+      success: false,
+      message: "Une erreur est survenue lors de la mise à jour de l'utilisateur.",
+      user: null
+    };
+  }
+}
 
 

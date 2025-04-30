@@ -23,92 +23,103 @@ const FormSeConnecter: React.FC = () => {
   //---------------------------------------------------------------------
   //------------------------2 Début comportement   ----------------------
   //---------------------------------------------------------------------
+
   //------------------------------------------------------------
-  //  useEffect pour vérifier le cookie JSON à l'ouverture du composant
+  // 2.0.0 FormConnect use.E
   //------------------------------------------------------------
   useEffect(() => {
-    console.log("2.0.0 Front FormConnect useEffect debut");
+    console.log("2.0.0 ../ Front FormConnect => useEffect debut");
     const cookieStr = Cookies.get('myData');
     const cookieData = cookieStr ? JSON.parse(cookieStr) : undefined;
-    console.log("2.0.1 Front FormConnect useE Cookie=", cookieData);
+    console.log("2.0.1 ../../ Front FormConnect => useE => get Cookie =", cookieData);
 
     if (cookieData) {
       if (cookieData.userAdmin === "jerome1872Troistorrents") {
-        console.log("2.0.2 Front FormConnect useE => userAdmin = jerome1872Troistorrents");
+        console.log("2.0.2 ../../../ Front FormConnect => useE => get Cookie => set VarZustand & push ->/admin/users");
         setUserAdmin("jerome1872Troistorrents");
         router.push("/admin/users");
       } else if (cookieData.userAdmin === "user2025Nethelvetic") {
-        console.log("2.0.3 Front FormConnect useE =>  = user2025Nethelvetic");
+        console.log("2.0.3 ../../../ Front FormConnect => useE => get Cookie => set VarZustand & push ->/gestion360/identitfier");
         setUserAdmin("user2025Nethelvetic");
         router.push("/gestion360/identifier");
       } else {
-        console.log("2.0.4 Front FormConnect useE =>  userAdmin = vide ");
+        console.log("2.0.4 ../../../ Front FormConnect => useE => get Cookie => set VarZustand & push ->/formulaire/seConnecter");
         router.push("/formulaire/seConnecter");
       }
     }
-  }, [router, setUserAdmin]);
+  }, []);
 
   //---------------------------------------------------------------------
   //    2.1.0 handleSubmit si le cookie est non présent 
   //---------------------------------------------------------------------
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("2.1.3 Front FormConnect handleSubmit debut");
+    console.log("2.1.3 ../ Front FormConnect => handleSubmit debut");
     e.preventDefault();
 
     if (!username || !password) {
       alert("Veuillez remplir tous les champs.");
       return;
     }
-    console.log("2.1.4 Front FormConnect handleSubmit Connect avec :", { username, password });
+    console.log("2.1.4 ../ Front FormConnect => H.S Connect avec :", { username, password });
 
     //---------------------------------------------------------------------
-   //    2.1.0 handleSubmit => selectionUserWithEmailAndPw
+   //    2.1.5 ../../ FormConnect => H.S. => selectionUserWithEmailAndPw
     try {
-      console.log("2.1.5 Back FormConnect handleSubmit => selectionUserWithEmailAndPw");
-      const result = await selectionUserWithEmailAndPassword(username, password);
+      console.log("2.1.5 ../.?/ Back FormConnect => H.S. => selectUserWithEmailAndPw");
+      const selectUserWithEmailAndPwResult = await selectionUserWithEmailAndPassword(username, password);
 
       //------------------------------------------------------------
-      // 2.1.6 Front FormConnect handleSubmit  => selectionUserWithEmailAndPw SUCCES => set Zustand & cookies
-      if (result && result.success) {
-        console.log("2.1.6 Front FormConnect handleSubmit => selectionUserWithEmailAndPw SUCCESS");
-        const { user, saas } = result;
+      // 2.1.6 ../../.?/ FormConnect => H.S. => selectUserWithEmailAndPw => set Zustand/cookies
+      if (selectUserWithEmailAndPwResult.success) {
+        console.log("2.1.6 ../../ Front FormConnect => H.S. => selectUserWithEmailAndPw OK");
+        const { user, saas } = selectUserWithEmailAndPwResult;
         
+        console.log("2.1.7 ../../../ Front FormConnect => H.S. => selectUserWithEmailAndPw OK => set Zustand/Cookies");
         // 2.1.7 set Zustand
         setUserAdmin(saas.identification);
 
         //2.1.8 set cookies
-        console.log("2.1.6 Front FormConnect handleSubmit => selectionUserWithEmailAndPw SUCCESS => set cookies");
         const myData = {
           userAdmin: saas.identification,
           userImgUrl: user.imgUrl,
-          userEmail: user.email,
+          userAdminEmail: user.email,
+          userId: user.id
         };
         Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
 
         //2.1.9 route push
         if (saas.identification === "jerome1872Troistorrents") {
+          console.log("2.1.9 ../../../../ Front FormConnect => H.S. => selectUserWithEmailAndPw => set Zustand/Cookies => Push -> admin/users");
           router.push("/admin/users");
         } else if (saas.identification === "user2025Nethelvetic") {
+          console.log("2.1.10 ../../../../ Front FormConnect => H.S. => selectUserWithEmailAndPw => set Zustand/Cookies => Push -> gestion360/identifier");
+          //////////////////////////////////////////////////////////////////////
+          //    CONTINUE A GESTION360/IDENTIFIER
+          /////////////////////////////////////////////////////////////////////
           router.push("/gestion360/identifier");
         } else {
-          router.push("/formulaire/seConnecter");
+          //////////////////////////////////////////////////////////////////////
+          //                         STOP 
+          /////////////////////////////////////////////////////////////////////
+          return;
         }
       } else {
         //------------------------------------------------------------
-        // 2.1.7 Front FormConnect handleSubmit  => selectionUserWithEmailAndPw NO SUCCES
-        console.log("2.1.10 Front FormConnect handleSubmit selectionUserWithEmailAndPw NO SUCCESS: ", result);
+        // 2.1.10 ../../ Front FormConnect handleSubmit  => selectionUserWithEmailAndPw NO SUCCES
+        console.log("2.1.10 ../../.?/ Front FormConnect => H.S. => selectUserWithEmailAndPw NO OK => set Cookies");
 
-        // 2.1.8 set cookies
+        // 2.1.11 set cookies
         const myData = {
-          userAdmin: result.user?.email === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
-          userImgUrl: result.user?.imgUrl || "",
-          userEmail: result.user?.email || "",
+          userAdmin: selectUserWithEmailAndPwResult.user?.email === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
+          userImgUrl: selectUserWithEmailAndPwResult.user?.imgUrl || "",
+          userAdminEmail: selectUserWithEmailAndPwResult.user?.email || "",
+          userId: selectUserWithEmailAndPwResult.user?.id || ""
         };
         Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
-        alert(result.message);
+        alert(selectUserWithEmailAndPwResult.message);
       }
     } catch (error) {
-      console.error("2.1.8 Front FormConnect handleSubmit Erreur:", error);
+      console.log("2.1.11 ../../ Front FormConnect => H.S. => selectUserWithEmailAndPw NO OK");
       alert("Une erreur est survenue lors de la connexion.");
     }
   };
@@ -117,30 +128,32 @@ const FormSeConnecter: React.FC = () => {
   //    2.2.0 handleForgotPassword sur clic du bouton "mot de passe oublié"
   //---------------------------------------------------------------------
   const handleForgotPassword = async () => {
-    console.log("2.2.0 Front FormConnect handleForgotPassword debut");
+    console.log("2.2.0 ../ Front FormConnect => handleForgotPassword debut");
     if (!username) {
       alert("Veuillez renseigner votre email pour réinitialiser votre mot de passe.");
       return;
     }
 
     //------------------------------------------------------------
-    // 2.2.1 Front FormConnect handleSubmit  => selectionUserWithEmailAndPw NO SUCCES
-     console.log("2.2.1 Front FormConnect handleForgotPassword => set Cookies ");
+    // 2.2.1 ../ Front FormConnect => H.F.Pw => set Cookies
+     console.log("2.2.1 ../../ Front FormConnect => H.F.Pw => set Cookies ");
 
     // 2.2.2 set cookies
      const myData = {
        userAdmin: username === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
        userImgUrl: "",
        userEmail: username || "",
+       userId: "",
      };
      Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
 
     try {
-      console.log("2.2.3 Back FormConnect handleForgotPassword => courrielPw() ");
+      console.log("2.2.3 ../../../ Back FormConnect => H.F.Pw => set Cookies => courrielPw OK NO");
       const courrielPeResult = await courrielPw(username);
 
       // 2.2.4 Back FormConnect handleForgotPassword => courrielPw() SUCESS
       if (courrielPeResult && courrielPeResult.success) {
+        console.log("2.2.3 ../../../ FRONT FormConnect => H.F.Pw => set Cookies => courrielPw OK");
         alert("Un email de réinitialisation a été envoyé à " + username);
       } else {
         alert(
@@ -149,7 +162,7 @@ const FormSeConnecter: React.FC = () => {
         );
       }
     } catch (error) {
-      console.error("2.2.4 Front FormConnect handleForgotPassword erreur: ", error);
+      console.log("2.2.4 ../../../ Front FormConnect => H.F.Pw => set Cookies => courrielPw NO OK");
       alert("Erreur lors de l'envoi de l'email.");
     }
   };
@@ -158,7 +171,8 @@ const FormSeConnecter: React.FC = () => {
   //    2.3.0 handleInscription sur clic du bouton "Inscription"
   //---------------------------------------------------------------------
   const handleInscription = () => {
-    console.log("2.3.0 Front FormConnect  handleInscription debut");
+    console.log("2.3.0 ../../../ Front FormConnect => handleInscription debut");
+    console.log("2.3.0 ../../../ Front FormConnect => handleInscription/ push -> formulaire/inscription");
     router.push("/formulaire/inscription");
   };
 

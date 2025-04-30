@@ -1,5 +1,5 @@
 import React from 'react';
-import FormInscri from '../../components/form-inscription';
+import FormIns from '../../components/form-inscription';
 
 
 export default function FormulaireInscription() {
@@ -10,7 +10,7 @@ export default function FormulaireInscription() {
 //--------------------------------------------------------------------- 
   return (
     <div className="w-full md:w-5xl mx-auto">
-        <FormInscri />
+        <FormIns />
     </div>
   );
 }

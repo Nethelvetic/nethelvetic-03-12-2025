@@ -1,5 +1,5 @@
 import React from 'react';
-import PageAdmFormaAdd from '../../../components/page-Adm-Forma-Add';
+import PageAdmFormaAdd from '../../../components/p-Adm-Forma-Add';
 
 
 

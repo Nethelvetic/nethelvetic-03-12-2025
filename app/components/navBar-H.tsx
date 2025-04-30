@@ -24,7 +24,7 @@ interface NavBarHProps {
 interface MyDataType {
   userAdmin?: string;
   userImgUrl?: string;
-  userEmail?: string;
+  userAdminEmail?: string;
 }
 
 const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
@@ -50,16 +50,17 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
     //---------------------------------------------------------------
     // Récupère les data du cookie "myData"
     const cookieStr = Cookies.get("myData");
-    console.log("2.0.2 NavBarH useEffect Cookie récupéré =", cookieStr);
+    console.log("2.0.2 ../NavBarH useEffect => Cookie OK =", cookieStr);
 
     //---------------------------------------------------------------
     // Parse les data et définit la variable cookieData
     if (cookieStr) {
       try {
+        console.log("2.0.2 .?/NavBarH useEffect => Cookie OK => parse Coocki Ok,No OK");
         const parsed: MyDataType = JSON.parse(cookieStr);
         setCookieData(parsed);
       } catch (error) {
-        console.error("Erreur lors du parsing du cookie 'myData':", error);
+        console.error("2.0.3 ../NavBarH useEffect => Cookie OK => parse Coocki No OK: ", error);
         setCookieData(undefined);
       }
     } else {
@@ -72,13 +73,15 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
   };
 
   //---------------------------------------------------------------------
-  // Déconnexion : supprime le cookie "myData" et met à jour l'état 
+  // Déconnexion : supprime le cookie "myData", met à jour l'état et redirige
   //---------------------------------------------------------------------
   const handleLogout = () => {
     console.log("2.0.2 NavBarH handleLogout");
     Cookies.remove("myData", { path: "/" });
     setCookieData(undefined);
     setUserAdmin("");
+    // redirection vers la page d'accueil
+    window.location.href = "/";
   };
 
   //---------------------------------------------------------------------
@@ -106,11 +109,20 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
             </a>
           ) : (
             <>
-              <img
-                src={cookieData.userImgUrl}
-                alt="User"
-                className="h-10 w-10 md:h-16 md:w-16 rounded-full"
-              />
+              {/* Image + email sous l'image */}
+              <div className="flex flex-col items-center">
+                <a href="/formulaire/seConnecter">
+                  <img
+                    src={cookieData.userImgUrl}
+                    alt="User"
+                    className="h-8 w-8 md:h-10 md:w-10 rounded-full"
+                  />
+                </a>
+                <span className="text-white font-openSansRegular text-xs md:text-sm mt-1">
+                  {cookieData.userAdminEmail}
+                </span>
+              </div>
+              {/* Bouton Quitter à côté */}
               <button
                 onClick={handleLogout}
                 className="ml-2 text-white hover:text-gray-200 font-openSansRegular text-base md:text-lg cursor-pointer"
@@ -131,14 +143,23 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
             </a>
           ) : (
             <>
-              <img
-                src={cookieData.userImgUrl}
-                alt="User"
-                className="h-10 w-10 rounded-full"
-              />
+              {/* Image + email sous l'image */}
+              <div className="flex flex-col items-center">
+                <a href="/formulaire/seConnecter">
+                  <img
+                    src={cookieData.userImgUrl}
+                    alt="User"
+                    className="h-8 w-8 rounded-full"
+                  />
+                </a>
+                <span className="text-white font-openSansRegular text-xs mt-1">
+                  {cookieData.userAdminEmail}
+                </span>
+              </div>
+              {/* Bouton Quitter à côté */}
               <button
                 onClick={handleLogout}
-                className="text-white hover:text-gray-200 font-openSansRegular text-base cursor-pointer"
+                className="text-white hover:text-gray-200 font-openSansRegular text-base cursor-pointer ml-2"
               >
                 Quitter
               </button>

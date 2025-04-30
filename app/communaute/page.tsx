@@ -1,5 +1,5 @@
 import React from 'react';
-import PageCommunaute from '../components/page-Communaute';
+import PageCommunaute from '../components/p-Communaute';
 
 
 export default function Communaute() {

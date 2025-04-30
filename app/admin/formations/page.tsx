@@ -1,5 +1,5 @@
 import React from 'react';
-import PageAdmFormations from '../../components/page-Adm-Formations';
+import PageAdmFormations from '../../components/p-Adm-Formations';
 
 
 

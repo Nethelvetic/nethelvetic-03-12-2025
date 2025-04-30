@@ -1,5 +1,5 @@
 import React from 'react';
-import PageAdmUsers from '../../components/page-Adm-Users';
+import PageAdmUsers from '../../components/p-Adm-Users';
 
 
 

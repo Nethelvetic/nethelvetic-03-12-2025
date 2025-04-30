@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import PageVuComponents from '../components/pageVuComponents';
+import PageVuComponents from '../components/p-VuComponents';
 
 export default function PageToutComponents() {
   //---------------------------------------------------------------------

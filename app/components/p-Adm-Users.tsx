@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { selectionUsers } from "../db/dbQuery-Users";
+import { usersSelectAll} from "../db/dbQuery-Users";
 import CartVTitreTxtBgGN from './cart-V-Titre-Txt-BgGN';
-import ListHUserBtnMBgGN from './list-H-Users-btnM-bgGN';
-import BtnLgNoEffetBgG from './btn-Lg-NoEffect-BgG';
+import LiHUserBtnBgGN from './li-H-Users-btn-bgGN';
+import BtnLgNoEffetBgG from './btn-Lg-NoEf-Url-BgG';
 
 
 
@@ -25,8 +25,8 @@ const PageAdmUser: React.FC = () => {
   useEffect(() => {
     console.log("2.0.0 PageAdmUser useEffect debut" )
     async function fetchUsers() {
-      const data = await selectionUsers ();
-      console.log("2.0.1 PageAdmUser useEffect selectionUsers SUCESS =>", data )
+      const data = await  usersSelectAll();
+      console.log("2.0.1 PageAdmUser => useEffect =>  usersSelectAll OK =>", data )
 
           //---------------------------------------------------------------------
           //2.0.1 PageAdmUser useEffect selectionUsers SUCCES => set useState
@@ -67,7 +67,11 @@ const PageAdmUser: React.FC = () => {
 
          {/*-----------------------------1 DEBUT CONTENEUR carte-H-Img-Titre-BdG */}
          <div className="p-6">
-            <ListHUserBtnMBgGN  cards={cardData} />
+            <LiHUserBtnBgGN
+                cards={cardData}
+                buttonTitle="Modifier"
+                buttonUrlPrefix= "/admin/users/"
+            />
          </div>
 
     

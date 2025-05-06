@@ -10,7 +10,7 @@ interface BtnLgBgGProps {
   children: React.ReactNode;
 }
 
-const BtnLgBgG: React.FC<BtnLgBgGProps> = ({ interneUrl, externalUrl, children}) => {
+const BtnLgNoEfUrlBgG: React.FC<BtnLgBgGProps> = ({ interneUrl, externalUrl, children}) => {
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique  ---------------------
   //---------------------------------------------------------------------
@@ -45,4 +45,4 @@ const BtnLgBgG: React.FC<BtnLgBgGProps> = ({ interneUrl, externalUrl, children})
   );
 };
 
-export default BtnLgBgG;
+export default BtnLgNoEfUrlBgG;

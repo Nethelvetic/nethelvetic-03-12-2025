@@ -1,40 +1,34 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { userInsertOne} from "../db/dbQuery-Users";
+import { crmUser_userInsertion } from "../db/dbQuery-CrmUsers_user";
 import ContainerBGN from "./cont-BgGN";
 import ContBtnLgNoEffectBgG from "./cont-Btn-Lg-NoEffet-BgG";
 import { useRouter } from "next/navigation";
-// Note : Import de la Server Action pour Vercel Blob
-import fileStoreVercelBlob from "../util/fileStoreVercelBlob"; 
+import Cookies from "js-cookie";
+import fileStoreVercelBlob from "../util/fileStoreVercelBlob";
 
 type UserDataType = {
   nom_entreprise: string;
   personne_a_contacter: string;
   ville: string;
-  code_postal?: string;
-  telephone?: string;
-  date_de_naissance?: string;
+  code_postal: string;
+  telephone: string;
+  date_de_naissance: string;
   date_creation: string;
   email: string;
-  mot_de_passe?: string;
-  username?: string;
-  status?: string;
-  domaine_activite?: string;
-  employeur?: string;
-  status_professionnel?: string;
-  adresse?: string;
-  imgUrl?: string;
-  btnUrlInt?: string;
-  btnUrlExt?: string;
+  username: string;
+  status: string;
+  domaine_activite: string;
+  employeur: string;
+  status_professionnel: string;
+  adresse: string;
+  imgUrl: string;
+  btnUrlInt: string;
+  btnUrlExt: string;
   btnTexte: string;
   btnModifUrl: string;
-  date?: string;
-  titre?: string;
-  texte?: string;
-  prix?: number;
-  heure?: string;
-  lieu?: string;
+  userId: number;
 };
 
 const initialUserData: UserDataType = {
@@ -46,32 +40,25 @@ const initialUserData: UserDataType = {
   date_de_naissance: "",
   date_creation: "",
   email: "",
-  mot_de_passe: "",
   username: "",
   status: "",
   domaine_activite: "",
   employeur: "",
   status_professionnel: "",
   adresse: "",
-  imgUrl: "/singeCalculateur.webp", // Image par défaut
+  imgUrl: "/singeCalculateur.webp",
   btnUrlInt: "/formulaire/contact",
   btnUrlExt: "",
   btnTexte: "modification",
-  btnModifUrl: "/admin/users",
-  date: "",
-  titre: "",
-  texte: "",
-  prix: 0,
-  heure: "",
-  lieu: ""
+  btnModifUrl: "",
+  userId: 0,
 };
 
-const FormAdminUserAdd: React.FC = () => {
-
+const FormCrmUserAdd: React.FC = () => {
   //---------------------------------------------------------------------
   //------------------------1 data dynamique ----------------------------
   //---------------------------------------------------------------------
-  console.log("1.0.0 Front FormAdminUserAdd  Début");
+  console.log("1.0.0 Front FormCrmUserAdd  Début");
   const [unUserData, setUnUserData] = useState<UserDataType>(initialUserData);
   const router = useRouter();
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -83,22 +70,16 @@ const FormAdminUserAdd: React.FC = () => {
       ? "bg-gradient-to-l from-gray-800 to-black text-gray-300 placeholder-gray-400"
       : "bg-gradient-to-l from-gray-800 to-black text-white placeholder-white";
 
-
-
   //---------------------------------------------------------------------
   //------------------------2 Comportement ------------------------------
   //---------------------------------------------------------------------
-
-  //---------------------------------------------------------------------
-  // 2.0.0 ../FormAdminUserAdd => handleClick (déclenche sur clique button)
-  //---------------------------------------------------------------------
   const handleClick = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("2.0.0 ../Front FormAdminUserAdd => handleClick debut");
+    console.log("2.0.0 ../ Front FormCrmUserAdd => handleClick debut");
     e.preventDefault();
 
-  //------------------------------------------------------------
-  // 2.0.1 ../.?/FormAdminUserAdd => handleClick => champs remplis OK ou NO OK
-  console.log("1.0.1 ../.?/Front FormAdminUserAdd => H.C. => champs remplis ou NON");
+    //------------------------------------------------------------
+    // 2.0.1 champs remplis OK ou NO OK
+    console.log("2.0.1 ../.?/ Front FormCrmUserAdd => H.C. => champs OK/NO");
     if (
       !unUserData.email ||
       !unUserData.nom_entreprise ||
@@ -109,87 +90,89 @@ const FormAdminUserAdd: React.FC = () => {
       !unUserData.telephone ||
       !unUserData.domaine_activite
     ) {
-      console.log("2.0.2 ../../Front FormAdminUserAdd => H.C. => champs NO OK");
+      console.log("2.0.2 ../../ Front FormCrmUserAdd => H.C. => champs NO OK");
       alert("Veuillez remplir tous les champs.");
       return;
     }
 
+    //------------------------------------------------------------
+    // 2.0.3 get Cookies
+    console.log("2.0.3 ../../ FRONT FormCrmUserAdd => H.C. => get Cookies");
+    const cookieStr = Cookies.get("myData");
+    const cookieData = cookieStr ? JSON.parse(cookieStr) : undefined;
+    const userIdFromCookie = cookieData?.userId ?? 0;
+    console.log("2.0.4 ../../ FRONT FormCrmUserAdd => H.C. => get Cookies =", cookieData);
+
+    //------------------------------------------------------------
+    // 2.0.5 préparer payload
     const dataToInsert = {
       nom_entreprise: unUserData.nom_entreprise,
       personne_a_contacter: unUserData.personne_a_contacter,
       ville: unUserData.ville,
       code_postal: unUserData.code_postal,
-      telephone: unUserData.telephone ?? "",
-      date_de_naissance: unUserData.date_de_naissance ?? "",
+      telephone: unUserData.telephone,
+      date_de_naissance: unUserData.date_de_naissance,
       date_creation: unUserData.date_creation,
       email: unUserData.email,
-      mot_de_passe: unUserData.mot_de_passe ?? "",
-      username: unUserData.username ?? "",
-      status: unUserData.status ?? "",
+      username: unUserData.username,
+      status: unUserData.status,
       domaine_activite: unUserData.domaine_activite,
-      employeur: unUserData.employeur ?? "",
-      status_professionnel: unUserData.status_professionnel ?? "",
+      employeur: unUserData.employeur,
+      status_professionnel: unUserData.status_professionnel,
       adresse: unUserData.adresse,
-      imgUrl: unUserData.imgUrl ?? "",
-      btnUrlInt: "/formulaire/contact",
-      btnUrlExt: "",
-      btnTexte: "modification",
-      btnModifUrl: "/admin/users"
+      imgUrl: unUserData.imgUrl,
+      btnUrlInt: unUserData.btnUrlInt,
+      btnUrlExt: unUserData.btnUrlExt,
+      btnTexte: unUserData.btnTexte,
+      btnModifUrl: "/gestion360/identifier",
+      userId: userIdFromCookie,
     };
 
     //------------------------------------------------------------
-    // 2.0.3 ../.?/FormAdminUserAdd => H.C. => champs OK => reatOneUser Ok ou NO
+    // 2.0.5 appel de la Server Action
+    console.log("2.0.5 ../../.?/ Back FormCrmUserAdd => H.C. => get Cookies => crmUser_userInsert OK/NO");
     try {
-      console.log("2.0.3 ../../.?Back FormAdminUserAdd => H.C. => champs OK => creatOneUser Ok ou NO");
-      const response = await userInsertOne(dataToInsert);
-
+      const crmUser_userInsertRes = await crmUser_userInsertion(dataToInsert);
       //------------------------------------------------------------
-      // 2.0.4 ../.?/FormAdminUserAdd => handleClick => champs remplis OK => creatOneUser ok
-      if (response.success) {
-        console.log("2.0.4 ../../../../ Front FormAdminUserAdd => H.C. => champs OK => creatOneUser Ok => push admin/users");
+      // 2.0.6 insertion OK
+      if (crmUser_userInsertRes.success) {
+        console.log("2.0.6 ../../../ FRONT FormCrmUserAdd => H.C. => get Cookies => crmUser_userInsert OK");
         setUnUserData(initialUserData);
-        /////////////////////////////////////////////////////////////////////
-        //         STOP 1 => ADMIN/USERS
-        ////////////////////////////////////////////////////////////////////
-        router.push("/admin/users");
+        router.push("/gestion360/identifier");
+      } else {
+        console.error("2.0.6 ../../../ FRONT FormCrmUserAdd => H.C. => get Cookies => crmUser_userInsert NO OK", crmUser_userInsertRes.message);
+        alert("L’insertion a échoué : " + crmUser_userInsertRes.message);
       }
     } catch (error) {
-      console.error("2.0.5 ../../../../ Front FormAdminUserAdd => H.C. => champs OK => creatOneUser NO OK", error);
+      console.error("2.0.7 ../../../ FRONT FormCrmUserAdd => H.C. => get Cookies => crmUser_userInsert erreur ", error);
+      alert("Une erreur est survenue, veuillez réessayer.");
     }
   };
 
-
   //---------------------------------------------------------------------
-  // 3.0.0 ../FormAdminUserAdd => handleImageUpload (uploader une image via Vercel Blob)
+  // 3.0.0 handleImageUpload
   //---------------------------------------------------------------------
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-
-  //---------------------------------------------------------------------
-  // 3.0.1 ../.?/FormAdminUserAdd => handleImageUpload => select file
-    console.log("3.0.1 ../.?/ Front FormAdminUserAdd => handleImageUpload => selec file Ok ou NO OK");
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      console.log("3.0.2 ../../ Front FormAdminUserAdd => handleImageUpload => selec file Ok", file);
-
-      //---------------------------------------------------------------------
-      // 3.0.3 ../../.?/ FormAdminUserAdd => handleImageUpload => select file => store in Vercel
+    console.log("3.0.1 handleImageUpload debut");
+    if (e.target.files?.[0]) {
       try {
-        console.log("3.0.3 ../../.?/ Back FormAdminUserAdd => handleImageUpload => selec file Ok => fileStoreVercelBlob ", file);
+        const file = e.target.files[0];
+        console.log("3.0.2 upload via Vercel Blob", file);
         const uploadedUrl = await fileStoreVercelBlob(file);
-        console.log("3.0.4 ../../.?/ Back FormAdminUserAdd => handleImageUpload => selec file Ok => fileStoreVercelBlob OK: ", uploadedUrl);
+        console.log("3.0.3 upload OK", uploadedUrl);
         setUnUserData({ ...unUserData, imgUrl: uploadedUrl });
-      } catch (error) {
-        console.error("3.0.4 ../../.?/ Back FormAdminUserAdd => handleImageUpload => selec file Ok => fileStoreVercelBlob NO OK: ", error);
+      } catch (err) {
+        console.error("3.0.4 upload error", err);
+        alert("L’image n’a pas pu être sélectionnée.");
       }
     }
   };
-
 
   //---------------------------------------------------------------------
   //------------------------2 Affichage ---------------------------------
   //---------------------------------------------------------------------
   return (
-    <div className="p-6">
+<div className="p-6">
       <ContainerBGN>
         <div className="w-full">
           <form onSubmit={handleClick} className="space-y-4 p-4 w-full">
@@ -345,7 +328,7 @@ const FormAdminUserAdd: React.FC = () => {
                 {/* Bouton */}
                 <div className="w-full pt-3 pb-3 flex space-x-4">
                   <ContBtnLgNoEffectBgG >
-                    <button type="submit">Creer</button>
+                    <button type="submit">Modifier</button>
                   </ContBtnLgNoEffectBgG >
                 </div>
               </div>
@@ -357,4 +340,4 @@ const FormAdminUserAdd: React.FC = () => {
   );
 };
 
-export default FormAdminUserAdd;
+export default FormCrmUserAdd;

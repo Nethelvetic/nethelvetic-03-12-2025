@@ -2,15 +2,16 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import {
-  actualiserOneUser,
-  suppOneUser,
-  selectionOneUser,
+  userUpdateOne,
+  userDeleteOne,
+  userSelectOne,
 } from "../db/dbQuery-Users";
 import ContainerBGN from "./cont-BgGN";
 import ContBtnLgNoEffectBgG from "./cont-Btn-Lg-NoEffet-BgG";
 import { useParams, useRouter } from "next/navigation";
 // Note : Import de la Server Action pour Vercel Blob
 import fileStoreVercelBlob from "../util/fileStoreVercelBlob";
+
 
 type UserDataType = {
   nom_entreprise: string;
@@ -102,30 +103,33 @@ const FormAdmUserModif: React.FC = () => {
   //------------------------------------------------------------------------
   useEffect(() => {
     console.log("2.0.1 ../ Front FormAdmUserModif => useEffect Début ");
+
     async function fetchUser() {
-      console.log("2.0.2 ../.?/ Front FormAdmUserModif => useE => modifId OK ou nNO");
+
+      //------------------------------------------------------------------------
+      // 2.0.2 ../.?/ FormAdmUserModif => useE => modifId OK/NO
+      console.log("2.0.2 ../.?/ Front FormAdmUserModif => useE => modifId OK/NO");
       if (isNaN(modifId)) {
-        console.error(
-          "2.0.3 ../../ Front FormAdmUserModif => useE => modifId NO OK",
-          modif_id
-        );
+        console.error("2.0.3 ../../ Front FormAdmUserModif => useE => modifId NO OK",modif_id);
+        ////////////////////////////////////////
+        /////////     STOP            //////////
+        ////////////////////////////////////////
         return;
       }
 
-      console.log(
-        "2.0.2 ../../.? Back FormAdmUserModif => useE => modifId OK => selectOneUser OK ou NO"
-      );
-      const selectionOneUserRes = await selectionOneUser(modifId);
+      //------------------------------------------------------------------------
+      // 2.0.4 ../../.?/ FormAdmUserModif => useE => modifId OK => userOneSelect OK/NO
+      console.log("2.0.4 ../../.? Back FormAdmUserModif => useE => modifId OK => userOneSelect OK/NO");
+      const selectionOneUserRes = await userSelectOne(modifId);
 
+      //------------------------------------------------------------------------
+      // 2.0.5 ../../../ FormAdmUserModif => useE => modifId OK => userOneSelect OK
       if (selectionOneUserRes.success) {
-        console.log(
-          "2.0.3 ../../../Front FormAdmUserModif => useE => modifId OK => selectOneUser OK "
-        );
+        console.log("2.0.5 ../../../ Front FormAdmUserModif => useE => modifId OK => userOneSelect OK ");
 
         if (selectionOneUserRes.user) {
           console.log(
-            "2.2.4 ../../../.?/Front FormAdmUserModif => useE => modifId OK => selectOneUser OK => set useState"
-          );
+            "2.0.6 ../../../.?/ Front FormAdmUserModif => useE => modifId OK => userOneSelect OK => set useState");
           const userObj = Array.isArray(selectionOneUserRes.user)
             ? selectionOneUserRes.user[0]
             : selectionOneUserRes.user;
@@ -149,11 +153,10 @@ const FormAdmUserModif: React.FC = () => {
             adresse: userObj.adresse ?? "",
             imgUrl: userObj.imgUrl ?? initialUserData.imgUrl,
           });
-        } else {
-          console.error(
-            "2.2.4 ../../../.?/Front FormAdmUserModif => useE => modifId OK => selectOneUser NO OK"
-          );
         }
+      } else {
+        console.error(
+          "2.0.7 ../../../.?/ Front FormAdmUserModif => useE => modifId OK => userOneSelect NO OK");
       }
     }
     fetchUser();
@@ -214,7 +217,7 @@ const FormAdmUserModif: React.FC = () => {
       "3.0.2 ../../.?/ BACK FormAdmUserModif => H.C. => champs OK => actualiserOneUser OK ou NO OK"
     );
     try {
-      const actualiserOneUserRes = await actualiserOneUser(modifId, payload);
+      const actualiserOneUserRes = await userUpdateOne(modifId, payload);
       if (actualiserOneUserRes.success) {
         console.log(
           "3.0.3 ../../../../ FRONT FormAdmUserModif => H.C. => actualiserOneUser OK => push adm/users "
@@ -243,7 +246,7 @@ const FormAdmUserModif: React.FC = () => {
         "3.0.6 ../.?/ BACK FormAdmUserModif => H.D. => suppOneUser OK ou NO OK"
       );
       try {
-        const suppOneUserRes = await suppOneUser(modifId);
+        const suppOneUserRes = await userDeleteOne(modifId);
         if (suppOneUserRes.success) {
           console.log(
             "3.0.7 ../../../ FRONT FormAdmUserModif => H.D. => suppOneUser OK => push admin/users"

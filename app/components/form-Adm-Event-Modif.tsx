@@ -47,7 +47,7 @@ const FormAdmEventModif: React.FC = () => {
   const modifIdStr = Array.isArray(modif_id) ? modif_id[0] : modif_id;
   const modifId = modifIdStr ? parseInt(modifIdStr, 10) : NaN;
 
-  //---------------------------------------------------------------------
+  //--------------------------------------------------------------------
   //------------------------2 Début comportement ------------------------
   //---------------------------------------------------------------------
   useEffect(() => {

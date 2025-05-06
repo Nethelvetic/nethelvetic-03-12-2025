@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import CarteVImgTxtBgGN from "./cart-V-Img-Txt-BgGN";
 import ContBtnLgNoEffetBgG from "./cont-Btn-Lg-NoEffet-BgG";
-import { createOneUserInscription } from "../db/dbQuery-Inscription";
+import { createOneUserInscription } from "../db/dbQuery-CrmUserInscrit";
 import VarZustand from "../util/zustand";
 
 const FormInitPw: React.FC = () => {
@@ -118,10 +118,10 @@ const FormInitPw: React.FC = () => {
             }),
             { expires: 1, path: '/' }
           );
-        } else if (res.saas) {
-          console.log("2.2.8 Front FormInitPw h.s. => Inscri SUCCES => admin saas");
-          const saasObj = Array.isArray(res.saas) ? res.saas[0] : res.saas;
-          setUserAdmin(saasObj.identification ?? "");
+        } else if (res.crm) {
+          console.log("2.2.8 Front FormInitPw h.s. => Inscri SUCCES => admin crm");
+          const crmObj = Array.isArray(res.crm) ? res.crm[0] : res.crm;
+          setUserAdmin(crmObj.identification ?? "");
           Cookies.set(
             'myData',
             JSON.stringify({

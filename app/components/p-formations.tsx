@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { selectionFormation } from "../db/dbQuery-Formations";
 import CarteVImgTitreBgN from './cart-V-Img-Titre-BgN';
-import ListHImgTxtBtnBgGN from './list-H-Img-Txt-Btn-BgGN';
+import ListHImgTxtBtnBgGN from './li-H-Img-Txt-Btn-BgGN';
 
 
 const FormationPage: React.FC = () => {

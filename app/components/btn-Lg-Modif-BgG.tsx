@@ -9,7 +9,7 @@ interface BtnLgModifBgGProps {
     children: React.ReactNode;
 }
 
-const BtnLgModifBgGViolet: React.FC<BtnLgModifBgGProps> = ({ modifUrl, children }) => {
+const BtnLgModifBgG: React.FC<BtnLgModifBgGProps> = ({ modifUrl, children }) => {
  
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique  ---------------------
@@ -39,4 +39,4 @@ const BtnLgModifBgGViolet: React.FC<BtnLgModifBgGProps> = ({ modifUrl, children 
   );
 };
 
-export default BtnLgModifBgGViolet;
+export default BtnLgModifBgG;

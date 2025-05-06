@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation"; 
 import CarteVImgTxtBgGN from "./cart-V-Img-Txt-BgGN";
 import ContBtnLgNoEffetBgG from "./cont-Btn-Lg-NoEffet-BgG";
-import courrielInscription from "../email/email-Inscription"; 
-import { createOneUserInscription } from "../db/dbQuery-Inscription"; 
+import courrielInscription from "../email/crmUser_EmailInscrit"; 
+import { crmUserInsertion} from "../db/dbQuery-CrmUserInscrit"; 
 import VarZustand from "../util/zustand";
 import Cookies from "js-cookie";
 
@@ -67,11 +67,11 @@ const initialUserData: UserDataType = {
   lieu: ""
 };
 
-const FormIns: React.FC = () => {
+const  FormCrmUserIns: React.FC = () => {
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique   --------------------
   //---------------------------------------------------------------------
-  console.log("1.0.0 FormIns debut");
+  console.log("1.0.0 CrmUser-Form debut");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -99,13 +99,13 @@ const FormIns: React.FC = () => {
   //------------------------2 Début comportement   ----------------------
   //---------------------------------------------------------------------
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("2.1.0 Front FormIns HandleSubmit debut");
+    console.log("2.1.0 Front CrmUser-Form HandleSubmit debut");
     e.preventDefault();
 
     //-------------------------------------------------------------------
-    // 2.1.1 ../.?/ FormIns => H.S.=> name/password ok ou No
+    // 2.1.1 ../.?/ CrmUser-Form => H.S.=> name/password ok ou No
     //-------------------------------------------------------------------
-    console.log("2.1.2 ../.?/ FRONT FormIns => H.S. => usename/Pw ok ou No OK :")
+    console.log("2.1.2 ../.?/ FRONT CrmUser-Form => H.S. => crmUser-Pw OK/NO :")
     if (!username || !password || !confirmPassword) {
       alert("Veuillez remplir tous les champs.");
       return;
@@ -115,10 +115,10 @@ const FormIns: React.FC = () => {
       alert("Les mots de passe ne correspondent pas.");
       return;
     }
-    console.log("2.1.3 ../../ FRONT FormIns => H.S. => usename/Pw ok ", { username, password, confirmPassword });
+    console.log("2.1.3 ../../ FRONT CrmUser-Form => H.S. => crmUser-Pw ok ", { username, password, confirmPassword });
     
     //-------------------------------------------------------------------
-    // 2.1.4 ../../.?/ FormIns => H.S. => name/Pw ok=> creerUserIns
+    // 2.1.4 ../../.?/ CrmUser-Form => H.S. => crmUser-Pw ok => CrmUser-Ins
     //-------------------------------------------------------------------
     try {
       const userToInsert = {
@@ -144,13 +144,13 @@ const FormIns: React.FC = () => {
         btnModifUrl: "/admin/users",
       };
 
-      console.log("2.1.5 ../../.?/ Back FormIns => H.S. => name/Pw => creerUserIns Ok/NO");
-      const createOneUserInscResult = await createOneUserInscription(userToInsert, password);
+      console.log("2.1.5 ../../.?/ Back CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins Ok/NO");
+      const crmUserInsertionRes = await crmUserInsertion(userToInsert, password);
 
       //-------------------------------------------------------------------
-      // 2.1.6 ../../.?/ FRONT FormIns => H.S. => name/Pw ok => creerUserIns NO OK
-      if (!createOneUserInscResult) {
-        console.error("2.1.6 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns NO OK");
+      // 2.1.6 ../../.?/ FRONT CrmUser-Form => H.S. => crmUser-Pw ok => CrmUser-Ins NO OK
+      if (!crmUserInsertionRes) {
+        console.error("2.1.6 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins NO OK");
         alert("Une erreur est survenue lors de la création de votre compte.");
         //////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////
@@ -162,24 +162,24 @@ const FormIns: React.FC = () => {
 
 
       ///////////////////////////////////////////////////////////////////////
-      // 2.2.7 ../../../ FormIns => H.S. => name/Pw => creerOneUserInscrit OK 
+      // 2.2.7 ../../../ CrmUser-Form => H.S. => crmUser-Pw  => creerOneUserInscrit OK 
       ///////////////////////////////////////////////////////////////////////
-      if (createOneUserInscResult.success) {
-        console.log("2.2.7 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns");
+      if (crmUserInsertionRes.success) {
+        console.log("2.2.7 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins OK");
 
         
         //------------------------------------------------------------
-        // 2.2.8 ../../../.?/ FormIns => H.S. => name/Pw => creerUserIns => set Zust/coock  
-        if (createOneUserInscResult.user) {
-          console.log("2.2.8 ../../../.?/ FRONT FormIns => H.S. => name/Pw => creerUserIns => set Zust/coock");
-          const userObj = Array.isArray(createOneUserInscResult.user)
-            ? createOneUserInscResult.user[0]   // si c’est un tableau, on prend le premier élément
-            : createOneUserInscResult.user;     // sinon, c’est déjà un objet
+        // 2.2.8 ../../../.?/ CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  
+        if (crmUserInsertionRes.user) {
+          console.log("2.2.8 ../../../.?/ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock");
+          const userObj = Array.isArray(crmUserInsertionRes.user)
+            ? crmUserInsertionRes.user[0]   // si c’est un tableau, on prend le premier élément
+            : crmUserInsertionRes.user;     // sinon, c’est déjà un objet
 
             //------------------------------------------------------------
-            // 2.2.9 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns => set Zust/coock  email = golliard73@g
+            // 2.2.9 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  email = golliard73@g
             if (userObj.email === "golliard73@gmail.com") {
-              console.log(" 2.2.9 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns => set Zust/coock >golliard73@g");
+              console.log(" 2.2.9 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock >golliard73@g");
 
               setUserAdmin("jerome1872Troistorrents")
 
@@ -192,15 +192,15 @@ const FormIns: React.FC = () => {
               Cookies.set('myData', JSON.stringify(myCookieData), { expires: 1, path: '/' });
 
             //------------------------------------------------------------
-            // 2.2.10 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns => set Zust/coock  email = !golliard73@g
-            }  else  if (createOneUserInscResult.saas) {
-              console.log("2.2.10 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns => set Zust/coock  >!golliard73@g");
+            // 2.2.10 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  email = !golliard73@g
+            }  else  if (crmUserInsertionRes.crm) {
+              console.log("2.2.10 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  >!golliard73@g");
     
-              const saasObj = Array.isArray(createOneUserInscResult.saas)
-                ? createOneUserInscResult.saas[0]  
-                : createOneUserInscResult.saas;     
+              const crmObj = Array.isArray(crmUserInsertionRes.crm)
+                ? crmUserInsertionRes.crm[0]  
+                : crmUserInsertionRes.crm;     
             
-              setUserAdmin(saasObj.identification ?? "");
+              setUserAdmin(crmObj.identification ?? "");
 
               const myCookieData = {
                 userAdmin: "user2025Nethelvetic",  
@@ -214,11 +214,11 @@ const FormIns: React.FC = () => {
 
 
         ///////////////////////////////////////////////////////////////////////
-        // 2.2.11 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns NO OK
+        // 2.2.11 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins NO OK
         //////////////////////////////////////////////////////////////////////
       } else {
-        console.log("2.2.11 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns NO OK");
-        alert(createOneUserInscResult.message);
+        console.log("2.2.11 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins NO OK");
+        alert(crmUserInsertionRes.message);
       
         router.push("/formulaire/seConnecter");
         ///////////////////////////////////////////
@@ -228,21 +228,21 @@ const FormIns: React.FC = () => {
       }
 
      //----------------------------------------------------------------------
-     // 2.2.12 ../../.?/ FormIns => H.S. => name/Pw => creerUserIns NO OK
+     // 2.2.12 ../../.?/ CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins NO OK
     } catch (error) {
-      console.error("2.2.12 ../../../ FRONT FormIns => H.S. => name/Pw => creerUserIns NO OK");
+      console.error("2.2.12 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins NO OK");
       alert(`Erreur lors de la création du compte ${error}`);
       return;
     }
 
     //-------------------------------------------------------------------
-    //    2.3.0  ../../../ F.H. => name/Pw => creerUserIns=> send email
+    //    2.3.0  ../../../ F.H. => crmUser-Pw  => CrmUser-Ins=> send email
     //-------------------------------------------------------------------
     try {
-      console.log("2.3.1 ../../.?/ BACK FormIns => H.S. => name/Pw => creerUserIns => send email OK/NO");
+      console.log("2.3.1 ../../.?/ BACK CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => send email OK/NO");
       const result = await courrielInscription(username);
       if (result && result.success) {
-        console.log("2.3.2 ../../../ BACK FormIns => H.S. => name/Pw => creerUserIns => send email OK");
+        console.log("2.3.2 ../../../ BACK CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => send email OK");
 
         // Redirection vers la page de gestion en cas de succès
         //////////////////////////////////////////////////////////////////
@@ -254,11 +254,11 @@ const FormIns: React.FC = () => {
         return;
         
       } else {
-        console.log("2.3.3 ../../../ Front Back F.H. => name/Pw => creerUserIns => email NO OK");
+        console.log("2.3.3 ../../../ Front Back F.H. => crmUser-Pw  => CrmUser-Ins => email NO OK");
         alert("Identifiants incorrects.");
       }
     } catch (error) {
-      console.error("2.3.4 ../../../ Front Back F.H. => name/Pw => creerUserIns => email ERREUR");
+      console.error("2.3.4 ../../../ Front Back F.H. => crmUser-Pw  => CrmUser-Ins => email ERREUR");
       alert("Une erreur est survenue lors de l'envoi de l'email.");
     }
   };
@@ -320,4 +320,4 @@ const FormIns: React.FC = () => {
   );
 };
 
-export default FormIns;
+export default FormCrmUserIns;

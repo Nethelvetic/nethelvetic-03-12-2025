@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import CarteVImgTxtBgGN from "./cart-V-Img-Txt-BgGN";
 import ContBtnLgNoEffetBgG from "./cont-Btn-Lg-NoEffet-BgG";
-import { selectionUserWithEmailAndPassword } from "../db/dbQuery-Users";
+import { crmUserEmailAndPwSelection} from "../db/dbQuery-CrmUsers";
 import VarZustand from '../util/zustand';
 import Cookies from "js-cookie";
 import courrielPw from "../email/email-Pw";
@@ -26,7 +26,7 @@ const FormSeConnecter: React.FC = () => {
 
   //------------------------------------------------------------
   // 2.0.0 FormConnect use.E
-  //------------------------------------------------------------
+  //----------------------------------------------------e--------
   useEffect(() => {
     console.log("2.0.0 ../ Front FormConnect => useEffect debut");
     const cookieStr = Cookies.get('myData');
@@ -65,22 +65,22 @@ const FormSeConnecter: React.FC = () => {
     //---------------------------------------------------------------------
    //    2.1.5 ../../ FormConnect => H.S. => selectionUserWithEmailAndPw
     try {
-      console.log("2.1.5 ../.?/ Back FormConnect => H.S. => selectUserWithEmailAndPw");
-      const selectUserWithEmailAndPwResult = await selectionUserWithEmailAndPassword(username, password);
+      console.log("2.1.5 ../.?/ Back FormConnect => H.S. => crmUserEmailAndPwSelect ");
+      const crmUserEmailAndPwSelectRes = await crmUserEmailAndPwSelection(username, password);
 
       //------------------------------------------------------------
-      // 2.1.6 ../../.?/ FormConnect => H.S. => selectUserWithEmailAndPw => set Zustand/cookies
-      if (selectUserWithEmailAndPwResult.success) {
-        console.log("2.1.6 ../../ Front FormConnect => H.S. => selectUserWithEmailAndPw OK");
-        const { user, saas } = selectUserWithEmailAndPwResult;
+      // 2.1.6 ../../.?/ FormConnect => H.S. => crmUserEmailAndPwSelect  => set Zustand/cookies
+      if (crmUserEmailAndPwSelectRes.success) {
+        console.log("2.1.6 ../../ Front FormConnect => H.S. => crmUserEmailAndPwSelect  OK");
+        const { user, crm } = crmUserEmailAndPwSelectRes;
         
-        console.log("2.1.7 ../../../ Front FormConnect => H.S. => selectUserWithEmailAndPw OK => set Zustand/Cookies");
+        console.log("2.1.7 ../../../ Front FormConnect => H.S. => crmUserEmailAndPwSelect  OK => set Zustand/Cookies");
         // 2.1.7 set Zustand
-        setUserAdmin(saas.identification);
+        setUserAdmin(crm.identification);
 
         //2.1.8 set cookies
         const myData = {
-          userAdmin: saas.identification,
+          userAdmin: crm.identification,
           userImgUrl: user.imgUrl,
           userAdminEmail: user.email,
           userId: user.id
@@ -88,11 +88,11 @@ const FormSeConnecter: React.FC = () => {
         Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
 
         //2.1.9 route push
-        if (saas.identification === "jerome1872Troistorrents") {
-          console.log("2.1.9 ../../../../ Front FormConnect => H.S. => selectUserWithEmailAndPw => set Zustand/Cookies => Push -> admin/users");
+        if (crm.identification === "jerome1872Troistorrents") {
+          console.log("2.1.9 ../../../../ Front FormConnect => H.S. => crmUserEmailAndPwSelect  => set Zustand/Cookies => Push -> admin/users");
           router.push("/admin/users");
-        } else if (saas.identification === "user2025Nethelvetic") {
-          console.log("2.1.10 ../../../../ Front FormConnect => H.S. => selectUserWithEmailAndPw => set Zustand/Cookies => Push -> gestion360/identifier");
+        } else if (crm.identification === "user2025Nethelvetic") {
+          console.log("2.1.10 ../../../../ Front FormConnect => H.S. => crmUserEmailAndPwSelect  => set Zustand/Cookies => Push -> gestion360/identifier");
           //////////////////////////////////////////////////////////////////////
           //    CONTINUE A GESTION360/IDENTIFIER
           /////////////////////////////////////////////////////////////////////
@@ -106,20 +106,20 @@ const FormSeConnecter: React.FC = () => {
       } else {
         //------------------------------------------------------------
         // 2.1.10 ../../ Front FormConnect handleSubmit  => selectionUserWithEmailAndPw NO SUCCES
-        console.log("2.1.10 ../../.?/ Front FormConnect => H.S. => selectUserWithEmailAndPw NO OK => set Cookies");
+        console.log("2.1.10 ../../.?/ Front FormConnect => H.S. => crmUserEmailAndPwSelect  NO OK => set Cookies");
 
         // 2.1.11 set cookies
         const myData = {
-          userAdmin: selectUserWithEmailAndPwResult.user?.email === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
-          userImgUrl: selectUserWithEmailAndPwResult.user?.imgUrl || "",
-          userAdminEmail: selectUserWithEmailAndPwResult.user?.email || "",
-          userId: selectUserWithEmailAndPwResult.user?.id || ""
+          userAdmin: crmUserEmailAndPwSelectRes.user?.email === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
+          userImgUrl: crmUserEmailAndPwSelectRes.user?.imgUrl || "",
+          userAdminEmail: crmUserEmailAndPwSelectRes.user?.email || "",
+          userId: crmUserEmailAndPwSelectRes.user?.id || ""
         };
         Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
-        alert(selectUserWithEmailAndPwResult.message);
+        alert(crmUserEmailAndPwSelectRes.message);
       }
     } catch (error) {
-      console.log("2.1.11 ../../ Front FormConnect => H.S. => selectUserWithEmailAndPw NO OK");
+      console.log("2.1.11 ../../ Front FormConnect => H.S. => crmUserEmailAndPwSelect  NO OK");
       alert("Une erreur est survenue lors de la connexion.");
     }
   };

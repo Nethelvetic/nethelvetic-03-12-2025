@@ -2,8 +2,8 @@
 
 import React from 'react';
 import ContainerBgGN from './cont-BgGN';
-import BtnLgModifBgG from './btn-Lg-Modif-BgG';
 import { useRouter } from "next/navigation";
+import ContBtnLgNoEffectBgG from './cont-Btn-Lg-NoEffet-BgG';
 
 interface CarteData {
   id: number;
@@ -30,11 +30,19 @@ interface CarteData {
   btnModifUrl: string;
 }
 
-interface ListHUsersBtnMBgGNProps {
+interface ListHUsersBtnBgGNProps {
   cards: CarteData[];
+  buttonTitle: string;
+  buttonUrlPrefix: string;
 }
 
-const ListHUsersBtnMBgGN: React.FC<ListHUsersBtnMBgGNProps> = ({ cards }) => {
+
+
+const ListHUsersBtnBgGN: React.FC<ListHUsersBtnBgGNProps> = ({
+  cards,
+  buttonTitle,
+  buttonUrlPrefix,
+}) => {
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique ----------------------
   //---------------------------------------------------------------------
@@ -46,17 +54,21 @@ const ListHUsersBtnMBgGN: React.FC<ListHUsersBtnMBgGNProps> = ({ cards }) => {
     a.nom_entreprise.localeCompare(b.nom_entreprise)
   );
 
-  
   //---------------------------------------------------------------------
   //------------------------2 affichage ---------------------------------
   //---------------------------------------------------------------------
   return (
     <div>
       {sortedCards.map((card, index) => {
+        //------------------------------------------------------
+        // Construire l'URL finale du bouton
+        const buttonUrl = `${buttonUrlPrefix}/${card.id}`;
 
         //------------------------------------------------------
-        // Définir l'URL par défaut sans l'utilisation de count et adm
-        const modifUrl = `${card.btnModifUrl}/${card.id}`;
+        // Handler local pour ce bouton
+        const handleButtonClick = () => {
+          router.push(buttonUrl);
+        };
 
         const content = (
           <div className="w-full">
@@ -84,27 +96,35 @@ const ListHUsersBtnMBgGN: React.FC<ListHUsersBtnMBgGNProps> = ({ cards }) => {
                   <span style={{ color: "#fff" }} className="ml-4">☎</span>
                   <p className="m-0 text-xs md:text-lg">{card.telephone}</p>
                 </div>
+
                 {/* Bouton visible uniquement sur grand écran */}
                 <div className="pt-1 pb-1 md:pt-3 md:pb-3 hidden md:block">
-                  <BtnLgModifBgG modifUrl={modifUrl}>
-                    modification
-                  </BtnLgModifBgG>
+                  <ContBtnLgNoEffectBgG>
+                    <button
+                      className="w-full h-full"
+                      onClick={handleButtonClick}
+                    >
+                      {buttonTitle}
+                    </button>
+                  </ContBtnLgNoEffectBgG>
                 </div>
               </div>
             </div>
           </div>
         );
 
+        //------------------------------------------------------
+        // Version mobile : on clique sur tout le container
+        const modifUrlMobile = buttonUrl;
+
         return (
           <React.Fragment key={index}>
-            {/* Version mobile : conteneur cliquable qui inclut le container */}
             <div
               className="md:hidden cursor-pointer"
-              onClick={() => router.push(modifUrl)}
+              onClick={() => router.push(modifUrlMobile)}
             >
               <ContainerBgGN>{content}</ContainerBgGN>
             </div>
-            {/* Version desktop : conteneur standard avec bouton */}
             <div className="hidden md:block">
               <ContainerBgGN>{content}</ContainerBgGN>
             </div>
@@ -115,4 +135,4 @@ const ListHUsersBtnMBgGN: React.FC<ListHUsersBtnMBgGNProps> = ({ cards }) => {
   );
 };
 
-export default ListHUsersBtnMBgGN;
+export default ListHUsersBtnBgGN;

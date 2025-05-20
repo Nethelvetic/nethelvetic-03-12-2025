@@ -12,7 +12,7 @@ import BtnSmBgG from './btn-Sm-BgG';
 
 
 
-const PageAcceuil: React.FC = () => {
+const PageAccueil: React.FC = () => {
 
 //---------------------------------------------------------------------
 //------------------------2 Début data dynamique ----------------------
@@ -72,7 +72,7 @@ const cardData = [
 
          {/*-----------------------------1 DEBUT CONTENEUR carte-H-Img-Titre-BgN */}
         <div className='p-6'>
-            <CarteVImgTitreBgN imageSrc='/jeroNum651Bg.png' title='Simplifie ton entreprise'/>
+            <CarteVImgTitreBgN imageSrc='/jeroNum651Bg.png' title='Simplifie ton entreprise 58'/>
         </div>
 
 
@@ -173,4 +173,4 @@ const cardData = [
   );
 };
 
-export default PageAcceuil;
+export default PageAccueil;

@@ -5,7 +5,7 @@ import {
   crmUser_userUpdateOne,
   crmUser_userOneSelection,
   crmUser_userSupprimer
-} from "../db/dbQuery-CrmUsers_user";
+} from "../db/dbNeon-CrmUsers_user";
 import ContainerBGN from "./cont-BgGN";
 import ContBtnLgNoEffectBgG from "./cont-Btn-Lg-NoEffet-BgG";
 import { useParams, useRouter } from "next/navigation";
@@ -58,7 +58,7 @@ const initialUserData: UserDataType = {
   userId: 0,
 };
 
-const FormCrmUserModif: React.FC = () => {
+const FormCrmUser_userModif: React.FC = () => {
   console.log("1.0.0 FRONT FormCrmUserModif Début ");
 
   //---------------------------------------------------------------------
@@ -255,26 +255,30 @@ const FormCrmUserModif: React.FC = () => {
           <form onSubmit={handleClick} className="space-y-4 p-4 w-full">
             <div className="flex flex-row items-start p-3">
               {/* Image */}
-              <div className="w-full md:w-1/3 flex flex-col h-48 md:h-104 overflow-hidden">
-                <img
-                  src={unUserData.imgUrl}
-                  alt="Image uploadée"
-                  className="object-contain w-full h-full"
-                />
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  ref={inputFileRef}
-                  className="hidden"
-                />
-                <button
-                  type="button"
-                  onClick={() => inputFileRef.current?.click()}
-                  className="mt-2 border px-4 py-2"
-                >
-                  Charger une image
-                </button>
+              <div className="w-full flex flex-col md:w-1/3 h-48 md:h-104 overflow-hidden">
+                <div className="w-full overflow-hidden mt-15">
+                  <img
+                    src={unUserData.imgUrl}
+                    alt="Image uploadée"
+                    className="object-contain w-full h-full"
+                  />
+                </div>
+                <div className="mt-2">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    ref={inputFileRef}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => inputFileRef.current?.click()}
+                    className="mt-1 block w-full border border-gray-300 shadow-sm px-4 py-2"
+                  >
+                    Charger une image
+                  </button>
+                </div>
               </div>
               {/* Champs */}
               <div className="w-full md:w-2/3 pl-4 space-y-4">
@@ -437,4 +441,4 @@ const FormCrmUserModif: React.FC = () => {
   );
 };
 
-export default FormCrmUserModif;
+export default FormCrmUser_userModif;

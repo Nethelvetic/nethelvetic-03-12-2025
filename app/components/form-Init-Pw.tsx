@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import CarteVImgTxtBgGN from "./cart-V-Img-Txt-BgGN";
 import ContBtnLgNoEffetBgG from "./cont-Btn-Lg-NoEffet-BgG";
-import { createOneUserInscription } from "../db/dbQuery-CrmUserInscrit";
+import { crmUserInsertion} from "../db/dbNeon-CrmUserInscrit";
 import VarZustand from "../util/zustand";
 
 const FormInitPw: React.FC = () => {
@@ -91,7 +91,7 @@ const FormInitPw: React.FC = () => {
     };
 
     try {
-      const res = await createOneUserInscription(userToInsert, password);
+      const res = await crmUserInsertion(userToInsert, password);
 
       // 2.2.4 Erreur
       if (!res.success) {

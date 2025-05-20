@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import ContainerBGN from "./cont-BgGN";
 import ContBtnLgBgG from "./cont-Btn-Lg-BgG";
 import { useRouter } from "next/navigation";
-import { createOneUser } from "../db/dbQuery-Users";
-import { createOneMessage } from "../db/dbQuery-Message";
+import { userInsertOne} from "../db/dbNeon-Users";
+import { createOneMessage } from "../db/dbNeon-Message";
 import CarteVImgTxtBgGN from "./cart-V-Img-Txt-BgGN";
 
 //------------------------1 Début format typage table USER
@@ -121,13 +121,13 @@ const FormContact: React.FC = () => {
 
     try {
       // Insérer un user dans userTable
-      console.log("2.2 await createOneUser avant => userData:", userData);
-      const userResponse = await createOneUser(userData);
-      console.log("2.3 await createOneUser après => réponse", userResponse);
+      console.log("2.2 await userInsertOneavant => userData:", userData);
+      const userResponse = await userInsertOne(userData);
+      console.log("2.3 await userInsertOneaprès => réponse", userResponse);
 
       if (userResponse.success) {
         // Récupérer l'id de l'utilisateur inséré et l'intégrer dans messageData
-        const userId = userResponse.id;
+        const userId = userResponse.user?.id;
         const messageDataWithUserId = { ...messageData, userId };
 
         console.log("2.4 await createOneMessage avant => messageDataWithUserId:", messageDataWithUserId);
@@ -147,7 +147,7 @@ const FormContact: React.FC = () => {
         alert(userResponse.message);
       }
     } catch (error) {
-      console.error("2.9 await createOneUser après => erreur :", error);
+      console.error("2.9 await userInsertOneaprès => erreur :", error);
     }
   };
 

@@ -4,11 +4,10 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import CarteVImgTxtBgGN from "./cart-V-Img-Txt-BgGN";
 import ContBtnLgNoEffetBgG from "./cont-Btn-Lg-NoEffet-BgG";
-import { crmUserEmailAndPwSelection} from "../db/dbQuery-CrmUsers";
+import { crmUserEmailAndPwSelection } from "../db/dbNeon-CrmUsers";
 import VarZustand from '../util/zustand';
 import Cookies from "js-cookie";
 import courrielPw from "../email/email-Pw";
-
 const FormSeConnecter: React.FC = () => {
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique   --------------------
@@ -72,26 +71,27 @@ const FormSeConnecter: React.FC = () => {
       // 2.1.6 ../../.?/ FormConnect => H.S. => crmUserEmailAndPwSelect  => set Zustand/cookies
       if (crmUserEmailAndPwSelectRes.success) {
         console.log("2.1.6 ../../ Front FormConnect => H.S. => crmUserEmailAndPwSelect  OK");
-        const { user, crm } = crmUserEmailAndPwSelectRes;
+        const { user, crmUser } = crmUserEmailAndPwSelectRes;
         
         console.log("2.1.7 ../../../ Front FormConnect => H.S. => crmUserEmailAndPwSelect  OK => set Zustand/Cookies");
         // 2.1.7 set Zustand
-        setUserAdmin(crm.identification);
+        setUserAdmin(crmUser.identification);
 
         //2.1.8 set cookies
         const myData = {
-          userAdmin: crm.identification,
-          userImgUrl: user.imgUrl,
-          userAdminEmail: user.email,
-          userId: user.id
+          userJerome: crmUser.identification,
+          crmUserAdmin: crmUser.identification,
+          crmUserImgUrl: user.imgUrl,
+          crmUserAdminEmail: user.email,
+          crmUserId: user.id
         };
         Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
 
         //2.1.9 route push
-        if (crm.identification === "jerome1872Troistorrents") {
+        if (crmUser.identification === "jerome1872Troistorrents") {
           console.log("2.1.9 ../../../../ Front FormConnect => H.S. => crmUserEmailAndPwSelect  => set Zustand/Cookies => Push -> admin/users");
           router.push("/admin/users");
-        } else if (crm.identification === "user2025Nethelvetic") {
+        } else if (crmUser.identification === "user2025Nethelvetic") {
           console.log("2.1.10 ../../../../ Front FormConnect => H.S. => crmUserEmailAndPwSelect  => set Zustand/Cookies => Push -> gestion360/identifier");
           //////////////////////////////////////////////////////////////////////
           //    CONTINUE A GESTION360/IDENTIFIER
@@ -110,10 +110,11 @@ const FormSeConnecter: React.FC = () => {
 
         // 2.1.11 set cookies
         const myData = {
-          userAdmin: crmUserEmailAndPwSelectRes.user?.email === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
-          userImgUrl: crmUserEmailAndPwSelectRes.user?.imgUrl || "",
-          userAdminEmail: crmUserEmailAndPwSelectRes.user?.email || "",
-          userId: crmUserEmailAndPwSelectRes.user?.id || ""
+          userJerome: "",
+          crmUserAdmin: crmUserEmailAndPwSelectRes.user?.email === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
+          crmUserImgUrl: crmUserEmailAndPwSelectRes.user?.imgUrl || "",
+          crmUserEmail: crmUserEmailAndPwSelectRes.user?.email || "",
+          crmUserId: crmUserEmailAndPwSelectRes.user?.id || ""
         };
         Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
         alert(crmUserEmailAndPwSelectRes.message);
@@ -140,10 +141,11 @@ const FormSeConnecter: React.FC = () => {
 
     // 2.2.2 set cookies
      const myData = {
-       userAdmin: username === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
-       userImgUrl: "",
-       userEmail: username || "",
-       userId: "",
+       userJerome: username === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
+       crmUserAdmin: username === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
+       crmUserImgUrl: "",
+       crmUserEmail: username || "",
+       crmUserId: "",
      };
      Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
 

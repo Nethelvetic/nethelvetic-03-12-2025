@@ -3,7 +3,7 @@ import PageAdmUsers from '../../components/p-Adm-Users';
 
 
 
-export default function SelectFormations() {
+export default function PageAdminUser() {
 
 
 //---------------------------------------------------------------------

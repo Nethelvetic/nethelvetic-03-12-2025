@@ -652,8 +652,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.saas": {
-      "name": "saas",
+    "public.crm": {
+      "name": "crm",
       "schema": "",
       "columns": {
         "id": {
@@ -663,7 +663,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "saas_id_seq",
+            "name": "crm_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -768,9 +768,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "saas_userId_users_id_fk": {
-          "name": "saas_userId_users_id_fk",
-          "tableFrom": "saas",
+        "crm_userId_users_id_fk": {
+          "name": "crm_userId_users_id_fk",
+          "tableFrom": "crm",
           "tableTo": "users",
           "columnsFrom": [
             "userId"
@@ -788,8 +788,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.saas_users": {
-      "name": "saas_users",
+    "public.crm_users": {
+      "name": "crm_users",
       "schema": "",
       "columns": {
         "id": {
@@ -799,7 +799,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "saas_users_id_seq",
+            "name": "crm_users_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -809,8 +809,8 @@
             "cycle": false
           }
         },
-        "saasId": {
-          "name": "saasId",
+        "crmId": {
+          "name": "crmId",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -824,12 +824,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "saas_users_saasId_saas_id_fk": {
-          "name": "saas_users_saasId_saas_id_fk",
-          "tableFrom": "saas_users",
-          "tableTo": "saas",
+        "crm_users_crmId_crm_id_fk": {
+          "name": "crm_users_crmId_crm_id_fk",
+          "tableFrom": "crm_users",
+          "tableTo": "crm",
           "columnsFrom": [
-            "saasId"
+            "crmId"
           ],
           "columnsTo": [
             "id"
@@ -837,9 +837,9 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "saas_users_userId_users_id_fk": {
-          "name": "saas_users_userId_users_id_fk",
-          "tableFrom": "saas_users",
+        "crm_users_userId_users_id_fk": {
+          "name": "crm_users_userId_users_id_fk",
+          "tableFrom": "crm_users",
           "tableTo": "users",
           "columnsFrom": [
             "userId"

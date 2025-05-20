@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { crmUser_userInsertion } from "../db/dbQuery-CrmUsers_user";
+import { crmUser_userInsertion } from "../db/dbNeon-CrmUsers_user";
 import ContainerBGN from "./cont-BgGN";
 import ContBtnLgNoEffectBgG from "./cont-Btn-Lg-NoEffet-BgG";
 import { useRouter } from "next/navigation";
@@ -54,7 +54,7 @@ const initialUserData: UserDataType = {
   userId: 0,
 };
 
-const FormCrmUserAdd: React.FC = () => {
+const FormCrmUser_userAdd: React.FC = () => {
   //---------------------------------------------------------------------
   //------------------------1 data dynamique ----------------------------
   //---------------------------------------------------------------------
@@ -328,7 +328,7 @@ const FormCrmUserAdd: React.FC = () => {
                 {/* Bouton */}
                 <div className="w-full pt-3 pb-3 flex space-x-4">
                   <ContBtnLgNoEffectBgG >
-                    <button type="submit">Modifier</button>
+                    <button type="submit">Créer</button>
                   </ContBtnLgNoEffectBgG >
                 </div>
               </div>
@@ -340,4 +340,4 @@ const FormCrmUserAdd: React.FC = () => {
   );
 };
 
-export default FormCrmUserAdd;
+export default FormCrmUser_userAdd;

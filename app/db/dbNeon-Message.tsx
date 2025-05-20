@@ -6,7 +6,7 @@ import {
   selectOneMessage, 
   updateOneMessage, 
   deleteOneMessage 
-} from "./dbQuery";
+} from "./dbNeon";
 
 // Type d'entrée pour un message
 type MessageInput = {

@@ -4,6 +4,7 @@ import React from 'react';
 import ContainerBgGN from './cont-BgGN';
 import { useRouter } from "next/navigation";
 import ContBtnLgNoEffectBgG from './cont-Btn-Lg-NoEffet-BgG';
+import Cookies from "js-cookie";
 
 interface CarteData {
   id: number;
@@ -34,14 +35,14 @@ interface ListHUsersBtnBgGNProps {
   cards: CarteData[];
   buttonTitle: string;
   buttonUrlPrefix: string;
+  buttonTitleCrmUser: string;  // Nouvelle prop pour le deuxième bouton
 }
-
-
 
 const ListHUsersBtnBgGN: React.FC<ListHUsersBtnBgGNProps> = ({
   cards,
   buttonTitle,
   buttonUrlPrefix,
+  buttonTitleCrmUser,
 }) => {
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique ----------------------
@@ -68,6 +69,21 @@ const ListHUsersBtnBgGN: React.FC<ListHUsersBtnBgGNProps> = ({
         // Handler local pour ce bouton
         const handleButtonClick = () => {
           router.push(buttonUrl);
+        };
+
+        // Handler pour le 2ème bouton (tu peux adapter le comportement ici)
+        const handleButtonCrmUserClick = () => {
+          console.log("2.0.0 ../ dbNeon ListHUsersBtnMBgGN => handleButtonCrmUserClick : id  ", card.id);
+
+           //2.1.8 set cookies
+          const myData = {
+            userAdmin: "user2025Nethelvetic",
+            userImgUrl: card.imgUrl,
+            userAdminEmail: card.email,
+            userId: card.id
+          };
+        Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
+         router.push("/gestion360/identifier");
         };
 
         const content = (
@@ -97,14 +113,22 @@ const ListHUsersBtnBgGN: React.FC<ListHUsersBtnBgGNProps> = ({
                   <p className="m-0 text-xs md:text-lg">{card.telephone}</p>
                 </div>
 
-                {/* Bouton visible uniquement sur grand écran */}
-                <div className="pt-1 pb-1 md:pt-3 md:pb-3 hidden md:block">
+                {/* 2 boutons sur desktop */}
+                <div className="pt-1 pb-1 md:pt-3 md:pb-3 hidden md:flex gap-4">
                   <ContBtnLgNoEffectBgG>
                     <button
                       className="w-full h-full"
                       onClick={handleButtonClick}
                     >
                       {buttonTitle}
+                    </button>
+                  </ContBtnLgNoEffectBgG>
+                  <ContBtnLgNoEffectBgG>
+                    <button
+                      className="w-full h-full"
+                      onClick={handleButtonCrmUserClick}
+                    >
+                      {buttonTitleCrmUser}
                     </button>
                   </ContBtnLgNoEffectBgG>
                 </div>

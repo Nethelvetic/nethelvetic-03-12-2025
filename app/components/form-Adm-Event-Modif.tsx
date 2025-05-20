@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { actualiserUnEvenement, suppUnEvenement, selectionUnEvenement } from "../db/dbQuery-Evenements";
+import { actualiserUnEvenement, suppUnEvenement, selectionUnEvenement } from "../db/dbNeon-Evenements";
 import ContainerBGN from "./cont-BgGN";
 import ContainerBtnLgBgG from "./cont-Btn-Lg-BgG";
 import { useParams, useRouter } from "next/navigation";

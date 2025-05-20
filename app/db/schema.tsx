@@ -55,7 +55,12 @@ export const usersTable = pgTable("users", {
 //---------------------------------------------------------------------
 //------------------------1.2 Début Table userrs_CRM_users ------------
 //---------------------------------------------------------------------
-export const usersCrmUsersTable = pgTable("users_CRM_users", {
+
+
+//---------------------------------------------------------------------
+//------------------------1.2 Début Table userrs_CRM_users ------------
+//---------------------------------------------------------------------
+export const crmUser_UsersTable = pgTable("crmUser_users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   nom_entreprise: varchar({ length: 255 }),
   personne_a_contacter: varchar({ length: 255 }),
@@ -144,9 +149,10 @@ export const communauteTable = pgTable("communaute", {
 
 
 //---------------------------------------------------------------------
-//------------------------5.0 Début Table Saas --------------------------
+//------------------------5.0 Début Table crm --------------------------
 //---------------------------------------------------------------------
-export const saasTable = pgTable("saas", {
+
+export const crmUsersTable = pgTable("crmUsers", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   plan: varchar({ length: 255 }).notNull(), // ex: "Free", "Pro", "Premium"
   plan_details: json("plan_details").notNull(),
@@ -232,16 +238,6 @@ export const communauteUsersTable = pgTable("communaute_users", {
 });
 
 
-//---------------------------------------------------------------------
-//------------------------2.4 Table de liaison Saas/users ---------------
-//---------------------------------------------------------------------
-export const saasUsersTable = pgTable("saas_users", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  saasId: integer().references(() => saasTable.id, { onDelete: "cascade" }),
-  userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
-});
-
-
 
 
 
@@ -261,16 +257,6 @@ export const saasUsersTable = pgTable("saas_users", {
 // --------------------------------------------------------------------
 // --------------------------------------------------------------------
 
-
-//---------------------------------------------------------------------
-//------------------------2.1 realation parent/users ------------------
-//---------------------------------------------------------------------
-export const userRelations = relations(usersTable, ({ many }) => ({
-  formations: many(formationUsersTable),
-  evenements: many(evenementsUsersTable),
-  communaute: many(communauteUsersTable),
-  saas: many(saasUsersTable),
-}));
 
 
 //---------------------------------------------------------------------
@@ -330,24 +316,6 @@ export const communauteUsersRelations = relations(communauteUsersTable, ({ one }
   }),
   user: one(usersTable, {
     fields: [communauteUsersTable.userId],
-    references: [usersTable.id],
-  }),
-}));
-
-
-//---------------------------------------------------------------------
-//------------------------2.5 realation Saas/users --------------------
-//---------------------------------------------------------------------
-export const saasRelations = relations(saasTable, ({ many }) => ({
-  subscribers: many(saasUsersTable),
-}));
-export const saasUsersRelations = relations(saasUsersTable, ({ one }) => ({
-  saas: one(saasTable, {
-    fields: [saasUsersTable.saasId],
-    references: [saasTable.id],
-  }),
-  user: one(usersTable, {
-    fields: [saasUsersTable.userId],
     references: [usersTable.id],
   }),
 }));

@@ -39,28 +39,22 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
   //---------------------------------------------------------------------
   // Récupère les valeurs zustand
   const { userAdmin, setUserAdmin } = VarZustand();
-  console.log("1.0.0 NavBarH var zustand userAdmin =", userAdmin);
+  console.log("1.0.0 NavBarH zustand => userAdmin =", userAdmin);
 
   //---------------------------------------------------------------------
   //------------------------2 Début Comportement   ----------------------
   //---------------------------------------------------------------------
-  // useEffect s'execute au changement de userAdmin,
   useEffect(() => {
     console.log("2.0.0 NavBarH useEffect début");
-    //---------------------------------------------------------------
-    // Récupère les data du cookie "myData"
     const cookieStr = Cookies.get("myData");
     console.log("2.0.2 ../NavBarH useEffect => Cookie OK =", cookieStr);
-
-    //---------------------------------------------------------------
-    // Parse les data et définit la variable cookieData
     if (cookieStr) {
       try {
-        console.log("2.0.2 .?/NavBarH useEffect => Cookie OK => parse Coocki Ok,No OK");
+        console.log("2.0.2 ../.? NavBarH useEffect => Cookie OK  => parse Cookie Ok/NO");
         const parsed: MyDataType = JSON.parse(cookieStr);
         setCookieData(parsed);
       } catch (error) {
-        console.error("2.0.3 ../NavBarH useEffect => Cookie OK => parse Coocki No OK: ", error);
+        console.error("2.0.3 ../.. NavBarH useEffect => Cookie OK  => parse Cookie NO ok ", error);
         setCookieData(undefined);
       }
     } else {
@@ -80,7 +74,6 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
     Cookies.remove("myData", { path: "/" });
     setCookieData(undefined);
     setUserAdmin("");
-    // redirection vers la page d'accueil
     window.location.href = "/";
   };
 
@@ -89,16 +82,11 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
   //---------------------------------------------------------------------
   return (
     <nav className="flex items-center justify-between fixed top-0 left-0 w-full bg-gray-800/70 backdrop-blur-sm py-2 px-6 z-50">
-      {/* Conteneur gauche : Logo et infos d'authentification */}
+      {/* ----------- logo + auth (desktop) ----------- */}
       <div className="flex items-center gap-4">
         <div className="logo">
-          <img
-            src={logo}
-            alt="Logo"
-            className="h-8 sm:h-12 md:h-14 lg:h-16"
-          />
+          <img src={logo} alt="Logo" className="h-8 sm:h-12 md:h-14 lg:h-16" />
         </div>
-        {/* Bloc auth pour grand écran */}
         <div className="hidden md:flex items-center gap-4">
           {!cookieData ? (
             <a
@@ -109,86 +97,69 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
             </a>
           ) : (
             <>
-              {/* Image + email sous l'image */}
-              <div className="flex flex-col items-center">
-                <a href="/formulaire/seConnecter">
-                  <img
-                    src={cookieData.userImgUrl}
-                    alt="User"
-                    className="h-8 w-8 md:h-10 md:w-10 rounded-full"
-                  />
-                </a>
-                <span className="text-white font-openSansRegular text-xs md:text-sm mt-1">
-                  {cookieData.userAdminEmail}
-                </span>
-              </div>
-              {/* Bouton Quitter à côté */}
-              <button
-                onClick={handleLogout}
-                className="ml-2 text-white hover:text-gray-200 font-openSansRegular text-base md:text-lg cursor-pointer"
-              >
-                Quitter
-              </button>
-            </>
-          )}
-        </div>
-        {/* Bloc auth pour petit écran (affiché à droite du logo) */}
-        <div className="flex md:hidden items-center gap-2">
-          {!cookieData ? (
-            <a
-              href="/formulaire/seConnecter"
-              className="text-white hover:text-gray-200 font-openSansRegular text-base"
-            >
-              Connecter
-            </a>
-          ) : (
-            <>
-              {/* Image + email sous l'image */}
-              <div className="flex flex-col items-center">
-                <a href="/formulaire/seConnecter">
-                  <img
-                    src={cookieData.userImgUrl}
-                    alt="User"
-                    className="h-8 w-8 rounded-full"
-                  />
-                </a>
-                <span className="text-white font-openSansRegular text-xs mt-1">
-                  {cookieData.userAdminEmail}
-                </span>
-              </div>
-              {/* Bouton Quitter à côté */}
-              <button
-                onClick={handleLogout}
-                className="text-white hover:text-gray-200 font-openSansRegular text-base cursor-pointer ml-2"
-              >
-                Quitter
-              </button>
+              {userAdmin === "jerome1872Troistorrents" ? (
+                // --- si c'est Jerome, on ne change rien (on pourrait afficher un avatar ou un label spécial) ---
+                <div className="flex items-center gap-2">
+                  {/* ici on laisse tel quel / ou mettre un avatar/admin placeholder */}
+                  <span className="text-white font-openSansRegular text-base md:text-lg">
+                    Admin
+                  </span>
+                  <button
+                    onClick={handleLogout}
+                    className="text-white hover:text-gray-200 font-openSansRegular text-base md:text-lg cursor-pointer"
+                  >
+                    Quitter
+                  </button>
+                </div>
+              ) : (
+                // --- sinon on affiche l'image et l'email du cookieData ---
+                <>
+                  <div className="flex flex-col items-center">
+                    <a href="/formulaire/seConnecter">
+                      <img
+                        src={cookieData.userImgUrl}
+                        alt="User"
+                        className="h-8 w-8 md:h-10 md:w-10 rounded-full"
+                      />
+                    </a>
+                    <span className="text-white font-openSansRegular text-xs md:text-sm mt-1">
+                      {cookieData.userAdminEmail}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="ml-2 text-white hover:text-gray-200 font-openSansRegular text-base md:text-lg cursor-pointer"
+                  >
+                    Quitter
+                  </button>
+                </>
+              )}
             </>
           )}
         </div>
       </div>
 
-      {/* Conteneur central pour grand écran : Menu items */}
+      {/* ----------- menu items (desktop) ----------- */}
       <div className="hidden md:flex space-x-4 items-center">
-        {items.map((item, index) => (
-          <div key={index} className="relative">
+        {items.map((item, idx) => (
+          <div key={idx} className="relative">
             {item.subItems ? (
               <>
                 <button
-                  onClick={() => toggleDropdown(index)}
-                  className="text-white hover:text-gray-200 font-openSansRegular text-base md:text-lg focus:outline-none"
+                  onClick={() => toggleDropdown(idx)}
+                  className="text-white hover:text-gray-200 font-openSansRegular text-base md:text-lg"
                 >
                   {item.title} &gt;
                 </button>
-                {openDropdown === index && (
+                {openDropdown === idx && (
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-gray-700 rounded shadow-lg z-50">
-                    {item.subItems.map((subItem, subIndex) => (
+                    {item.subItems.map((sub, sidx) => (
                       <a
-                        key={subIndex}
-                        href={subItem.link}
+                        key={sidx}
+                        href={sub.link}
                         className="block px-4 py-2 text-white hover:bg-gray-600"
                       >
-                        {subItem.title}
+                        {sub.title}
                       </a>
                     ))}
                   </div>
@@ -206,20 +177,56 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
         ))}
       </div>
 
-      {/* Conteneur droit pour petit écran : uniquement le bouton hamburger */}
-      <div className="flex md:hidden items-center">
+      {/* ----------- hamburger + auth (mobile) ----------- */}
+      <div className="flex md:hidden items-center gap-2">
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="text-white focus:outline-none"
+          className="text-white focus:outline-none mr-4"
         >
           ☰
         </button>
+        {!cookieData ? (
+          <a
+            href="/formulaire/seConnecter"
+            className="text-white hover:text-gray-200 font-openSansRegular text-base"
+          >
+            Connecter
+          </a>
+        ) : userAdmin === "jerome1872Troistorrents" ? (
+          // mobile, Jerome : rien à changer non plus
+          <button
+            onClick={handleLogout}
+            className="text-white hover:text-gray-200 font-openSansRegular text-base cursor-pointer"
+          >
+            Quitter
+          </button>
+        ) : (
+          <>
+            <div className="flex flex-col items-center">
+              <a href="/formulaire/seConnecter">
+                <img
+                  src={cookieData.userImgUrl}
+                  alt="User"
+                  className="h-8 w-8 rounded-full"
+                />
+              </a>
+              <span className="text-white font-openSansRegular text-xs mt-1">
+                {cookieData.userAdminEmail}
+              </span>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="text-white hover:text-gray-200 font-openSansRegular text-base cursor-pointer ml-2"
+            >
+              Quitter
+            </button>
+          </>
+        )}
       </div>
 
-      {/* Menu déroulant pour petit écran */}
+      {/* ----------- menu déroulant mobile ----------- */}
       {isMenuOpen && (
-        <div className="fixed top-12 left-0 w-full bg-black backdrop-blur-md flex flex-col space-y-2 md:hidden py-3 px-6 z-60 border-b-gardient">
-          {/* Bouton de fermeture */}
+        <div className="fixed top-12 left-0 w-full bg-black backdrop-blur-md flex flex-col space-y-2 py-3 px-6 z-60 border-b-gardient md:hidden">
           <div className="flex justify-end">
             <button
               onClick={() => setIsMenuOpen(false)}
@@ -229,26 +236,26 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
               &times;
             </button>
           </div>
-          {items.map((item, index) => (
-            <div key={index} className="relative">
+          {items.map((item, idx) => (
+            <div key={idx} className="relative">
               {item.subItems ? (
                 <>
                   <button
-                    onClick={() => toggleDropdown(index)}
+                    onClick={() => toggleDropdown(idx)}
                     className="font-bebas text-left text-3xl text-white hover:opacity-80 w-full"
                   >
                     {item.title} &gt;
                   </button>
-                  {openDropdown === index && (
+                  {openDropdown === idx && (
                     <div className="mt-2 flex flex-col items-center">
-                      {item.subItems.map((subItem, subIndex) => (
+                      {item.subItems.map((sub, sidx) => (
                         <a
-                          key={subIndex}
-                          href={subItem.link}
+                          key={sidx}
+                          href={sub.link}
                           className="block text-center text-xl text-white hover:opacity-80 w-full"
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          {subItem.title}
+                          {sub.title}
                         </a>
                       ))}
                     </div>

@@ -5,13 +5,12 @@ import {
   userUpdateOne,
   userDeleteOne,
   userSelectOne,
-} from "../db/dbQuery-Users";
+} from "../db/dbNeon-Users";
 import ContainerBGN from "./cont-BgGN";
 import ContBtnLgNoEffectBgG from "./cont-Btn-Lg-NoEffet-BgG";
 import { useParams, useRouter } from "next/navigation";
 // Note : Import de la Server Action pour Vercel Blob
 import fileStoreVercelBlob from "../util/fileStoreVercelBlob";
-
 
 type UserDataType = {
   nom_entreprise: string;
@@ -105,12 +104,11 @@ const FormAdmUserModif: React.FC = () => {
     console.log("2.0.1 ../ Front FormAdmUserModif => useEffect Début ");
 
     async function fetchUser() {
-
       //------------------------------------------------------------------------
       // 2.0.2 ../.?/ FormAdmUserModif => useE => modifId OK/NO
       console.log("2.0.2 ../.?/ Front FormAdmUserModif => useE => modifId OK/NO");
       if (isNaN(modifId)) {
-        console.error("2.0.3 ../../ Front FormAdmUserModif => useE => modifId NO OK",modif_id);
+        console.error("2.0.3 ../../ Front FormAdmUserModif => useE => modifId NO OK", modif_id);
         ////////////////////////////////////////
         /////////     STOP            //////////
         ////////////////////////////////////////
@@ -129,7 +127,8 @@ const FormAdmUserModif: React.FC = () => {
 
         if (selectionOneUserRes.user) {
           console.log(
-            "2.0.6 ../../../.?/ Front FormAdmUserModif => useE => modifId OK => userOneSelect OK => set useState");
+            "2.0.6 ../../../.?/ Front FormAdmUserModif => useE => modifId OK => userOneSelect OK => set useState"
+          );
           const userObj = Array.isArray(selectionOneUserRes.user)
             ? selectionOneUserRes.user[0]
             : selectionOneUserRes.user;
@@ -156,18 +155,17 @@ const FormAdmUserModif: React.FC = () => {
         }
       } else {
         console.error(
-          "2.0.7 ../../../.?/ Front FormAdmUserModif => useE => modifId OK => userOneSelect NO OK");
+          "2.0.7 ../../../.?/ Front FormAdmUserModif => useE => modifId OK => userOneSelect NO OK"
+        );
       }
     }
     fetchUser();
   }, [modifId, modif_id]);
 
   //------------------------------------------------------------------------
-  // 3.0.0 ../ FormAdmUserModif => handleClick {modifier}
+  // 3.0.0 ../ FormAdmUserModif => handleSubmit {modifier}
   //------------------------------------------------------------------------
-  const handleClick = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleClick = async (e: React.FormEvent<HTMLFormElement>) => {
     console.log("3.0.0 ../ FRONT FormAdmUserModif => handleClick debut");
     e.preventDefault();
     console.log("3.0.1 ../.?/ FRONT FormAdmUserModif => H.C. => champs Ok no OK");
@@ -223,7 +221,7 @@ const FormAdmUserModif: React.FC = () => {
           "3.0.3 ../../../../ FRONT FormAdmUserModif => H.C. => actualiserOneUser OK => push adm/users "
         );
         router.push("/admin/users");
-      }else{
+      } else {
         console.log("3.0.4 ../../../../ FRONT FormAdmUserModif => H.C. => actualiserOneUser No OK");
         alert("La modification a échoué, veuillez réessayer.");
       }
@@ -242,22 +240,15 @@ const FormAdmUserModif: React.FC = () => {
   const handleDelete = async () => {
     console.log("3.0.6 .?/ FRONT FormAdmUserModif => handleDelete debut");
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
-      console.log(
-        "3.0.6 ../.?/ BACK FormAdmUserModif => H.D. => suppOneUser OK ou NO OK"
-      );
+      console.log("3.0.6 ../.?/ BACK FormAdmUserModif => H.D. => suppOneUser OK ou NO OK");
       try {
         const suppOneUserRes = await userDeleteOne(modifId);
         if (suppOneUserRes.success) {
-          console.log(
-            "3.0.7 ../../../ FRONT FormAdmUserModif => H.D. => suppOneUser OK => push admin/users"
-          );
+          console.log("3.0.7 ../../../ FRONT FormAdmUserModif => H.D. => suppOneUser OK => push admin/users");
           router.push("/admin/users");
         }
       } catch (error) {
-        console.error(
-          "3.0.8 ../../ FRONT FormAdmUserModif => H.D. => suppOneUser NO OK",
-          error
-        );
+        console.error("3.0.8 ../../ FRONT FormAdmUserModif => H.D. => suppOneUser NO OK", error);
         alert("La suppression a échoué, veuillez réessayer.");
       }
     }
@@ -266,34 +257,18 @@ const FormAdmUserModif: React.FC = () => {
   //------------------------------------------------------------------------
   // 3.0.9 ../ FormAdmUserModif => handleImageUpload
   //------------------------------------------------------------------------
-  const handleImageUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    console.log(
-      "3.0.1 ../.?/ Front FormAdmUserModif => handleImageUpload => selec file Ok ou NO OK"
-    );
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("3.0.1 ../.?/ Front FormAdmUserModif => handleImageUpload => selec file Ok ou NO OK");
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      console.log(
-        "3.0.2 ../../ Front FormAdmUserModif => handleImageUpload => selec file Ok",
-        file
-      );
+      console.log("3.0.2 ../../ Front FormAdmUserModif => handleImageUpload => selec file Ok", file);
       try {
-        console.log(
-          "3.0.3 ../../.?/ Back FormAdmUserModif => handleImageUpload => fileStoreVercelBlob",
-          file
-        );
+        console.log("3.0.3 ../../.?/ Back FormAdmUserModif => handleImageUpload => fileStoreVercelBlob", file);
         const uploadedUrl = await fileStoreVercelBlob(file);
-        console.log(
-          "3.0.4 ../../.?/ Back FormAdmUserModif => handleImageUpload => fileStoreVercelBlob OK:",
-          uploadedUrl
-        );
+        console.log("3.0.4 ../../.?/ Back FormAdmUserModif => handleImageUpload => fileStoreVercelBlob OK:", uploadedUrl);
         setUnUserData({ ...unUserData, imgUrl: uploadedUrl });
       } catch (error) {
-        console.error(
-          "3.0.4 ../../.?/ Back FormAdmUserModif => handleImageUpload => fileStoreVercelBlob NO OK:",
-          error
-        );
+        console.error("3.0.4 ../../.?/ Back FormAdmUserModif => handleImageUpload => fileStoreVercelBlob NO OK:", error);
         alert("L’image n’a pas pu être sélectionnée, veuillez réessayer.");
       }
     }
@@ -307,9 +282,10 @@ const FormAdmUserModif: React.FC = () => {
       <ContainerBGN>
         <div className="w-full">
           <form onSubmit={handleClick} className="space-y-4 p-4 w-full">
-            <div className="flex flex-row items-start p-3">
+            {/* Mise à jour flex pour petit écran : colonne */}
+            <div className="flex flex-col md:flex-row items-start p-3">
               {/* Section Image */}
-              <div className="w-full flex flex-col md:w-1/3 h-48 md:h-104 overflow-hidden">
+              <div className="w-full flex flex-col md:w-1/3 h-80 md:h-104 overflow-hidden">
                 <div className="w-full overflow-hidden mt-15">
                   <img
                     src={unUserData.imgUrl}
@@ -336,8 +312,8 @@ const FormAdmUserModif: React.FC = () => {
                 </div>
               </div>
 
-              {/* Section Autres champs (colonne de droite) */}
-              <div className="w-full md:w-2/3 flex flex-col text-left pl-4 mt-4">
+              {/* Section Autres champs (colonne de droite sur desktop, dessous sur mobile) */}
+              <div className="w-full md:w-2/3 flex flex-col text-left pl-0 md:pl-4 mt-4 md:mt-0">
                 {/* Email */}
                 <div className="w-full flex flex-col mt-4">
                   <label className="block text-sm md:text-xl font-medium">
@@ -492,14 +468,14 @@ const FormAdmUserModif: React.FC = () => {
 
                 {/* Boutons Modifier & Supprimer */}
                 <div className="w-full pt-3 pb-3 flex space-x-4">
-                  <ContBtnLgNoEffectBgG >
+                  <ContBtnLgNoEffectBgG>
                     <button type="submit">Modifier</button>
-                  </ContBtnLgNoEffectBgG >
-                  <ContBtnLgNoEffectBgG >
+                  </ContBtnLgNoEffectBgG>
+                  <ContBtnLgNoEffectBgG>
                     <button type="button" onClick={handleDelete}>
                       Supprimer
                     </button>
-                  </ContBtnLgNoEffectBgG >
+                  </ContBtnLgNoEffectBgG>
                 </div>
               </div>
             </div>

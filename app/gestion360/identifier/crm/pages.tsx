@@ -1,9 +1,9 @@
 import React from 'react';
-import From360CrmUserAdd from '../../../components/form-360-CRM-User-Add';
+import FormCrmUser_compteInfoPerso from '../../../components/form-CrmUser_compteInfoPerso';
 
 
 
-export default function CrmUserAdd() {
+export default function CrmUserCompteInfoPerso() {
 
 
 //---------------------------------------------------------------------
@@ -11,7 +11,7 @@ export default function CrmUserAdd() {
 //--------------------------------------------------------------------- 
   return (
     <div className="w-full md:w-5xl mx-auto">
-      <From360CrmUserAdd />
+      <h1>salutation</h1>
     </div>
   );
 }

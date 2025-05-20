@@ -1,8 +1,10 @@
 "use server";
 
-import { selectUsersCrmUsers, insertOneCrmUser} from "./dbQuery";
+import { 
+  userOneInsert, 
+} from "./dbSupabase";
 
-  type UserCrmUsersInput = {
+  type UserInput = {
     nom_entreprise: string;             // varchar(255) non null
     personne_a_contacter: string;        // varchar(255) non null
     ville: string;                       // varchar(255), optionnel
@@ -22,25 +24,15 @@ import { selectUsersCrmUsers, insertOneCrmUser} from "./dbQuery";
     btnUrlExt: string;                  // varchar(255), optionnel
     btnTexte: string;                    // varchar(255) non null
     btnModifUrl: string;                 // varchar(255) non null
-    userId: number;                      // référence à usersTable.id
   };
   
   
 
-//-------------------------------------------------------------------------------
-//------------------------2  Fonction selectionUsers ----------------------------
-//-------------------------------------------------------------------------------
-export async function selectionUsersCrmUsers(id: string) {
-  console.log("2.0 back selectionUsersCrmUsers debut");
-  return await selectUsersCrmUsers(id);
+//--------------------------------------------------------------------------------
+//------------------------1  Fonction createUser ---------------------------------
+//--------------------------------------------------------------------------------
+export async function userInsertOne(user: UserInput) {
+  console.log("1.0 BACK createUser Début");
+  return await userOneInsert(user);
 }
 
-
-
-//-------------------------------------------------------------------------------
-//------------------------2  Fonction creation on CrmUsers ----------------------------
-//-------------------------------------------------------------------------------
-export async function insertionCrmUsers(user: UserCrmUsersInput) {
-  console.log("2.0 back selectionUsersCrmUsers debut");
-  return await insertOneCrmUser(user);
-}

@@ -4,6 +4,7 @@ import "../../../app/globals.css";
 import NavBarVAdmin from "../../components/navBar-V-Admin";
 
 
+
 export default function Gest360IdentifierLayout({
   children,
 }: {
@@ -15,8 +16,14 @@ export default function Gest360IdentifierLayout({
   // définir les onglets du menu.
   //---------------------------------------------------------------------
   const navItems = [
-    { title: "Contacts", link: "/admin/users" },
-    { title: "akfljka", link: "/admin/newsLetter" },
+    {
+      title: "Compte",
+      subItems: [
+        { title: "Infos personnelles", link: "/gestion360/identifier/crmUser_compteInfosPerso" },
+        { title: "Abonnement gestion360", link: "/gestion360/identifier/crmUser_compte_360Abo" },
+      ],
+    },
+    { title: "Contacts", link: "/gestion360/identifier" },
     {
       title: "Finance",
       subItems: [

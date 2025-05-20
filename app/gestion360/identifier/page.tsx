@@ -1,13 +1,13 @@
 "use client";
 
 import React from 'react';
-import PageGest360CrmUser from '../../components/p-Gest360-CRM-User';
+import PageCrmUser_userBtnM from '../../components/p-CrmUser_userBtnM';
 
 
 
 
 export default function Gestion360Identifier() {
-  console.log("1.0 PageGest360CrmUser debut");
+  console.log("1.0 PageCrmUser_user  debut");
 
 
 //---------------------------------------------------------------------
@@ -15,7 +15,7 @@ export default function Gestion360Identifier() {
 //--------------------------------------------------------------------- 
   return (
     <div className="w-full md:w-5xl mx-auto">
-      <PageGest360CrmUser />
+      <PageCrmUser_userBtnM />
     </div>
   );
 }

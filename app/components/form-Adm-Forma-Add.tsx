@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { createFormation } from "../db/dbQuery-Formations";
+import { createFormation } from "../db/dbNeon-Formations";
 import ContainerBGN from "./cont-BgGN";
 import ContainerBtnLgBgG from "./cont-Btn-Lg-BgG";
 import { useRouter } from "next/navigation";

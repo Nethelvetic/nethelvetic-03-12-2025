@@ -2,8 +2,9 @@
 
 import React from 'react';
 import ContainerBgGN from './cont-BgGN';
-import BtnLgModifBgG from './btn-Lg-Modif-BgG';
 import { useRouter } from "next/navigation";
+import ContBtnLgNoEffectBgG from './cont-Btn-Lg-NoEffet-BgG';
+import Cookies from "js-cookie";
 
 interface CarteData {
   id: number;
@@ -30,11 +31,17 @@ interface CarteData {
   btnModifUrl: string;
 }
 
-interface ListHUsersBtnVueBgGNProps {
+interface ListCrmUser_userBtnBgGNProps {
   cards: CarteData[];
+  buttonTitle: string;
+  buttonUrlPrefix: string;
 }
 
-const ListHUsersBtnVueBgGN: React.FC<ListHUsersBtnVueBgGNProps> = ({ cards }) => {
+const ListCrmUser_userBtnBgGN: React.FC<ListCrmUser_userBtnBgGNProps> = ({
+  cards,
+  buttonTitle,
+  buttonUrlPrefix,
+}) => {
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique ----------------------
   //---------------------------------------------------------------------
@@ -46,17 +53,36 @@ const ListHUsersBtnVueBgGN: React.FC<ListHUsersBtnVueBgGNProps> = ({ cards }) =>
     a.nom_entreprise.localeCompare(b.nom_entreprise)
   );
 
-  
   //---------------------------------------------------------------------
   //------------------------2 affichage ---------------------------------
   //---------------------------------------------------------------------
   return (
     <div>
       {sortedCards.map((card, index) => {
+        //------------------------------------------------------
+        // Construire l'URL finale du bouton
+        const buttonUrl = `${buttonUrlPrefix}/${card.id}`;
 
         //------------------------------------------------------
-        // Définir l'URL par défaut sans l'utilisation de count et adm
-        const modifUrl = `${card.btnModifUrl}/${card.id}`;
+        // Handler local pour ce bouton
+        const handleButtonClick = () => {
+          router.push(buttonUrl);
+        };
+
+        // Handler pour le 2ème bouton (tu peux adapter le comportement ici)
+        const handleButtonCrmUserClick = () => {
+          console.log("2.0.0 ../ dbNeon ListHUsersBtnMBgGN => handleButtonCrmUserClick : id  ", card.id);
+
+           //2.1.8 set cookies
+          const myData = {
+            userAdmin: "user2025Nethelvetic",
+            userImgUrl: card.imgUrl,
+            userAdminEmail: card.email,
+            userId: card.id
+          };
+        Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
+         router.push("/gestion360/identifier");
+        };
 
         const content = (
           <div className="w-full">
@@ -84,27 +110,35 @@ const ListHUsersBtnVueBgGN: React.FC<ListHUsersBtnVueBgGNProps> = ({ cards }) =>
                   <span style={{ color: "#fff" }} className="ml-4">☎</span>
                   <p className="m-0 text-xs md:text-lg">{card.telephone}</p>
                 </div>
-                {/* Bouton visible uniquement sur grand écran */}
-                <div className="pt-1 pb-1 md:pt-3 md:pb-3 hidden md:block">
-                  <BtnLgModifBgG modifUrl={modifUrl}>
-                    modification
-                  </BtnLgModifBgG>
+
+                {/* 1 boutons sur desktop */}
+                <div className="pt-1 pb-1 md:pt-3 md:pb-3 hidden md:flex gap-4">
+                  <ContBtnLgNoEffectBgG>
+                    <button
+                      className="w-full h-full"
+                      onClick={handleButtonClick}
+                    >
+                      {buttonTitle}
+                    </button>
+                  </ContBtnLgNoEffectBgG>
                 </div>
               </div>
             </div>
           </div>
         );
 
+        //------------------------------------------------------
+        // Version mobile : on clique sur tout le container
+        const modifUrlMobile = buttonUrl;
+
         return (
           <React.Fragment key={index}>
-            {/* Version mobile : conteneur cliquable qui inclut le container */}
             <div
               className="md:hidden cursor-pointer"
-              onClick={() => router.push(modifUrl)}
+              onClick={() => router.push(modifUrlMobile)}
             >
               <ContainerBgGN>{content}</ContainerBgGN>
             </div>
-            {/* Version desktop : conteneur standard avec bouton */}
             <div className="hidden md:block">
               <ContainerBgGN>{content}</ContainerBgGN>
             </div>
@@ -115,4 +149,4 @@ const ListHUsersBtnVueBgGN: React.FC<ListHUsersBtnVueBgGNProps> = ({ cards }) =>
   );
 };
 
-export default ListHUsersBtnVueBgGN;
+export default ListCrmUser_userBtnBgGN

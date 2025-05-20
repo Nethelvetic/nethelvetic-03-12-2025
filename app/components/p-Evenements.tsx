@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { selectionEvenements } from "../db/dbQuery-Evenements";
+import { selectionEvenements } from "../db/dbNeon-Evenements";
 import CarteVImgTitreBgN from './cart-V-Img-Titre-BgN';
-import ListHImgTxtBtnBgGN from './li-H-Img-Txt-Btn-BgGN';
+import ListHImgTxtBtnBgGN from './li-Img-Txt-Btn-BgGN';
 
 
 const PageEvenements: React.FC = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import PageAccueil from './components/p-Acceuil';
+import PageAccueil from './components/p-Accueil';
 
 export default function Home() {
   return (

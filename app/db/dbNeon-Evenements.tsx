@@ -1,6 +1,6 @@
 "use server"; 
 
-import { insertEvenement, selectEvenements, selectUnEvenement, updateUnEvenement, deleteUnEvenement   } from "./dbQuery";
+import { insertEvenement, selectEvenements, selectUnEvenement, updateUnEvenement, deleteUnEvenement   } from "./dbNeon";
  
 type EvenementInput = {
   titre: string;
@@ -21,7 +21,7 @@ type EvenementInput = {
 //------------------------1.1  Fonction insert Formation ---------------------------
 //--------------------------------------------------------------------------------
 export async function createEvenement(evenement: EvenementInput) {
-  console.log("1.0 BACK Page dbQuery-Evenements createEvenement ");
+  console.log("1.0 BACK Page dbNeon -Evenements createEvenement ");
   return await insertEvenement(evenement);
 }
 
@@ -31,7 +31,7 @@ export async function createEvenement(evenement: EvenementInput) {
 //------------------------1.2  Fonction selectFormation ----------------------------
 //--------------------------------------------------------------------------------
 export async function selectionEvenements() {
-  console.log("1.2 dbQuery-Evenements  selectEvenements");
+  console.log("1.2 dbNeon -Evenements  selectEvenements");
   return await selectEvenements();
 }
 
@@ -41,7 +41,7 @@ export async function selectionEvenements() {
 //------------------------1.3  Fonction selectUneFormation -----------------------
 //--------------------------------------------------------------------------------
 export async function selectionUnEvenement(id:number) {
-  console.log("1.3 dbQuery-Evenements  selectUnEvenement");
+  console.log("1.3 dbNeon -Evenements  selectUnEvenement");
   return await selectUnEvenement(id);
 }
 
@@ -51,7 +51,7 @@ export async function selectionUnEvenement(id:number) {
 //------------------------1.4  Fonction updateUneFormation -----------------------
 //--------------------------------------------------------------------------------
 export async function actualiserUnEvenement(id:number, evenement:EvenementInput) {
-  console.log("1.4 dbQuery-Evenements  actualiserUnEvenement");
+  console.log("1.4 dbNeon -Evenements  actualiserUnEvenement");
   return await updateUnEvenement(id, evenement);
 }
 
@@ -60,6 +60,6 @@ export async function actualiserUnEvenement(id:number, evenement:EvenementInput)
 //------------------------1.5  Fonction suppUneFormation -------------------------
 //--------------------------------------------------------------------------------
 export async function suppUnEvenement(id:number) {
-  console.log("1.5 dbQuery-Evenements  suppUnEvenement");
+  console.log("1.5 dbNeon -Evenements  suppUnEvenement");
   return await deleteUnEvenement(id);
 }

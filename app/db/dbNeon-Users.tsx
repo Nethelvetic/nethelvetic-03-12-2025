@@ -1,14 +1,14 @@
 "use server";
 
 import { 
-  insertOneUser, 
-  selectUsers, 
-  selectOneUser, 
-  updateOneUser, 
-  deleteOneUser,
-  selectUserWithEmailAndPassword,
-  selectUserWithActiveSaas
-} from "./dbQuery";
+  userOneInsert, 
+  usersSelect, 
+  userOneSelect, 
+  userOneUpDate, 
+  userOneDelete,
+  crmUserEmailAndPwSelect,
+  crmUserActif
+} from "./dbNeon";
 
   type UserInput = {
     nom_entreprise: string;             // varchar(255) non null
@@ -19,7 +19,6 @@ import {
     date_de_naissance: string;          // date, optionnel
     date_creation: string;               // date non null (format ISO ou "YYYY-MM-DD")
     email: string;                       // varchar(255) non null, unique
-    mot_de_passe: string;               // varchar(255), optionnel
     username: string;                   // varchar(255), unique, optionnel
     status: string;                     // varchar(50), optionnel (ex: "actif", "inactif", "suspendu")
     domaine_activite: string;           // varchar(255), optionnel (anciennement "profession")
@@ -38,60 +37,40 @@ import {
 //--------------------------------------------------------------------------------
 //------------------------1  Fonction createUser ---------------------------------
 //--------------------------------------------------------------------------------
-export async function createOneUser(user: UserInput) {
+export async function userInsertOne(user: UserInput) {
   console.log("1.0 BACK createUser Début");
-  return await insertOneUser(user);
+  return await userOneInsert(user);
 }
 
 //-------------------------------------------------------------------------------
 //------------------------2  Fonction selectionUsers ----------------------------
 //-------------------------------------------------------------------------------
-export async function selectionUsers() {
-  console.log("2.0 Début selectUsers");
-  return await selectUsers();
+export async function usersSelectAll() {
+  console.log("2.0 Début usersSelect");
+  return await usersSelect();
 }
 
 //--------------------------------------------------------------------------------
 //------------------------3  Fonction selectionOneUser ----------------------------
 //--------------------------------------------------------------------------------
-export async function selectionOneUser(id: number) {
-  console.log("3.0 Début selectOneUser avec l'id =", id);
-  return await selectOneUser(id);
+export async function userSelectOne(id: number) {
+  console.log("3.0 Début userOneSelect avec l'id =", id);
+  return await userOneSelect(id);
 }
 
 //--------------------------------------------------------------------------------
 //------------------------4  Fonction actualiserOneUser ----------------------------
 //--------------------------------------------------------------------------------
-export async function actualiserOneUser(id: number, user: UserInput) {
+export async function userUpdateOne(id: number, user: UserInput) {
   console.log("4.0 Début updateUser pour l'id =", id);
-  return await updateOneUser(id, user);
+  return await userOneUpDate(id, user);
 }
 
 //--------------------------------------------------------------------------------
 //------------------------5  Fonction suppOneUser ----------------------------
 //--------------------------------------------------------------------------------
-export async function suppOneUser(id: number) {
+export async function userDeleteOne(id: number) {
   console.log("5.0 Début deleteUser pour l'id =", id);
-  return await deleteOneUser(id);
+  return await userOneDelete(id);
 }
 
-
-
-//--------------------------------------------------------------------------------
-//-------------6  Fonction select user with email et passWord --------------------
-//--------------------------------------------------------------------------------
-export async function selectionUserWithEmailAndPassword(email: string, motDePasse: string ) {
-  console.log("6.0 selectionUserWithEmailAndPassword pour l'email =", email);
-  return await selectUserWithEmailAndPassword(email, motDePasse );
-}
-selectUserWithActiveSaas
-
-
-
-//--------------------------------------------------------------------------------
-//-------------6 Fonction select user with active Saas --------------------
-//--------------------------------------------------------------------------------
-export async function selectionUserWithActiveSaas(email: string, motDePasse: string ) {
-  console.log("6.0 selectionUserWithEmailAndPassword pour l'email =", email);
-  return await selectUserWithActiveSaas(email, motDePasse );
-}

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { createOneUser } from "../db/dbQuery-Users";
+import { userInsertOne} from "../db/dbNeon-Users";
 import ContainerBGN from "./cont-BgGN";
 import ContainerBtnLgBgG from "./cont-Btn-Lg-BgG";
 import { useRouter } from "next/navigation";
@@ -120,15 +120,15 @@ const FormUser: React.FC = () => {
     };
 
     try {
-      console.log("2.1 FormUser handleClick avant createOneUser => dataToInsert:", dataToInsert);
+      console.log("2.1 FormUser handleClick avant userInsertOne=> dataToInsert:", dataToInsert);
       const response = await createOneUser(dataToInsert);
-      console.log("3.2 FormUser handleClick après createOneUser => réponse:", response);
+      console.log("3.2 FormUser handleClick après userInsertOne=> réponse:", response);
       if (response.success) {
         setUnUserData(initialUserData);
         router.push("/admin/users");
       }
     } catch (error) {
-      console.error("3.3 FormUser handleClick createOneUser erreur:", error);
+      console.error("3.3 FormUser handleClick userInsertOneerreur:", error);
     }
   };
 

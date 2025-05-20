@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { userInsertOne} from "../db/dbQuery-Users";
+import { userInsertOne} from "../db/dbNeon-Users";
 import ContainerBGN from "./cont-BgGN";
 import ContBtnLgNoEffectBgG from "./cont-Btn-Lg-NoEffet-BgG";
 import { useRouter } from "next/navigation";
@@ -217,7 +217,7 @@ const FormAdminUserAdd: React.FC = () => {
                     onClick={() => inputFileRef.current?.click()}
                     className="mt-1 block w-full border border-gray-300 shadow-sm px-4 py-2"
                   >
-                    Charger une image
+                    Charger une image 34
                   </button>
                 </div>
               </div>

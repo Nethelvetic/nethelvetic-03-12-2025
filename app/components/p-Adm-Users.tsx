@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { usersSelectAll} from "../db/dbQuery-Users";
+import { usersSelectAll} from "../db/dbNeon-Users";
 import CartVTitreTxtBgGN from './cart-V-Titre-Txt-BgGN';
-import LiHUserBtnBgGN from './li-H-Users-btn-bgGN';
+import LiUserBtnBgGN from './li-Users-btn-bgGN';
 import BtnLgNoEffetBgG from './btn-Lg-NoEf-Url-BgG';
 
 
@@ -67,10 +67,11 @@ const PageAdmUser: React.FC = () => {
 
          {/*-----------------------------1 DEBUT CONTENEUR carte-H-Img-Titre-BdG */}
          <div className="p-6">
-            <LiHUserBtnBgGN
+            <LiUserBtnBgGN
                 cards={cardData}
                 buttonTitle="Modifier"
                 buttonUrlPrefix= "/admin/users/"
+                buttonTitleCrmUser="CRM User"
             />
          </div>
 

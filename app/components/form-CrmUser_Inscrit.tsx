@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import CarteVImgTxtBgGN from "./cart-V-Img-Txt-BgGN";
 import ContBtnLgNoEffetBgG from "./cont-Btn-Lg-NoEffet-BgG";
 import courrielInscription from "../email/crmUser_EmailInscrit"; 
-import { crmUserInsertion} from "../db/dbQuery-CrmUserInscrit"; 
+import { crmUserInsertion} from "../db/dbNeon-CrmUserInscrit"; 
 import VarZustand from "../util/zustand";
 import Cookies from "js-cookie";
 
@@ -117,10 +117,8 @@ const  FormCrmUserIns: React.FC = () => {
     }
     console.log("2.1.3 ../../ FRONT CrmUser-Form => H.S. => crmUser-Pw ok ", { username, password, confirmPassword });
     
-    //-------------------------------------------------------------------
-    // 2.1.4 ../../.?/ CrmUser-Form => H.S. => crmUser-Pw ok => CrmUser-Ins
-    //-------------------------------------------------------------------
-    try {
+
+  
       const userToInsert = {
         nom_entreprise: "",
         personne_a_contacter: "",
@@ -144,88 +142,95 @@ const  FormCrmUserIns: React.FC = () => {
         btnModifUrl: "/admin/users",
       };
 
-      console.log("2.1.5 ../../.?/ Back CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins Ok/NO");
-      const crmUserInsertionRes = await crmUserInsertion(userToInsert, password);
 
-      //-------------------------------------------------------------------
-      // 2.1.6 ../../.?/ FRONT CrmUser-Form => H.S. => crmUser-Pw ok => CrmUser-Ins NO OK
-      if (!crmUserInsertionRes) {
-        console.error("2.1.6 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins NO OK");
-        alert("Une erreur est survenue lors de la création de votre compte.");
-        //////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////
-        //////////////          STOP 1        ////////////////////////////
-        //////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////
-        return;
-      }
+    //-------------------------------------------------------------------
+    // 2.1.4 ../../.?/ CrmUser-Form => H.S. => crmUser-Pw ok => CrmUser-Ins
+    //-------------------------------------------------------------------
+    try {
+          console.log("2.1.5 ../../.?/ Back CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins Ok/NO");
+          const crmUserInsertionRes = await crmUserInsertion(userToInsert, password);
 
-
-      ///////////////////////////////////////////////////////////////////////
-      // 2.2.7 ../../../ CrmUser-Form => H.S. => crmUser-Pw  => creerOneUserInscrit OK 
-      ///////////////////////////////////////////////////////////////////////
-      if (crmUserInsertionRes.success) {
-        console.log("2.2.7 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins OK");
-
+          //-------------------------------------------------------------------
+          // 2.1.6 ../../.?/ FRONT CrmUser-Form => H.S. => crmUser-Pw ok => CrmUser-Ins NO OK
+          if (!crmUserInsertionRes) {
+            console.error("2.1.6 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins NO OK");
+            alert("Une erreur est survenue lors de la création de votre compte.");
+            //////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////
+            //////////////          STOP 1        ////////////////////////////
+            //////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////
+            return;
+          }  
+         
         
-        //------------------------------------------------------------
-        // 2.2.8 ../../../.?/ CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  
-        if (crmUserInsertionRes.user) {
-          console.log("2.2.8 ../../../.?/ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock");
-          const userObj = Array.isArray(crmUserInsertionRes.user)
-            ? crmUserInsertionRes.user[0]   // si c’est un tableau, on prend le premier élément
-            : crmUserInsertionRes.user;     // sinon, c’est déjà un objet
+          ///////////////////////////////////////////////////////////////////////
+          // 2.2.7 ../../../ CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins OK
+          ///////////////////////////////////////////////////////////////////////
+          if (crmUserInsertionRes.success) {
+            console.log("2.2.7 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins OK");
+          
 
             //------------------------------------------------------------
-            // 2.2.9 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  email = golliard73@g
-            if (userObj.email === "golliard73@gmail.com") {
-              console.log(" 2.2.9 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock >golliard73@g");
-
-              setUserAdmin("jerome1872Troistorrents")
-
-              const myCookieData = {
-                userAdmin: "jerome1872Troistorrents",  
-                userImgUrl: userObj.imgUrl,
-                userAdminEmail: username,  
-                userId: userObj.id           
-              };
-              Cookies.set('myData', JSON.stringify(myCookieData), { expires: 1, path: '/' });
-
-            //------------------------------------------------------------
-            // 2.2.10 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  email = !golliard73@g
-            }  else  if (crmUserInsertionRes.crm) {
-              console.log("2.2.10 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  >!golliard73@g");
-    
-              const crmObj = Array.isArray(crmUserInsertionRes.crm)
-                ? crmUserInsertionRes.crm[0]  
-                : crmUserInsertionRes.crm;     
+            // 2.2.8 ../../../.?/ CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  
+            if (crmUserInsertionRes.user) {
+              console.log("2.2.8 ../../../.?/ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock");
+              const userObj = Array.isArray(crmUserInsertionRes.user)
+                ? crmUserInsertionRes.user[0]   // si c’est un tableau, on prend le premier élément
+                : crmUserInsertionRes.user;     // sinon, c’est déjà un objet
             
-              setUserAdmin(crmObj.identification ?? "");
+                //------------------------------------------------------------
+                // 2.2.9 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  email = golliard73@g
+                if (userObj.email === "golliard73@gmail.com") {
+                  console.log(" 2.2.9 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock >golliard73@g");
+                
+                  setUserAdmin("jerome1872Troistorrents")
 
-              const myCookieData = {
-                userAdmin: "user2025Nethelvetic",  
-                userImgUrl: userObj.imgUrl, 
-                userAdminEmail: username, 
-                userId: userObj.id           
-              };
-              Cookies.set('myData', JSON.stringify(myCookieData), { expires: 1, path: '/' });
+                  const myCookieData = {
+                    userJerome: "jerome1872Troistorrents",
+                    crmUserAdmin: "jerome1872Troistorrents",  
+                    crmUserImgUrl: userObj.imgUrl,
+                    crmUserAdminEmail: username,  
+                    crmUserId: userObj.id           
+                  };
+                  Cookies.set('myData', JSON.stringify(myCookieData), { expires: 1, path: '/' });
+                
+                  //------------------------------------------------------------
+                  // 2.2.10 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  email = !golliard73@g
+                }  else  if (crmUserInsertionRes.crm) {
+                  console.log("2.2.10 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  >!golliard73@g");
+                
+                  const crmObj = Array.isArray(crmUserInsertionRes.crm)
+                    ? crmUserInsertionRes.crm[0]  
+                    : crmUserInsertionRes.crm;     
+                
+                  setUserAdmin(crmObj.identification ?? "");
+                
+                  const myCookieData = {
+                    userJerome: "false",
+                    crmUserAdmin: "user2025Nethelvetic",  
+                    crmUserImgUrl: userObj.imgUrl, 
+                    crmUserAdminEmail: username, 
+                    crmUserId: userObj.id           
+                  };
+                  Cookies.set('myData', JSON.stringify(myCookieData), { expires: 1, path: '/' });
+                }
             }
-        }
 
 
-        ///////////////////////////////////////////////////////////////////////
-        // 2.2.11 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins NO OK
-        //////////////////////////////////////////////////////////////////////
-      } else {
-        console.log("2.2.11 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins NO OK");
-        alert(crmUserInsertionRes.message);
-      
-        router.push("/formulaire/seConnecter");
-        ///////////////////////////////////////////
-        /////////    STOP              ////////////
-        ///////////////////////////////////////////
-        return;
-      }
+            /////////////////////////////////////////////////////////////////////
+            // 2.2.11 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins NO OK
+            //////////////////////////////////////////////////////////////////////
+          } else {
+           console.log("2.2.11 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins NO OK");
+           alert(crmUserInsertionRes.message);
+         
+           router.push("/formulaire/seConnecter");
+           ///////////////////////////////////////////
+           /////////    STOP              ////////////
+           ///////////////////////////////////////////
+           return;
+         }
 
      //----------------------------------------------------------------------
      // 2.2.12 ../../.?/ CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins NO OK

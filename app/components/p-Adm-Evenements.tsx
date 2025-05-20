@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { selectionEvenements } from "../db/dbQuery-Evenements";
+import { selectionEvenements } from "../db/dbNeon-Evenements";
 import CartVTitreTxtBgGN from './cart-V-Titre-Txt-BgGN';
-import ListHImgTxtBtnMBgGN from './li-H-Img-Txt-BtnM-BgGN';
+import ListHImgTxtBtnMBgGN from './li-Img-Txt-BtnM-BgGN';
 import BtnLgBgG from './btn-Lg-BgG';
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import PageGestion360 from '../components/p-Gest360';
+
 
 
 export default function Gestion360() {
@@ -11,7 +11,7 @@ export default function Gestion360() {
 //--------------------------------------------------------------------- 
   return (
       <div className="w-full md:w-5xl mx-auto">
-      <PageGestion360/>
+      <h1>salutation</h1>
       </div>
   
   );

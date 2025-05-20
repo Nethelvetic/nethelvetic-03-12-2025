@@ -1,7 +1,7 @@
 "use server"; 
 
 
-import { insertFormation, selectAllFormations, selectUneFormation, updateUneFormation, deleteUneFormation } from "./dbQuery";
+import { insertFormation, selectAllFormations, selectUneFormation, updateUneFormation, deleteUneFormation } from "./dbNeon";
 
 type FormationInput = {
   titre: string;

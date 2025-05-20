@@ -7,8 +7,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 //---------------------------------------------------------------------
 //------------------------1.1 Fonction email inscription  ------------
 //---------------------------------------------------------------------
-export async function emailInscription(emailProps: string) {
-  console.log("1.1.0 email-Query Email-Inscri debut");
+export async function crmUser_EmailInscrit(emailProps: string) {
+  console.log("1.1.0 email-Query crmUser_EmailInscrit debut");
 
   try {
 
@@ -22,13 +22,13 @@ export async function emailInscription(emailProps: string) {
       react: reactContent,
     });
 
-    console.log("1.1.3 email-Query Email-Inscri SUCCES", data);
+    console.log("1.1.3 email-Query crmUser_EmailInscrit SUCCES", data);
     return { 
       success: true, 
       message: "email envoyé avec succès !" };
 
   } catch (error) {
-    console.error("1.1.4 email-Query Email-Inscri NO SUCCES ", error);
+    console.error("1.1.4 email-Query crmUser_EmailInscrit NO SUCCES ", error);
     return { 
       success: false, 
       message: "Une erreur est survenue lors de l'envoi d'un email." };

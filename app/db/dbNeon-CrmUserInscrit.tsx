@@ -1,6 +1,6 @@
 "use server";
 
-import { insertOneUserInscription} from "./dbQuery";
+import { crmUserInscrit} from "./dbNeon";
 
   type UserInput = {
     nom_entreprise: string;             // varchar(255) non null
@@ -30,7 +30,7 @@ import { insertOneUserInscription} from "./dbQuery";
 //--------------------------------------------------------------------------------
 //------------------------1  Fonction createUser ---------------------------------
 //--------------------------------------------------------------------------------
-export async function createOneUserInscription(user: UserInput, saasMotdePasse: string ) {
-  console.log("1.0 BACK createOneUserInscription Début");
-  return await insertOneUserInscription(user, saasMotdePasse);
+export async function crmUserInsertion(user: UserInput, crmMotdePasse: string ) {
+  console.log("1.0 crmUserInsertionDébut");
+  return await crmUserInscrit(user, crmMotdePasse);
 }

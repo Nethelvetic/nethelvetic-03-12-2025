@@ -1,9 +1,9 @@
 import React from 'react';
-import FormLogin from '../components/form-CrmOuAdm_Connect';
-import FormSimple from '../components/form-Simple';
+import PageAdmUsers from '../../components/p-Adm-Users';
 
 
-export default function CreationEntreprise() {
+
+export default function PageAdminUsers() {
 
 
 //---------------------------------------------------------------------
@@ -11,7 +11,7 @@ export default function CreationEntreprise() {
 //--------------------------------------------------------------------- 
   return (
     <div className="w-full md:w-5xl mx-auto">
-      <FormLogin />
+      <PageAdmUsers/>
     </div>
   );
 }

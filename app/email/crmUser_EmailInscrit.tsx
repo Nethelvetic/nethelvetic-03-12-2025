@@ -1,6 +1,6 @@
   "use server"; 
   
-  import { emailInscription } from "../email/email-Query";
+  import { crmUser_EmailInscrit } from "./email-Query";
   
   // Type d'entrée pour un message 
   type MessageInput = {
@@ -16,8 +16,8 @@
   //--------------------------------------------------------------------------------
   //------------------------ 1  Fonction createMessage ---------------------------
   //--------------------------------------------------------------------------------
-  export default async function courrielInscription(email: string) {
-    console.log("1.0 envoiOneEmail Début");
-    return await emailInscription(email);
+  export default async function crmUser_EmailInscription(email: string) {
+    console.log("1.0 crmUser_EmailInscription Début");
+    return await crmUser_EmailInscrit(email);
   }
   

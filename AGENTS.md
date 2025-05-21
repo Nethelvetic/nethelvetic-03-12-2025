@@ -53,34 +53,22 @@ Assure-toi de suivre une approche pédagogique, en te mettant dans la peau d'une
 
 # Steps
 
-1. **Préparation de l'environnement de développement :**
-- Installe Visual Studio Code et configure-le pour le développement avec TypeScript et Tailwind CSS.
-- Utilise Bash comme terminale de commandes pour toutes les interactions CLI.
-- Configure PostgreSQL avec Neon pour le stockage des données.
 
-2. **Projet :**
-- Crée un nouveau projet Next.js avec TypeScript via la CLI de Next.js.
-- Intègre Tailwind CSS suivant les instructions officielles pour Next.js.
-
-3. **Structure et architecture des dossiers :**
-- Clone le dépôt GitHub pour récupérer l'arborescence existante.
-- Organise les dossiers selon les bonnes pratiques de Next.js, incluant les pages, composants, styles, et configurations.
-
-4. **Gestion des données avec Drizzle et PostgreSQL :**
+1. **Gestion des données avec Drizzle et PostgreSQL :**
 - ORM Drizzle avec la base de données PostgreSQL via l'URL de connexion fournie.
 postgresql://nethelvetic-03-12-2025_owner:npg_kRPHEjTO7e3q@ep-soft-recipe-a26py0fa-pooler.eu-central-1.aws.neon.tech/nethelvetic-03-12-2025?sslmode=require
 
 
-5. **Développement du frontend :**
+2. **Développement du frontend :**
 - Implémente un design responsive utilisant Tailwind CSS.
 - Construit un layout de base et plusieurs composants réutilisables en Next.js.
 
-6. **Fonctionnalités :**
+3. **Fonctionnalités :**
 - Implémente une navigation fluide des pages.
 - Email via Resend => const resend = new Resend("re_NxZRa7bC_Q6DNSPB7y9fai8ZJLWAVrwYg");
 - Ajoute le support pour plusieurs langues à l'application.
 
-7. **Optimisations :**
+4. **Optimisations :**
 - Intègre le SEO de base avec des balises meta et des titres.
 - Utilise `next/image` pour optimiser les images du site.
 - Implémente le lazy loading pour les composants non essentiels.

@@ -1,37 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nethelvetic 03-12-2025
 
-## Getting Started
+Ce projet est une application Next.js utilisant Drizzle ORM, Supabase et Tailwind CSS. Il contient également un starter pour la génération d'e-mails avec React Email.
 
-First, run the development server:
+## Installation des dépendances
+
+Assurez‑vous d'avoir Node.js installé puis installez les paquets :
+
+```bash
+npm install
+```
+
+## Configuration des variables d'environnement
+
+Créez un fichier `.env.local` à la racine du projet et ajoutez les variables suivantes :
+
+```env
+DATABASE_URL=<url de connexion PostgreSQL>
+SUPABASE_URL=<url du projet Supabase>
+SUPABASE_ANON_KEY=<clef anonyme Supabase>
+RESEND_API_KEY=<clef API Resend>
+# facultatif pour les emails
+VERCEL_URL=http://localhost:3000
+```
+
+Ces valeurs permettent à Drizzle, Supabase et Resend de fonctionner correctement.
+
+## Lancer le serveur de développement
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+L'application est alors accessible sur [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Commandes utiles
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run lint` – lance ESLint pour analyser le code.
+- `npm run build` – génère la version de production.
 
-## Learn More
+### Aperçu des emails
 
-To learn more about Next.js, take a look at the following resources:
+Le dossier `react-email-starter` contient un petit projet pour prévisualiser les modèles d'e-mails. Pour l'utiliser :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+cd react-email-starter
+npm install
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# nethelvetic-03-12-2025
+Un serveur local s'ouvre sur le port 3000 pour afficher les templates.

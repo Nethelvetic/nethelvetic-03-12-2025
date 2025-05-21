@@ -51,7 +51,6 @@ Construis une explication détaillée et bien structurée pour la création d'un
 
 Assure-toi de suivre une approche pédagogique, en te mettant dans la peau d'une développeuse junior cherchant à améliorer ses compétences.
 
-# Steps
 
 
 1. **Gestion des données avec Drizzle et PostgreSQL :**
@@ -84,3 +83,5 @@ Produis un texte structuré et détaillé expliquant chaque étape du processus 
 - Incorpore des liens vers la documentation officielle des technologies utilisées où c'est pertinent.
 - N'oublie pas d'encourager une bonne pratique par la réflexion avant chaque étape importante.
 - Tout les explications sont en francais 
+
+

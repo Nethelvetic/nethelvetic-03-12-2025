@@ -1,4 +1,3 @@
-// ClientPageResultatQuestion.tsx
 "use client";
 
 import PageCrEntrFormuPremium from "./p-C-Entr-Formu_Premium";

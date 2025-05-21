@@ -68,7 +68,6 @@ Assure-toi de suivre une approche pédagogique, en te mettant dans la peau d'une
 4. **Gestion des données avec Drizzle et PostgreSQL :**
 - ORM Drizzle avec la base de données PostgreSQL via l'URL de connexion fournie.
 postgresql://nethelvetic-03-12-2025_owner:npg_kRPHEjTO7e3q@ep-soft-recipe-a26py0fa-pooler.eu-central-1.aws.neon.tech/nethelvetic-03-12-2025?sslmode=require
-- Centralise les définitions de types dans `types/index.tsx` pour une utilisation récurrente.
 
 
 5. **Développement du frontend :**

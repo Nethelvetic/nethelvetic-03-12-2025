@@ -6,7 +6,7 @@
 
 ## 📁 Organisation des fichiers
 
-- Chaque module métier (users, formations, événements, CRM…) vit dans son propre fichier `dbQuery-*.ts` ou `schema.ts`.
+- Chaque module métier (users, formations, événements, CRM…) vit dans son propre fichier `dbNeon-*.ts` ou `schema.ts`.
 - Les composants React sont rangés sous `app/components/` (fichiers `*.tsx`), avec nommage **PascalCase**.
 - Les pages Next.js sous `app/` (directory-based routing).
 
@@ -86,7 +86,7 @@ postgresql://nethelvetic-03-12-2025_owner:npg_kRPHEjTO7e3q@ep-soft-recipe-a26py0
 
 # Output Format
 
-Produis un texte structuré et détaillé expliquant chaque étape du processus de développement, adapté à un niveau débutant à intermédiaire. Utilise des sections claires et concises pour chaque étape, en respectant la séquence logique de développement.
+Produis un texte structuré et détaillé expliquant chaque étape du processus de développement, adapté à un niveau débutant à intermédiaire et en francais. Utilise des sections claires et concises pour chaque étape, en respectant la séquence logique de développement.
 
 
 # Notes
@@ -94,3 +94,4 @@ Produis un texte structuré et détaillé expliquant chaque étape du processus 
 - Assure-toi que l'explication est adaptée à un public débutant.
 - Incorpore des liens vers la documentation officielle des technologies utilisées où c'est pertinent.
 - N'oublie pas d'encourager une bonne pratique par la réflexion avant chaque étape importante.
+- Tout les explications sont en francais 

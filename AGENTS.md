@@ -69,7 +69,6 @@ postgresql://nethelvetic-03-12-2025_owner:npg_kRPHEjTO7e3q@ep-soft-recipe-a26py0
 
 4. **Optimisations :**
 - Intègre le SEO de base avec des balises meta et des titres.
-- Utilise `next/image` pour optimiser les images du site.
 - Implémente le lazy loading pour les composants non essentiels.
 
 # Output Format

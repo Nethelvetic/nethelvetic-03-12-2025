@@ -1,8 +1,6 @@
 import { EmailTemplPw } from '../components/email-temp-Pw';
 import { EmailTemplate5 } from '../components/email-template5';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { resend } from './resend';
 
 //---------------------------------------------------------------------
 //------------------------1.1 Fonction email inscription  ------------

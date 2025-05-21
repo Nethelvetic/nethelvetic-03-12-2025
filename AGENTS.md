@@ -4,6 +4,7 @@
 
 ---
 
+kebab
 ## 📁 Organisation des fichiers
 
 - Chaque module métier (users, formations, événements, CRM…) vit dans son propre fichier `dbNeon-*.ts` ou `schema.ts`.

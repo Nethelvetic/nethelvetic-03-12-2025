@@ -82,7 +82,7 @@ const FormCrmUserCompteInfoPerso: React.FC = () => {
       console.log("1.1.1 Front FormCrmUserCompte useEffect => get Cookies");
       const cookieStr = Cookies.get("myData");
       const cookieData = cookieStr ? JSON.parse(cookieStr) : undefined;
-      const userId = cookieData?.userId;
+      const userId = cookieData?.crmUserId;
       console.log("1.1.2 Front FormCrmUserCompte useEffect => cookieData =", cookieData);
 
       if (!userId) {
@@ -169,7 +169,7 @@ const FormCrmUserCompteInfoPerso: React.FC = () => {
     console.log("2.0.3 ../../FRONT FormCrmUserCompte => H.C. => get Cookies");
     const cookieStr = Cookies.get("myData");
     const cookieData = cookieStr ? JSON.parse(cookieStr) : undefined;
-    const userIdFromCookie = cookieData?.userId ?? 0;
+    const userIdFromCookie = cookieData?.crmUserId ?? 0;
     console.log("2.0.4 ../../FRONT FormCrmUserCompte => H.C. => get Cookies =", cookieData);
 
     //------------------------------------------------------------

@@ -33,11 +33,11 @@ const FormSeConnecter: React.FC = () => {
     console.log("2.0.1 ../../ Front FormConnect => useE => get Cookie =", cookieData);
 
     if (cookieData) {
-      if (cookieData.userAdmin === "jerome1872Troistorrents") {
+      if (cookieData.crmUserAdmin === "jerome1872Troistorrents") {
         console.log("2.0.2 ../../../ Front FormConnect => useE => get Cookie => set VarZustand & push ->/admin/users");
         setUserAdmin("jerome1872Troistorrents");
         router.push("/admin/users");
-      } else if (cookieData.userAdmin === "user2025Nethelvetic") {
+      } else if (cookieData.crmUserAdmin === "user2025Nethelvetic") {
         console.log("2.0.3 ../../../ Front FormConnect => useE => get Cookie => set VarZustand & push ->/gestion360/identitfier");
         setUserAdmin("user2025Nethelvetic");
         router.push("/gestion360/identifier");
@@ -113,7 +113,7 @@ const FormSeConnecter: React.FC = () => {
           userJerome: "",
           crmUserAdmin: crmUserEmailAndPwSelectRes.user?.email === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
           crmUserImgUrl: crmUserEmailAndPwSelectRes.user?.imgUrl || "",
-          crmUserEmail: crmUserEmailAndPwSelectRes.user?.email || "",
+          crmUserAdminEmail: crmUserEmailAndPwSelectRes.user?.email || "",
           crmUserId: crmUserEmailAndPwSelectRes.user?.id || ""
         };
         Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
@@ -144,7 +144,7 @@ const FormSeConnecter: React.FC = () => {
        userJerome: username === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
        crmUserAdmin: username === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
        crmUserImgUrl: "",
-       crmUserEmail: username || "",
+       crmUserAdminEmail: username || "",
        crmUserId: "",
      };
      Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });

@@ -77,10 +77,11 @@ const ListHUsersBtnBgGN: React.FC<ListHUsersBtnBgGNProps> = ({
 
            //2.1.8 set cookies
           const myData = {
-            userAdmin: "user2025Nethelvetic",
-            userImgUrl: card.imgUrl,
-            userAdminEmail: card.email,
-            userId: card.id
+            userJerome: "false",
+            crmUserAdmin: "user2025Nethelvetic",
+            crmUserImgUrl: card.imgUrl,
+            crmUserAdminEmail: card.email,
+            crmUserId: card.id
           };
         Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
          router.push("/gestion360/identifier");

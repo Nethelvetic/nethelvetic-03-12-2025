@@ -100,7 +100,7 @@ const FormCrmUser_userAdd: React.FC = () => {
     console.log("2.0.3 ../../ FRONT FormCrmUserAdd => H.C. => get Cookies");
     const cookieStr = Cookies.get("myData");
     const cookieData = cookieStr ? JSON.parse(cookieStr) : undefined;
-    const userIdFromCookie = cookieData?.userId ?? 0;
+    const userIdFromCookie = cookieData?.crmUserId ?? 0;
     console.log("2.0.4 ../../ FRONT FormCrmUserAdd => H.C. => get Cookies =", cookieData);
 
     //------------------------------------------------------------

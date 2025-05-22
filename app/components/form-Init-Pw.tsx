@@ -30,11 +30,11 @@ const FormInitPw: React.FC = () => {
       console.log("2.0.1 Front FormInitPw useE1 => cookies SUCCES");
       try {
         const data = JSON.parse(cookieStr);
-        if (data.userEmail) {
+        if (data.crmUserAdminEmail) {
           console.log( "2.0.2 Front FormInitPw useE1 => cookies SUCCES => setUsername useState");
 
           // 2.0.3 set useState username
-          setUsername(data.userEmail);
+          setUsername(data.crmUserAdminEmail);
         }
       } catch {
         console.log("2.0.3 Front FormInitPw useE => cookies No SUCCES");
@@ -112,9 +112,11 @@ const FormInitPw: React.FC = () => {
           Cookies.set(
             'myData',
             JSON.stringify({
-              userAdmin: "jerome1872Troistorrents",
-              userImgUrl: userObj.imgUrl,
-              userAdminEmail: username,
+              userJerome: "jerome1872Troistorrents",
+              crmUserAdmin: "jerome1872Troistorrents",
+              crmUserImgUrl: userObj.imgUrl,
+              crmUserAdminEmail: username,
+              crmUserId: userObj.id ?? ""
             }),
             { expires: 1, path: '/' }
           );
@@ -125,9 +127,11 @@ const FormInitPw: React.FC = () => {
           Cookies.set(
             'myData',
             JSON.stringify({
-              userAdmin: "user2025Nethelvetic",
-              userImgUrl: userObj.imgUrl,
-              userAdminEmail: username,
+              userJerome: "false",
+              crmUserAdmin: "user2025Nethelvetic",
+              crmUserImgUrl: userObj.imgUrl,
+              crmUserAdminEmail: username,
+              crmUserId: userObj.id ?? ""
             }),
             { expires: 1, path: '/' }
           );

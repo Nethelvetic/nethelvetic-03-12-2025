@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { selectionFormation } from "../db/dbNeon-Formations";
+import { selectionAllFormations } from "../db/dbNeon-Formations";
 import CarteVImgTitreBgN from './cart-V-Img-Titre-BgN';
 import ListHImgTxtBtnBgGN from './li-Img-Txt-Btn-BgGN';
 
@@ -19,9 +19,11 @@ const FormationPage: React.FC = () => {
   useEffect(() => {
     console.log("2 debut useEffect");
     async function fetchFormations() {
-      const data = await selectionFormation ();
-      setCardData(data);
-      console.log("2.1 reponse data =", data);
+      const data = await selectionAllFormations();
+      if (data.success) {
+        setCardData(data.formations ?? []);
+        console.log("2.1 reponse data =", data.formations);
+      }
     }
     fetchFormations();
   }, []);

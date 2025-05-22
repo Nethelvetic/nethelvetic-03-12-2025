@@ -22,9 +22,11 @@ interface NavBarHProps {
 
 // Définition du type pour le cookie JSON "myData"
 interface MyDataType {
-  userAdmin?: string;
-  userImgUrl?: string;
-  userAdminEmail?: string;
+  userJerome?: string;
+  crmUserAdmin?: string;
+  crmUserImgUrl?: string;
+  crmUserAdminEmail?: string;
+  crmUserId?: string | number;
 }
 
 const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
@@ -117,13 +119,13 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
                   <div className="flex flex-col items-center">
                     <a href="/formulaire/seConnecter">
                       <img
-                        src={cookieData.userImgUrl}
+                        src={cookieData.crmUserImgUrl}
                         alt="User"
                         className="h-8 w-8 md:h-10 md:w-10 rounded-full"
                       />
                     </a>
                     <span className="text-white font-openSansRegular text-xs md:text-sm mt-1">
-                      {cookieData.userAdminEmail}
+                      {cookieData.crmUserAdminEmail}
                     </span>
                   </div>
                   <button
@@ -205,13 +207,13 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
             <div className="flex flex-col items-center">
               <a href="/formulaire/seConnecter">
                 <img
-                  src={cookieData.userImgUrl}
+                  src={cookieData.crmUserImgUrl}
                   alt="User"
                   className="h-8 w-8 rounded-full"
                 />
               </a>
               <span className="text-white font-openSansRegular text-xs mt-1">
-                {cookieData.userAdminEmail}
+                {cookieData.crmUserAdminEmail}
               </span>
             </div>
             <button

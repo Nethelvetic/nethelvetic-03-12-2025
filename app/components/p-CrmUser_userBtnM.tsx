@@ -58,7 +58,7 @@ const PageCrmUser_userBtnM: React.FC = () => {
      //---------------------------------------------------------------------
     //2.0.6 ../../../.?/ gest360CrmUser => useEf => cookies => parse Cookie => get userAdmin2
     if (cookieData.crmUserAdmin === "jerome1872Troistorrents") {
-      console.log("2.0.6 ../../../../ FRONT PageCrmUser_user => useEf => cookies => parse Cookie => get userAdmin2 & push admin/user: ", cookieData.userAdmin );
+      console.log("2.0.6 ../../../../ FRONT PageCrmUser_user => useEf => cookies => parse Cookie => get userAdmin2 & push admin/user: ", cookieData.crmUserAdmin );
       router.push("/admin/users");
       ///////////////////////////////////////////////////////////////////
       //                    STOP 3
@@ -69,7 +69,7 @@ const PageCrmUser_userBtnM: React.FC = () => {
       //2.0.7 ../../.?/ gest360CrmUser => useEffect => cookies OK => parse Cookie => get userAdmin1
     } else if (cookieData.crmUserAdmin === "user2025Nethelvetic") {
       // Utilisateur normal : on reste ici, on ne fait rien
-      console.log("2.0.7 ../../../../ FRONT PageCrmUser_user => useE => cookies => parse Cookie => userAdmin1 OK", cookieData.userAdmin);;
+      console.log("2.0.7 ../../../../ FRONT PageCrmUser_user => useE => cookies => parse Cookie => userAdmin1 OK", cookieData.crmUserAdmin);;
       ///////////////////////////////////////////////////////////////////
       //               CONTINUIE
       ///////////////////////////////////////////////////////////////////
@@ -77,7 +77,7 @@ const PageCrmUser_userBtnM: React.FC = () => {
 
     } else {
       // Valeur inattendue → renvoyer à la connexion
-      console.log("2.0.8 ../../../../../ FRONT PageCrmUser_user => useE => cookies => parse Cookie => userAdmin NO OK => push formulaire/seConnecter", cookieData.userAdmin);;
+      console.log("2.0.8 ../../../../../ FRONT PageCrmUser_user => useE => cookies => parse Cookie => userAdmin NO OK => push formulaire/seConnecter", cookieData.crmUserAdmin);;
       router.push("/formulaire/seConnecter");
       ///////////////////////////////////////////////////////////////////
       //                    STOP 4
@@ -90,7 +90,7 @@ const PageCrmUser_userBtnM: React.FC = () => {
     console.log("2.0.9 ../../../../.?/ Back PageCrmUser_user => useE => cookies => parse Cookie => userAdmin => crmUsersAllSelect_User Ok/NO");
     async function fetchUsers() {
 
-      const crmUsers_usersAllSelectRes = await crmUsers_usersAllSelection(cookieData.userId);
+      const crmUsers_usersAllSelectRes = await crmUsers_usersAllSelection(cookieData.crmUserId);
 
       if (crmUsers_usersAllSelectRes.success) {
         // On s'assure que user est bien un tableau (et non null)

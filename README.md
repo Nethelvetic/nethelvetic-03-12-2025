@@ -19,6 +19,10 @@ DATABASE_URL=<url de connexion PostgreSQL>
 SUPABASE_URL=<url du projet Supabase>
 SUPABASE_ANON_KEY=<clef anonyme Supabase>
 RESEND_API_KEY=<clef API Resend>
+# valeurs d'administration
+ADMIN_EMAIL=<email de l'administrateur>
+ADMIN_ID_JEROME=<identifiant administrateur principal>
+ADMIN_ID_DEFAULT=<identifiant utilisateur standard>
 # facultatif pour les emails
 VERCEL_URL=http://localhost:3000
 ```

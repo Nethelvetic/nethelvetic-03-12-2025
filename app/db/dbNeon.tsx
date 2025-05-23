@@ -3,6 +3,7 @@ import { neon } from '@neondatabase/serverless';
 import { drizzle } from "drizzle-orm/neon-http";
 import { and, eq, isNotNull, not } from "drizzle-orm";
 import { formationTable, evenementsTable, usersTable, messageTable, crmUsersTable, crmUser_UsersTable  } from "./schema";
+import { ADMIN_EMAIL, ADMIN_ID_JEROME, ADMIN_ID_DEFAULT } from "../util/admin-config";
 
 
 // 105  TABLES FORMATION
@@ -1346,7 +1347,7 @@ export async function crmUserInscrit(user: FormatUserInput, crmMotdePasse: strin
         status_abonnement: "actif",
         status_paiement: "non payé",
         mot_de_passe:  crmMotdePasse,
-        identification: user.email  === "golliard73@gmail.com"? "jerome1872Troistorrents": "user2025Nethelvetic",
+        identification: user.email  === ADMIN_EMAIL ? ADMIN_ID_JEROME : ADMIN_ID_DEFAULT,
         userId: existingUser[0].id,
       };
 
@@ -1445,7 +1446,7 @@ export async function crmUserInscrit(user: FormatUserInput, crmMotdePasse: strin
           status_abonnement: "actif",
           status_paiement: "non payé",
           mot_de_passe: crmMotdePasse,
-          identification: user.email  === "golliard73@gmail.com"? "jerome1872Troistorrents": "user2025Nethelvetic",
+          identification: user.email  === ADMIN_EMAIL ? ADMIN_ID_JEROME : ADMIN_ID_DEFAULT,
           userId: userInserted[0].id,
         };
         const crmUserInsertRes = await crmUserInsert(crmData);

@@ -8,6 +8,7 @@ import courrielInscription from "../email/crmUser_EmailInscrit";
 import { crmUserInsertion} from "../db/dbNeon-CrmUserInscrit"; 
 import VarZustand from "../util/zustand";
 import Cookies from "js-cookie";
+import { ADMIN_EMAIL, ADMIN_ID_JEROME, ADMIN_ID_DEFAULT } from "../util/admin-config";
 
 type UserDataType = {
   nom_entreprise?: string;
@@ -181,14 +182,14 @@ const  FormCrmUserIns: React.FC = () => {
             
                 //------------------------------------------------------------
                 // 2.2.9 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock  email = golliard73@g
-                if (userObj.email === "golliard73@gmail.com") {
+                if (userObj.email === ADMIN_EMAIL) {
                   console.log(" 2.2.9 ../../../ FRONT CrmUser-Form => H.S. => crmUser-Pw  => CrmUser-Ins => set Zust/coock >golliard73@g");
-                
-                  setUserAdmin("jerome1872Troistorrents")
+
+                  setUserAdmin(ADMIN_ID_JEROME)
 
                   const myCookieData = {
-                    userJerome: "jerome1872Troistorrents",
-                    crmUserAdmin: "jerome1872Troistorrents",  
+                    userJerome: ADMIN_ID_JEROME,
+                    crmUserAdmin: ADMIN_ID_JEROME,
                     crmUserImgUrl: userObj.imgUrl,
                     crmUserAdminEmail: username,  
                     crmUserId: userObj.id           
@@ -208,7 +209,7 @@ const  FormCrmUserIns: React.FC = () => {
                 
                   const myCookieData = {
                     userJerome: "false",
-                    crmUserAdmin: "user2025Nethelvetic",  
+                    crmUserAdmin: ADMIN_ID_DEFAULT,
                     crmUserImgUrl: userObj.imgUrl, 
                     crmUserAdminEmail: username, 
                     crmUserId: userObj.id           

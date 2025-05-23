@@ -2,7 +2,7 @@ import "dotenv/config";
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from "drizzle-orm/neon-http";
 import { and, eq, isNotNull, not } from "drizzle-orm";
-import { formationTable, evenementsTable, usersTable, messageTable, crmUsersTable, crmUser_UsersTable  } from "./schema";
+import { formationTable, evenementsTable, usersTable, messageTable, crmUsersTable, crmUser_UsersTable, offresTable } from "./schema";
 
 
 // 105  TABLES FORMATION
@@ -99,7 +99,19 @@ type FormatMessageInput = {
   ville: string;
   code_postal: string;
   message: string;
-  date: string; 
+  date: string;
+};
+
+// Typage pour la table offresTable
+type TypeOffreInput = {
+  produits: any; // détails produits ou services au format JSON
+  total_ht: number;
+  total_ttc: number;
+  statut: string;
+  pieces_jointes?: any;
+  cree_le: string;
+  modifie_le: string;
+  userId: number;
 };
 
 
@@ -2016,3 +2028,108 @@ export async function crmUser_userUpdateById(id: number, user: FormatUserInput) 
     };
   }
 }
+
+// --------------------------------------------------------------------
+// ------------------------9.0  Début CRUD Offres ---------------------
+// --------------------------------------------------------------------
+
+export async function insertOffre(offre: TypeOffreInput) {
+  console.log("9.1.0 dbNeon  insertOffre : offre= ", offre);
+  try {
+    await db.insert(offresTable).values(offre);
+    console.log("9.1.1 dbNeon  insertOffre ok");
+    return { success: true, message: "Offre ajoutée avec succès !" };
+  } catch (error) {
+    console.error("9.1.2 dbNeon  insertOffre erreur", error);
+    return { success: false, message: "Erreur lors de l'ajout de l'offre." };
+  }
+}
+
+export async function selectOffres() {
+  console.log("9.2.0 dbNeon  selectOffres");
+  try {
+    const offres = await db.select().from(offresTable);
+    console.log("9.2.1 dbNeon  selectOffres ok", offres);
+    return offres;
+  } catch (error) {
+    console.error("9.2.2 dbNeon  selectOffres erreur", error);
+    throw error;
+  }
+}
+
+export async function selectOneOffre(id: number) {
+  console.log("9.3.0 dbNeon  selectOneOffre id=", id);
+  try {
+    const offre = await db
+      .select()
+      .from(offresTable)
+      .where(eq(offresTable.id, id))
+      .limit(1);
+    console.log("9.3.1 dbNeon  selectOneOffre ok", offre);
+    return offre;
+  } catch (error) {
+    console.error("9.3.2 dbNeon  selectOneOffre erreur", error);
+    throw error;
+  }
+}
+
+export async function updateOffre(id: number, offre: TypeOffreInput) {
+  console.log("9.4.0 dbNeon  updateOffre id=", id);
+  try {
+    await db.update(offresTable).set(offre).where(eq(offresTable.id, id));
+    console.log("9.4.1 dbNeon  updateOffre ok");
+    return { success: true, message: "Offre mise à jour avec succès !" };
+  } catch (error) {
+    console.error("9.4.2 dbNeon  updateOffre erreur", error);
+    return { success: false, message: "Erreur lors de la mise à jour." };
+  }
+}
+
+export async function deleteOffre(id: number) {
+  console.log("9.5.0 dbNeon  deleteOffre id=", id);
+  try {
+    await db.delete(offresTable).where(eq(offresTable.id, id));
+    console.log("9.5.1 dbNeon  deleteOffre ok");
+    return { success: true, message: "Offre supprimée avec succès !" };
+  } catch (error) {
+    console.error("9.5.2 dbNeon  deleteOffre erreur", error);
+    return { success: false, message: "Erreur lors de la suppression." };
+  }
+}
+
+export async function duplicateOffre(id: number) {
+  console.log("9.6.0 dbNeon  duplicateOffre id=", id);
+  try {
+    const offre = await db
+      .select()
+      .from(offresTable)
+      .where(eq(offresTable.id, id))
+      .limit(1);
+    if (offre.length === 0) {
+      return { success: false, message: "Offre introuvable" };
+    }
+    const copy = { ...offre[0], id: undefined } as any;
+    await db.insert(offresTable).values(copy);
+    console.log("9.6.1 dbNeon  duplicateOffre ok");
+    return { success: true, message: "Offre dupliquée" };
+  } catch (error) {
+    console.error("9.6.2 dbNeon  duplicateOffre erreur", error);
+    return { success: false, message: "Erreur duplication" };
+  }
+}
+
+export async function updateOffreStatut(id: number, statut: string) {
+  console.log("9.7.0 dbNeon  updateOffreStatut id=", id, statut);
+  try {
+    await db
+      .update(offresTable)
+      .set({ statut })
+      .where(eq(offresTable.id, id));
+    console.log("9.7.1 dbNeon  updateOffreStatut ok");
+    return { success: true, message: "Statut mis à jour" };
+  } catch (error) {
+    console.error("9.7.2 dbNeon  updateOffreStatut erreur", error);
+    return { success: false, message: "Erreur changement de statut" };
+  }
+}
+

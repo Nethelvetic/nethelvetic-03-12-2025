@@ -171,6 +171,21 @@ export const crmUsersTable = pgTable("crmUsers", {
   userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
 });
 
+//---------------------------------------------------------------------
+//------------------------7.0 Début Table offres ----------------------
+//---------------------------------------------------------------------
+export const offresTable = pgTable("offres", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  produits: json("produits").notNull(),
+  total_ht: integer().notNull(),
+  total_ttc: integer().notNull(),
+  statut: varchar({ length: 50 }).notNull().default("brouillon"),
+  pieces_jointes: json("pieces_jointes"),
+  cree_le: date("cree_le").notNull(),
+  modifie_le: date("modifie_le").notNull(),
+  userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
+});
+
 
 
 //---------------------------------------------------------------------
@@ -328,6 +343,16 @@ export const communauteUsersRelations = relations(communauteUsersTable, ({ one }
 export const messageUserRelations = relations(messageTable, ({ one }) => ({
   sender: one(usersTable, {
     fields: [messageTable.userId],
+    references: [usersTable.id],
+  }),
+}));
+
+//---------------------------------------------------------------------
+//------------------------Relations pour offresTable ------------------
+//---------------------------------------------------------------------
+export const offresRelations = relations(offresTable, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [offresTable.userId],
     references: [usersTable.id],
   }),
 }));

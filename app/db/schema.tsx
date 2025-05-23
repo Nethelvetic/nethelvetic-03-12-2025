@@ -7,6 +7,7 @@ import {
   json,
 } from "drizzle-orm/pg-core";
 import { sql as drizzleSql, relations } from "drizzle-orm";
+import { ADMIN_ID_JEROME } from "@/admin-config";
 
 // --------------------------------------------------------------------
 // --------------------------------------------------------------------
@@ -167,7 +168,7 @@ export const crmUsersTable = pgTable("crmUsers", {
   status_paiement: varchar({ length: 50 }).notNull().default("non payé"),
   mode_paiement: varchar({ length: 100 }),
   facturation_info: text(),
-  identification: varchar({ length: 50 }).notNull().default("jerome1872Troistorrents"),
+  identification: varchar({ length: 50 }).notNull().default(ADMIN_ID_JEROME),
   userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
 });
 

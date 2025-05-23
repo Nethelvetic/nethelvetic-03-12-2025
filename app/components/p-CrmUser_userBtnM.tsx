@@ -7,6 +7,7 @@ import BtnLgNoEffetBgG from "./btn-Lg-NoEf-Url-BgG";
 import LiCrmUser_userBtnBgGN from "./li-CrmUser_usersBtn-bgGN";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { ADMIN_ID_JEROME, ADMIN_ID_DEFAULT } from "@/admin-config";
 
 const PageCrmUser_userBtnM: React.FC = () => {
   //---------------------------------------------------------------------
@@ -57,7 +58,7 @@ const PageCrmUser_userBtnM: React.FC = () => {
 
      //---------------------------------------------------------------------
     //2.0.6 ../../../.?/ gest360CrmUser => useEf => cookies => parse Cookie => get userAdmin2
-    if (cookieData.crmUserAdmin === "jerome1872Troistorrents") {
+    if (cookieData.crmUserAdmin === ADMIN_ID_JEROME) {
       console.log("2.0.6 ../../../../ FRONT PageCrmUser_user => useEf => cookies => parse Cookie => get userAdmin2 & push admin/user: ", cookieData.crmUserAdmin );
       router.push("/admin/users");
       ///////////////////////////////////////////////////////////////////
@@ -67,7 +68,7 @@ const PageCrmUser_userBtnM: React.FC = () => {
 
       //---------------------------------------------------------------------
       //2.0.7 ../../.?/ gest360CrmUser => useEffect => cookies OK => parse Cookie => get userAdmin1
-    } else if (cookieData.crmUserAdmin === "user2025Nethelvetic") {
+    } else if (cookieData.crmUserAdmin === ADMIN_ID_DEFAULT) {
       // Utilisateur normal : on reste ici, on ne fait rien
       console.log("2.0.7 ../../../../ FRONT PageCrmUser_user => useE => cookies => parse Cookie => userAdmin1 OK", cookieData.crmUserAdmin);;
       ///////////////////////////////////////////////////////////////////

@@ -1,6 +1,7 @@
 import { EmailTemplPw } from '../components/email-temp-Pw';
 import { EmailTemplate5 } from '../components/email-template5';
 import { resend } from './resend';
+import { ADMIN_EMAIL } from '@/admin-config';
 
 //---------------------------------------------------------------------
 //------------------------1.1 Fonction email inscription  ------------
@@ -15,7 +16,7 @@ export async function crmUser_EmailInscrit(emailProps: string) {
 
     const { data, error } = await resend.emails.send({
       from: 'Nethelvetic <do-not-reply@test.nethelvetic.ch>',
-      to: ['golliard73@gmail.com'],
+      to: [ADMIN_EMAIL],
       subject: 'Hello world',
       react: reactContent,
     });
@@ -48,7 +49,7 @@ export async function emailPw(emailProps: string) {
 
     const { data, error } = await resend.emails.send({
       from: 'Nethelvetic <do-not-reply@test.nethelvetic.ch>',
-      to: ['golliard73@gmail.com'],
+      to: [ADMIN_EMAIL],
       subject: 'Hello world',
       react: reactContent,
     });

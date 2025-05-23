@@ -12,6 +12,8 @@ import {
     Tailwind
   } from '@react-email/components';
 
+const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000';
+
 
   interface EmailTempPwProps {
     email: string;
@@ -40,7 +42,7 @@ import {
           Pour créer un nouveau mot de passe, veuillez cliquer sur le lien suivant :
           </Text>
           <Button
-            href="http://localhost:3000/formulaire/init-Pw"
+            href={`${baseUrl}/formulaire/init-Pw`}
             className="bg-red-400 text-white py-3 px-5"
           >
             lien de réinitialisation

@@ -12,6 +12,8 @@ import {
     Tailwind
   } from '@react-email/components';
 
+const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000';
+
 
   interface EmailTemplate4Props {
     email: string;
@@ -40,7 +42,7 @@ import {
             c'est un succès !
           </Text>
           <Button
-            href="http://localhost:3000/"
+            href={`${baseUrl}/`}
             className="bg-red-400 text-white py-3 px-5"
           >
             Accéder au site

@@ -19,7 +19,7 @@ const baseUrl = process.env.VERCEL_URL
 export const StripeWelcomeEmail = () => (
   <Html>
     <Head />
-    <Preview>You're now ready to make live transactions with Stripe!</Preview>
+    <Preview>Vous êtes prêt à effectuer des transactions en direct avec Stripe !</Preview>
     <Body style={main}>
       <Container style={container}>
         <Section style={box}>
@@ -31,8 +31,8 @@ export const StripeWelcomeEmail = () => (
           />
           <Hr style={hr} />
           <Text style={paragraph}>
-            Thanks for submitting your account information. You're now ready to
-            make live transactions with Stripe!
+            Merci d'avoir soumis les informations de votre compte. Vous pouvez
+            maintenant effectuer des transactions en direct avec Stripe !
           </Text>
           <Text style={paragraph}>
             You can view your payments and a variety of other information about

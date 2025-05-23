@@ -23,10 +23,10 @@ export const NotionMagicLinkEmail = ({
 }: NotionMagicLinkEmailProps) => (
   <Html>
     <Head />
-    <Preview>Log in with this magic link</Preview>
+    <Preview>Connectez-vous grâce à ce lien magique</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Login</Heading>
+        <Heading style={h1}>Connexion</Heading>
         <Link
           href="https://notion.so"
           target="_blank"
@@ -36,10 +36,10 @@ export const NotionMagicLinkEmail = ({
             marginBottom: '16px',
           }}
         >
-          Click here to log in with this magic link
+          Cliquez ici pour vous connecter grâce à ce lien magique
         </Link>
         <Text style={{ ...text, marginBottom: '14px' }}>
-          Or, copy and paste this temporary login code:
+          Ou copiez-collez ce code de connexion temporaire :
         </Text>
         <code style={code}>{loginCode}</code>
         <Text
@@ -50,7 +50,7 @@ export const NotionMagicLinkEmail = ({
             marginBottom: '16px',
           }}
         >
-          If you didn&apos;t try to login, you can safely ignore this email.
+          Si vous n&apos;avez pas tenté de vous connecter, vous pouvez ignorer cet e-mail.
         </Text>
         <Text
           style={{
@@ -60,14 +60,13 @@ export const NotionMagicLinkEmail = ({
             marginBottom: '38px',
           }}
         >
-          Hint: You can set a permanent password in Settings & members → My
-          account.
+          Astuce&nbsp;: vous pouvez définir un mot de passe permanent dans Paramètres & membres → Mon compte.
         </Text>
         <Img
           src={`${baseUrl}/static/notion-logo.png`}
           width="32"
           height="32"
-          alt="Notion's Logo"
+          alt="Logo de Notion"
         />
         <Text style={footer}>
           <Link
@@ -77,9 +76,9 @@ export const NotionMagicLinkEmail = ({
           >
             Notion.so
           </Link>
-          , the all-in-one-workspace
+          , l&apos;espace de travail tout-en-un
           <br />
-          for your notes, tasks, wikis, and databases.
+          pour vos notes, tâches, wikis et bases de données.
         </Text>
       </Container>
     </Body>

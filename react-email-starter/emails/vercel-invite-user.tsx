@@ -65,7 +65,7 @@ export const VercelInviteUserEmail = ({
               Join <strong>{teamName}</strong> on <strong>Vercel</strong>
             </Heading>
             <Text className="text-black text-[14px] leading-[24px]">
-              Hello {username},
+              Bonjour {username},
             </Text>
             <Text className="text-black text-[14px] leading-[24px]">
               <strong>{invitedByUsername}</strong> (

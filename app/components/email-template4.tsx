@@ -10,9 +10,9 @@ export const EmailTemplate4: React.FC<Readonly<EmailTemplate4Props>> = ({
 
     <Tailwind>
  
-        <h1>Welcome, {firstName}!</h1>
+        <h1>Bienvenue, {firstName} !</h1>
 
-        <button className='bg-red-400 text-white py-3 px-5'>clique ti to</button>
+        <button className='bg-red-400 text-white py-3 px-5'>Cliquez ici</button>
 
     </Tailwind>
 

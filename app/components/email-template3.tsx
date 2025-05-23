@@ -19,7 +19,7 @@ export const EmailTemplate3: React.FC = () => (
           href="https://example.com"
           className="bg-red-400 text-white py-3 px-5"
         >
-          Click 2
+          Cliquez ici
         </Button>
       </Html>
     </Tailwind>

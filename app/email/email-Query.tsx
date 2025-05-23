@@ -16,7 +16,7 @@ export async function crmUser_EmailInscrit(emailProps: string) {
     const { data, error } = await resend.emails.send({
       from: 'Nethelvetic <do-not-reply@test.nethelvetic.ch>',
       to: ['golliard73@gmail.com'],
-      subject: 'Hello world',
+      subject: 'Bonjour le monde',
       react: reactContent,
     });
 
@@ -49,7 +49,7 @@ export async function emailPw(emailProps: string) {
     const { data, error } = await resend.emails.send({
       from: 'Nethelvetic <do-not-reply@test.nethelvetic.ch>',
       to: ['golliard73@gmail.com'],
-      subject: 'Hello world',
+      subject: 'Bonjour le monde',
       react: reactContent,
     });
 

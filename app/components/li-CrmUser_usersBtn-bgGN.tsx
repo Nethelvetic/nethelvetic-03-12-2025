@@ -5,6 +5,7 @@ import ContainerBgGN from './cont-BgGN';
 import { useRouter } from "next/navigation";
 import ContBtnLgNoEffectBgG from './cont-Btn-Lg-NoEffet-BgG';
 import Cookies from "js-cookie";
+import { ADMIN_ID_DEFAULT } from "@/admin-config";
 
 interface CarteData {
   id: number;
@@ -76,7 +77,7 @@ const ListCrmUser_userBtnBgGN: React.FC<ListCrmUser_userBtnBgGNProps> = ({
            //2.1.8 set cookies
           const myData = {
             userJerome: "false",
-            crmUserAdmin: "user2025Nethelvetic",
+            crmUserAdmin: ADMIN_ID_DEFAULT,
             crmUserImgUrl: card.imgUrl,
             crmUserAdminEmail: card.email,
             crmUserId: card.id

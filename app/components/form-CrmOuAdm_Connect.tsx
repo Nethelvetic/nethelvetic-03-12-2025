@@ -8,6 +8,11 @@ import { crmUserEmailAndPwSelection } from "../db/dbNeon-CrmUsers";
 import VarZustand from '../util/zustand';
 import Cookies from "js-cookie";
 import courrielPw from "../email/email-Pw";
+import {
+  ADMIN_EMAIL,
+  ADMIN_ID_JEROME,
+  ADMIN_ID_DEFAULT,
+} from "@/admin-config";
 const FormSeConnecter: React.FC = () => {
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique   --------------------
@@ -33,13 +38,13 @@ const FormSeConnecter: React.FC = () => {
     console.log("2.0.1 ../../ Front FormConnect => useE => get Cookie =", cookieData);
 
     if (cookieData) {
-      if (cookieData.crmUserAdmin === "jerome1872Troistorrents") {
+      if (cookieData.crmUserAdmin === ADMIN_ID_JEROME) {
         console.log("2.0.2 ../../../ Front FormConnect => useE => get Cookie => set VarZustand & push ->/admin/users");
-        setUserAdmin("jerome1872Troistorrents");
+        setUserAdmin(ADMIN_ID_JEROME);
         router.push("/admin/users");
-      } else if (cookieData.crmUserAdmin === "user2025Nethelvetic") {
+      } else if (cookieData.crmUserAdmin === ADMIN_ID_DEFAULT) {
         console.log("2.0.3 ../../../ Front FormConnect => useE => get Cookie => set VarZustand & push ->/gestion360/identitfier");
-        setUserAdmin("user2025Nethelvetic");
+        setUserAdmin(ADMIN_ID_DEFAULT);
         router.push("/gestion360/identifier");
       } else {
         console.log("2.0.4 ../../../ Front FormConnect => useE => get Cookie => set VarZustand & push ->/formulaire/seConnecter");
@@ -88,10 +93,10 @@ const FormSeConnecter: React.FC = () => {
         Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
 
         //2.1.9 route push
-        if (crmUser.identification === "jerome1872Troistorrents") {
+        if (crmUser.identification === ADMIN_ID_JEROME) {
           console.log("2.1.9 ../../../../ Front FormConnect => H.S. => crmUserEmailAndPwSelect  => set Zustand/Cookies => Push -> admin/users");
           router.push("/admin/users");
-        } else if (crmUser.identification === "user2025Nethelvetic") {
+        } else if (crmUser.identification === ADMIN_ID_DEFAULT) {
           console.log("2.1.10 ../../../../ Front FormConnect => H.S. => crmUserEmailAndPwSelect  => set Zustand/Cookies => Push -> gestion360/identifier");
           //////////////////////////////////////////////////////////////////////
           //    CONTINUE A GESTION360/IDENTIFIER
@@ -111,7 +116,7 @@ const FormSeConnecter: React.FC = () => {
         // 2.1.11 set cookies
         const myData = {
           userJerome: "",
-          crmUserAdmin: crmUserEmailAndPwSelectRes.user?.email === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
+          crmUserAdmin: crmUserEmailAndPwSelectRes.user?.email === ADMIN_EMAIL ? ADMIN_ID_JEROME : ADMIN_ID_DEFAULT,
           crmUserImgUrl: crmUserEmailAndPwSelectRes.user?.imgUrl || "",
           crmUserAdminEmail: crmUserEmailAndPwSelectRes.user?.email || "",
           crmUserId: crmUserEmailAndPwSelectRes.user?.id || ""
@@ -141,8 +146,8 @@ const FormSeConnecter: React.FC = () => {
 
     // 2.2.2 set cookies
      const myData = {
-       userJerome: username === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
-       crmUserAdmin: username === "golliard73@gmail.com" ? "jerome1872Troistorrents": "user2025Nethelvetic",
+       userJerome: username === ADMIN_EMAIL ? ADMIN_ID_JEROME : ADMIN_ID_DEFAULT,
+       crmUserAdmin: username === ADMIN_EMAIL ? ADMIN_ID_JEROME : ADMIN_ID_DEFAULT,
        crmUserImgUrl: "",
        crmUserAdminEmail: username || "",
        crmUserId: "",

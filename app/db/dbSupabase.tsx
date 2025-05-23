@@ -11,6 +11,7 @@ import {
 import { drizzle } from "drizzle-orm/postgres-js";
 import { and, eq, isNotNull, not } from "drizzle-orm";
 import postgres from "postgres";
+import { ADMIN_EMAIL, ADMIN_ID_JEROME, ADMIN_ID_DEFAULT } from "@/admin-config";
 
 //------------------------------------------------------------------------
 // 0.1 Instanciation Supabase
@@ -271,9 +272,9 @@ export async function crmUserInscrit(user: FormatUserInput, crmMotdePasse: strin
         status_abonnement:      "actif",
         status_paiement:        "non payé",
         mot_de_passe:           crmMotdePasse,
-        identification:         user.email === "golliard73@gmail.com"
-                                  ? "jerome1872Troistorrents"
-                                  : "user2025Nethelvetic",
+        identification:         user.email === ADMIN_EMAIL
+                                  ? ADMIN_ID_JEROME
+                                  : ADMIN_ID_DEFAULT,
         userId: existingUser[0].id,
       };
       const crmUserInsertRes = await crmUserInsert(crmDataForExistingUser);
@@ -324,9 +325,9 @@ export async function crmUserInscrit(user: FormatUserInput, crmMotdePasse: strin
           status_abonnement:      "actif",
           status_paiement:        "non payé",
           mot_de_passe:           crmMotdePasse,
-          identification:         user.email === "golliard73@gmail.com"
-                                    ? "jerome1872Troistorrents"
-                                    : "user2025Nethelvetic",
+          identification:         user.email === ADMIN_EMAIL
+                                    ? ADMIN_ID_JEROME
+                                    : ADMIN_ID_DEFAULT,
           userId: userInserted[0].id,
         };
         const crmUserInsertRes2 = await crmUserInsert(crmData);

@@ -7,6 +7,11 @@ import CarteVImgTxtBgGN from "./cart-V-Img-Txt-BgGN";
 import ContBtnLgNoEffetBgG from "./cont-Btn-Lg-NoEffet-BgG";
 import { crmUserInsertion} from "../db/dbNeon-CrmUserInscrit";
 import VarZustand from "../util/zustand";
+import {
+  ADMIN_EMAIL,
+  ADMIN_ID_JEROME,
+  ADMIN_ID_DEFAULT,
+} from "@/admin-config";
 
 const FormInitPw: React.FC = () => {
   //---------------------------------------------------------------------
@@ -106,14 +111,14 @@ const FormInitPw: React.FC = () => {
         console.log("2.2.6 FormInitPw h.s. => Inscri SUCCES => set Zustand & cookies");
         const userObj = Array.isArray(res.user) ? res.user[0] : res.user;
 
-        if (userObj.email === "golliard73@gmail.com") {
+        if (userObj.email === ADMIN_EMAIL) {
           console.log("2.2.7 Front FormInitPw h.s. => Inscri SUCCES => admin golliard");
-          setUserAdmin("jerome1872Troistorrents");
+          setUserAdmin(ADMIN_ID_JEROME);
           Cookies.set(
             'myData',
             JSON.stringify({
-              userJerome: "jerome1872Troistorrents",
-              crmUserAdmin: "jerome1872Troistorrents",
+              userJerome: ADMIN_ID_JEROME,
+              crmUserAdmin: ADMIN_ID_JEROME,
               crmUserImgUrl: userObj.imgUrl,
               crmUserAdminEmail: username,
               crmUserId: userObj.id ?? ""
@@ -128,7 +133,7 @@ const FormInitPw: React.FC = () => {
             'myData',
             JSON.stringify({
               userJerome: "false",
-              crmUserAdmin: "user2025Nethelvetic",
+              crmUserAdmin: ADMIN_ID_DEFAULT,
               crmUserImgUrl: userObj.imgUrl,
               crmUserAdminEmail: username,
               crmUserId: userObj.id ?? ""

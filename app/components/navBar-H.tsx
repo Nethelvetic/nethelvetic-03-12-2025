@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import VarZustand from "../util/zustand";
+import { ADMIN_ID_JEROME } from "@/admin-config";
 
 interface NavSubItem {
   title: string;
@@ -99,7 +100,7 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
             </a>
           ) : (
             <>
-              {userAdmin === "jerome1872Troistorrents" ? (
+              {userAdmin === ADMIN_ID_JEROME ? (
                 // --- si c'est Jerome, on ne change rien (on pourrait afficher un avatar ou un label spécial) ---
                 <div className="flex items-center gap-2">
                   {/* ici on laisse tel quel / ou mettre un avatar/admin placeholder */}
@@ -194,7 +195,7 @@ const NavBarH: React.FC<NavBarHProps> = ({ items, logo }) => {
           >
             Connecter
           </a>
-        ) : userAdmin === "jerome1872Troistorrents" ? (
+        ) : userAdmin === ADMIN_ID_JEROME ? (
           // mobile, Jerome : rien à changer non plus
           <button
             onClick={handleLogout}

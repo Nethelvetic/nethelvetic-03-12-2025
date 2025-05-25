@@ -137,8 +137,9 @@ const FormCrmUser_userModif: React.FC = () => {
         console.error("2.0.5 ../../ FRONT FormCrmUserModif => useE => selectionOneCrmUser NO OK");
       }
     }
+    if (!modifIdStr) return;
     fetchUser();
-  }, []);
+  }, [modifIdStr, modifId]);
 
 
   //---------------------------------------------------------------------
@@ -255,7 +256,7 @@ const FormCrmUser_userModif: React.FC = () => {
           <form onSubmit={handleClick} className="space-y-4 p-4 w-full">
             <div className="flex flex-col md:flex-row items-start p-3">
               {/* Image */}
-              <div className="w-3/4 md:w-1/3 mx-auto md:mx-0 flex flex-col h-48 md:h-104 overflow-hidden">
+              <div className="w-full md:w-1/3 mx-auto md:mx-0 flex flex-col h-80 md:h-104 overflow-hidden">
                 <div className="w-full overflow-hidden mt-15">
                   <img
                     src={unUserData.imgUrl}

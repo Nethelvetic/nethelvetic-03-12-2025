@@ -3,9 +3,6 @@
 import React from 'react';
 import ContainerBgGN from './cont-BgGN';
 import { useRouter } from "next/navigation";
-import ContBtnLgNoEffectBgG from './cont-Btn-Lg-NoEffet-BgG';
-import Cookies from "js-cookie";
-import { ADMIN_ID_DEFAULT } from "@/admin-config";
 
 interface CarteData {
   id: number;
@@ -70,21 +67,6 @@ const ListCrmUser_userBtnBgGN: React.FC<ListCrmUser_userBtnBgGNProps> = ({
           router.push(buttonUrl);
         };
 
-        // Handler pour le 2ème bouton (tu peux adapter le comportement ici)
-        const handleButtonCrmUserClick = () => {
-          console.log("2.0.0 ../ dbNeon ListHUsersBtnMBgGN => handleButtonCrmUserClick : id  ", card.id);
-
-           //2.1.8 set cookies
-          const myData = {
-            userJerome: "false",
-            crmUserAdmin: ADMIN_ID_DEFAULT,
-            crmUserImgUrl: card.imgUrl,
-            crmUserAdminEmail: card.email,
-            crmUserId: card.id
-          };
-        Cookies.set('myData', JSON.stringify(myData), { expires: 1, path: '/' });
-         router.push("/gestion360/identifier");
-        };
 
         const content = (
           <div className="w-full">
@@ -113,38 +95,21 @@ const ListCrmUser_userBtnBgGN: React.FC<ListCrmUser_userBtnBgGNProps> = ({
                   <p className="m-0 text-xs md:text-lg">{card.telephone}</p>
                 </div>
 
-                {/* 1 boutons sur desktop */}
-                <div className="pt-1 pb-1 md:pt-3 md:pb-3 hidden md:flex gap-4">
-                  <ContBtnLgNoEffectBgG>
-                    <button
-                      className="w-full h-full"
-                      onClick={handleButtonClick}
-                    >
-                      {buttonTitle}
-                    </button>
-                  </ContBtnLgNoEffectBgG>
-                </div>
               </div>
             </div>
           </div>
         );
 
         //------------------------------------------------------
-        // Version mobile : on clique sur tout le container
-        const modifUrlMobile = buttonUrl;
-
+        // clic sur tout le conteneur
         return (
-          <React.Fragment key={index}>
-            <div
-              className="md:hidden cursor-pointer"
-              onClick={() => router.push(modifUrlMobile)}
-            >
-              <ContainerBgGN>{content}</ContainerBgGN>
-            </div>
-            <div className="hidden md:block">
-              <ContainerBgGN>{content}</ContainerBgGN>
-            </div>
-          </React.Fragment>
+          <div
+            key={index}
+            className="cursor-pointer hover:brightness-75 transition"
+            onClick={handleButtonClick}
+          >
+            <ContainerBgGN>{content}</ContainerBgGN>
+          </div>
         );
       })}
     </div>

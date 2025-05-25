@@ -253,9 +253,9 @@ const FormCrmUser_userModif: React.FC = () => {
       <ContainerBGN>
         <div className="w-full">
           <form onSubmit={handleClick} className="space-y-4 p-4 w-full">
-            <div className="flex flex-row items-start p-3">
+            <div className="flex flex-col md:flex-row items-start p-3">
               {/* Image */}
-              <div className="w-full flex flex-col md:w-1/3 h-48 md:h-104 overflow-hidden">
+              <div className="w-full md:w-1/3 mx-auto md:mx-0 flex flex-col h-64 md:h-104 overflow-hidden">
                 <div className="w-full overflow-hidden mt-15">
                   <img
                     src={unUserData.imgUrl}
@@ -281,7 +281,7 @@ const FormCrmUser_userModif: React.FC = () => {
                 </div>
               </div>
               {/* Champs */}
-              <div className="w-full md:w-2/3 pl-4 space-y-4">
+              <div className="w-full md:w-2/3 pl-0 md:pl-4 space-y-4">
                 {/* Email */}
                 <div>
                   <label className="font-medium">Email</label>

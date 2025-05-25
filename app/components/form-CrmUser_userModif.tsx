@@ -137,8 +137,9 @@ const FormCrmUser_userModif: React.FC = () => {
         console.error("2.0.5 ../../ FRONT FormCrmUserModif => useE => selectionOneCrmUser NO OK");
       }
     }
+    if (!modifIdStr) return;
     fetchUser();
-  }, []);
+  }, [modifIdStr, modifId]);
 
 
   //---------------------------------------------------------------------

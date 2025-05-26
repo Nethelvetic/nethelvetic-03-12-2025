@@ -272,13 +272,14 @@ const FormCrmUser_userModif: React.FC = () => {
                     ref={inputFileRef}
                     className="hidden"
                   />
-                  <button
-                    type="button"
-                    onClick={() => inputFileRef.current?.click()}
-                    className="mt-1 block w-full border border-gray-300 shadow-sm px-4 py-2"
-                  >
-                    Charger une image
-                  </button>
+                  <ContBtnLgNoEffectBgG>
+                    <button
+                      type="button"
+                      onClick={() => inputFileRef.current?.click()}
+                    >
+                      Charger une image
+                    </button>
+                  </ContBtnLgNoEffectBgG>
                 </div>
               </div>
               {/* Champs */}

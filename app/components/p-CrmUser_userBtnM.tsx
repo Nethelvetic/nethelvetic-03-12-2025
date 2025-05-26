@@ -136,8 +136,8 @@ const PageCrmUser_userBtnM: React.FC = () => {
       <div className="p-6">
         <LiCrmUser_userBtnBgGN 
           cards={cardData}
-          buttonTitle="Modifier"
-          buttonUrlPrefix="/gestion360/identifier/crmUser_userModif"
+          buttonTitle="Suivant"
+          buttonUrlPrefix="/gestion360/identifier/crmUser_user"
         />
       </div>
     </div>

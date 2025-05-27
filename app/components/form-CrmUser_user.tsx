@@ -110,8 +110,8 @@ const FormCrmUser_user: React.FC = () => {
   //---------------------------------------------------------------------
   const MiniUserForm = () => (
     <form className="space-y-4 p-4 w-full">
-      <div className="flex flex-col md:flex-row items-start p-3">
-        <div className="w-full md:w-1/3 mx-auto md:mx-0 flex flex-col h-80 md:h-104 overflow-hidden">
+      <div className="flex flex-col md:flex-row items-start md:items-stretch p-3">
+        <div className="w-full md:w-1/3 mx-auto md:mx-0 flex flex-col h-80 md:h-full overflow-hidden">
           <div className="w-full overflow-hidden mt-15">
             <img
               src={unUserData.imgUrl}

@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { ADMIN_ID_JEROME, ADMIN_ID_DEFAULT } from "@/admin-config";
 
-const PageCrmUser_userBtnM: React.FC = () => {
+const PageCrmUser_userBtn: React.FC = () => {
   //---------------------------------------------------------------------
   //------------------------1 Début data dynamique ----------------------
   //---------------------------------------------------------------------
@@ -144,4 +144,4 @@ const PageCrmUser_userBtnM: React.FC = () => {
   );
 };
 
-export default PageCrmUser_userBtnM;
+export default PageCrmUser_userBtn;

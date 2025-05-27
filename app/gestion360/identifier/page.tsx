@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import PageCrmUser_userBtnM from '../../components/p-CrmUser_userBtnM';
+import PageCrmUser_userBtn from '../../components/p-CrmUser_userBtn';
 
 
 
@@ -15,7 +15,7 @@ export default function Gestion360Identifier() {
 //--------------------------------------------------------------------- 
   return (
     <div className="w-full md:w-5xl mx-auto">
-      <PageCrmUser_userBtnM />
+      <PageCrmUser_userBtn />
     </div>
   );
 }

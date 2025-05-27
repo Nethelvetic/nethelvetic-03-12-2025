@@ -6,7 +6,7 @@ import { crmUser_userOneSelection } from "../db/dbNeon-CrmUsers_user";
 import ContainerBGN from "./cont-BgGN";
 import CrmUser_userFactures from "./CrmUser_userFactures";
 import CrmUser_userOffre from "./CrmUser_userOffre";
-import CrmUser_user from "./CrmUser_user";
+import CrmUser_user from "./CrmUser_userInfos";
 
 // TypeScript interface reprenant la structure du formulaire de modification
 interface UserDataType {

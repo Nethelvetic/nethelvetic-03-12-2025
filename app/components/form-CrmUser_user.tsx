@@ -61,7 +61,7 @@ const FormCrmUser_user: React.FC = () => {
   //---------------------------------------------------------------------
   const [unUserData, setUnUserData] = useState<UserDataType>(initialUserData);
   const [activeTab, setActiveTab] =
-    useState<"factures" | "offres" | "infos">("factures");
+    useState<"factures" | "offres" | "infos">("infos");
   const { userId } = useParams();
   const userIdStr = Array.isArray(userId) ? userId[0] : userId;
   const getInputClass = (value: string) =>

@@ -1,10 +1,13 @@
-import { 
-  integer, 
-  pgTable, 
-  varchar, 
-  date, 
-  text, 
+import {
+  integer,
+  pgTable,
+  varchar,
+  date,
+  text,
   json,
+  numeric,
+  timestamp,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { sql as drizzleSql, relations } from "drizzle-orm";
 import { ADMIN_ID_JEROME } from "@/admin-config";
@@ -177,17 +180,49 @@ export const crmUsersTable = pgTable("crmUsers", {
 //---------------------------------------------------------------------
 //------------------------6.0 Début Table message ---------------------
 //---------------------------------------------------------------------
-  export const messageTable = pgTable("messages", {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    email: varchar({ length: 255 }).notNull(),
-    nom_entreprise: varchar({ length: 255 }).notNull(),
-    personne_a_contacter: varchar({ length: 255 }).notNull(),
-    ville: varchar({ length: 255 }).notNull(),
-    code_postal: varchar({ length: 20 }),
-    message: varchar({ length: 255 }).notNull(),
-    date: date().notNull(), 
-    userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
-  });
+export const messageTable = pgTable("messages", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  email: varchar({ length: 255 }).notNull(),
+  nom_entreprise: varchar({ length: 255 }).notNull(),
+  personne_a_contacter: varchar({ length: 255 }).notNull(),
+  ville: varchar({ length: 255 }).notNull(),
+  code_postal: varchar({ length: 20 }),
+  message: varchar({ length: 255 }).notNull(),
+  date: date().notNull(),
+  userId: integer().references(() => usersTable.id, { onDelete: "cascade" }),
+});
+
+
+//---------------------------------------------------------------------
+//------------------------7.0 Début Table crmUsers_userOffre ----------
+//---------------------------------------------------------------------
+export const crmUsers_userOffreTable = pgTable("crmUsers_userOffre", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  numero_devis: varchar({ length: 255 }),
+  date_devis: date(),
+  validite_devis: varchar({ length: 50 }),
+  etat_devis: varchar({ length: 50 }),
+  nom_emetteur: varchar({ length: 255 }),
+  telephone_emetteur: varchar({ length: 50 }),
+  email_emetteur: varchar({ length: 255 }),
+  site_web_emetteur: varchar({ length: 255 }),
+  adresse_emetteur: text(),
+  nom_destinataire: varchar({ length: 255 }),
+  telephone_destinataire: varchar({ length: 50 }),
+  adresse_destinataire: text(),
+  lignes_offre: json("lignes_offre"),
+  sous_total: numeric("sous_total"),
+  tva_taux: numeric("tva_taux"),
+  tva_montant: numeric("tva_montant"),
+  total: numeric("total"),
+  termes_conditions: text("termes_conditions"),
+  signature: varchar({ length: 255 }),
+  mention_signature: varchar({ length: 255 }),
+  notes_internes: text("notes_internes"),
+  date_creation: timestamp("date_creation"),
+  date_modification: timestamp("date_modification"),
+  est_supprime: boolean("est_supprime").default(false),
+});
 
 
 

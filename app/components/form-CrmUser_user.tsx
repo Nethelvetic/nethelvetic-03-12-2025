@@ -1,18 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { useParams, useRouter } from "next/navigation";
-import {
-  crmUser_userOneSelection,
-  crmUser_userUpdateOne,
-  crmUser_userSupprimer,
-} from "../db/dbNeon-CrmUsers_user";
+import React, { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import { crmUser_userOneSelection } from "../db/dbNeon-CrmUsers_user";
 import ContainerBGN from "./cont-BgGN";
-import ContBtnLgNoEffectBgG from "./cont-Btn-Lg-NoEffet-BgG";
 import CrmUser_userFactures from "./CrmUser_userFactures";
 import CrmUser_userOffre from "./CrmUser_userOffre";
 import CrmUser_user from "./CrmUser_user";
-import fileStoreVercelBlob from "../util/fileStoreVercelBlob";
 
 // TypeScript interface reprenant la structure du formulaire de modification
 interface UserDataType {
@@ -69,10 +63,7 @@ const FormCrmUser_user: React.FC = () => {
   const [activeTab, setActiveTab] =
     useState<"factures" | "offres" | "infos">("factures");
   const { userId } = useParams();
-  const router = useRouter();
-  const inputFileRef = useRef<HTMLInputElement>(null);
   const userIdStr = Array.isArray(userId) ? userId[0] : userId;
-  const userIdNumber = userIdStr ? parseInt(userIdStr, 10) : NaN;
   const getInputClass = (value: string) =>
     value
       ? "bg-gradient-to-l from-gray-800 to-black text-gray-300 placeholder-gray-400"
@@ -112,70 +103,49 @@ const FormCrmUser_user: React.FC = () => {
       }
     }
     fetchUser();
-  }, [userIdStr, userIdNumber]);
+  }, [userIdStr]);
 
   //---------------------------------------------------------------------
-  //2.1.0  FormCrmUser_user => handleClick
+  // Formulaire simplifié pour Offres et Factures
   //---------------------------------------------------------------------
-  const handleClick = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (
-      !unUserData.email ||
-      !unUserData.nom_entreprise ||
-      !unUserData.personne_a_contacter ||
-      !unUserData.ville ||
-      !unUserData.code_postal ||
-      !unUserData.adresse ||
-      !unUserData.telephone ||
-      !unUserData.domaine_activite
-    ) {
-      alert("Veuillez remplir tous les champs.");
-      return;
-    }
-
-    const payload: UserDataType = { ...unUserData };
-
-    try {
-      const res = await crmUser_userUpdateOne(userIdNumber, payload);
-      if (res.success) {
-        router.push("/gestion360/identifier");
-      } else {
-        alert("La modification a échoué, veuillez réessayer.");
-      }
-    } catch (error) {
-      alert("La modification a échoué, veuillez réessayer.");
-    }
-  };
-
-  //---------------------------------------------------------------------
-  //2.2.0  FormCrmUser_user => handleDelete
-  //---------------------------------------------------------------------
-  const handleDelete = async () => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
-      try {
-        const res = await crmUser_userSupprimer(userIdNumber);
-        if (res.success) {
-          router.push("/gestion360/identifier");
-        }
-      } catch (error) {
-        alert("La suppression a échoué, veuillez réessayer.");
-      }
-    }
-  };
-
-  //---------------------------------------------------------------------
-  //2.3.0  FormCrmUser_user => handleImageUpload
-  //---------------------------------------------------------------------
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      try {
-        const uploadedUrl = await fileStoreVercelBlob(e.target.files[0]);
-        setUnUserData({ ...unUserData, imgUrl: uploadedUrl });
-      } catch {
-        alert("L’image n’a pas pu être sélectionnée, veuillez réessayer.");
-      }
-    }
-  };
+  const MiniUserForm = () => (
+    <form className="space-y-4 p-4 w-full">
+      <div className="flex flex-col md:flex-row items-start p-3">
+        <div className="w-full md:w-1/3 mx-auto md:mx-0 flex flex-col h-80 md:h-104 overflow-hidden">
+          <div className="w-full overflow-hidden mt-15">
+            <img
+              src={unUserData.imgUrl}
+              alt="Image utilisateur"
+              className="object-contain w-full h-full"
+            />
+          </div>
+        </div>
+        <div className="w-full md:w-2/3 pl-0 md:pl-4 space-y-4">
+          <div>
+            <label className="font-medium">Email</label>
+            <input
+              type="email"
+              value={unUserData.email}
+              onChange={e =>
+                setUnUserData({ ...unUserData, email: e.target.value })
+              }
+              className={`w-full border-b ${getInputClass(unUserData.email)}`}
+            />
+          </div>
+          <div>
+            <label>Ville</label>
+            <input
+              value={unUserData.ville}
+              onChange={e =>
+                setUnUserData({ ...unUserData, ville: e.target.value })
+              }
+              className={`w-full border-b ${getInputClass(unUserData.ville)}`}
+            />
+          </div>
+        </div>
+      </div>
+    </form>
+  );
 
   //---------------------------------------------------------------------
   //------------------------2 Affichage --------------------------------
@@ -216,8 +186,18 @@ const FormCrmUser_user: React.FC = () => {
           </button>
         </div>
         <div className="p-4">
-          {activeTab === "factures" && <CrmUser_userFactures />}
-          {activeTab === "offres" && <CrmUser_userOffre />}
+          {activeTab === "factures" && (
+            <>
+              <MiniUserForm />
+              <CrmUser_userFactures />
+            </>
+          )}
+          {activeTab === "offres" && (
+            <>
+              <MiniUserForm />
+              <CrmUser_userOffre />
+            </>
+          )}
           {activeTab === "infos" && <CrmUser_user />}
         </div>
       </ContainerBGN>

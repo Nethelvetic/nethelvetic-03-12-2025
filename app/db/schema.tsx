@@ -225,6 +225,54 @@ export const crmUsers_userOffreTable = pgTable("crmUsers_userOffre", {
 });
 
 
+//---------------------------------------------------------------------
+//------------------------8.0 Début Table crmUsers_userFactures -------
+//---------------------------------------------------------------------
+export const crmUsers_userFacturesTable = pgTable("crm_users_user_factures", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  numero_facture: varchar({ length: 255 }),
+  date_facture: date(),
+  etat_facture: varchar({ length: 50 }),
+  nom_emetteur: varchar({ length: 255 }),
+  telephone_emetteur: varchar({ length: 50 }),
+  email_emetteur: varchar({ length: 255 }),
+  site_web_emetteur: varchar({ length: 255 }),
+  adresse_emetteur: text(),
+  nom_destinataire: varchar({ length: 255 }),
+  telephone_destinataire: varchar({ length: 50 }),
+  adresse_destinataire: text(),
+  sous_total: numeric("sous_total"),
+  tva_taux: numeric("tva_taux"),
+  tva_montant: numeric("tva_montant"),
+  total: numeric("total"),
+  ordre_paiement: varchar({ length: 255 }),
+  numero_compte_bancaire: varchar({ length: 255 }),
+  conditions_paiement: varchar({ length: 255 }),
+  date_paiement_effectue: date(),
+  methode_paiement: varchar({ length: 50 }),
+  notes_internes: text("notes_internes"),
+  date_creation: timestamp("date_creation"),
+  date_modification: timestamp("date_modification"),
+  est_supprime: boolean("est_supprime").default(false),
+  devise: varchar({ length: 10 }),
+  reference_devis_associe: integer().references(() => crmUsers_userOffreTable.id, { onDelete: "set null" }),
+  url_pdf: varchar({ length: 255 }),
+  envoyee_a: varchar({ length: 255 }),
+});
+
+//---------------------------------------------------------------------
+//------------------------9.0 Début Table ligne_facture ---------------
+//---------------------------------------------------------------------
+export const ligneFactureTable = pgTable("ligne_facture", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  facture_id: integer().references(() => crmUsers_userFacturesTable.id, { onDelete: "cascade" }),
+  description: varchar({ length: 255 }),
+  prix_unitaire: numeric("prix_unitaire"),
+  quantite: integer(),
+  total_ligne: numeric("total_ligne"),
+});
+
+
 
 
 

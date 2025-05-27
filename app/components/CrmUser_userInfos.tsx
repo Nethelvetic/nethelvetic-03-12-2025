@@ -1,12 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { useParams, useRouter } from "next/navigation";
-import {
-  crmUser_userOneSelection,
-  crmUser_userUpdateOne,
-  crmUser_userSupprimer,
-} from "../db/dbNeon-CrmUsers_user";
+import React, { useRef } from "react";
+import { useRouter } from "next/navigation";
+import { crmUser_userUpdateOne, crmUser_userSupprimer } from "../db/dbNeon-CrmUsers_user";
 import ContainerBGN from "./cont-BgGN";
 import ContBtnLgNoEffectBgG from "./cont-Btn-Lg-NoEffet-BgG";
 import fileStoreVercelBlob from "../util/fileStoreVercelBlob";
@@ -34,79 +30,24 @@ interface UserDataType {
   userId: number;
 }
 
-const initialUserData: UserDataType = {
-  nom_entreprise: "",
-  personne_a_contacter: "",
-  ville: "",
-  code_postal: "",
-  telephone: "",
-  date_de_naissance: "",
-  date_creation: "",
-  email: "",
-  username: "",
-  status: "",
-  domaine_activite: "",
-  employeur: "",
-  status_professionnel: "",
-  adresse: "",
-  imgUrl: "/singeCalculateur.webp",
-  btnUrlInt: "/formulaire/contact",
-  btnUrlExt: "",
-  btnTexte: "modification",
-  btnModifUrl: "",
-  userId: 0,
-};
 
-const CrmUser_user: React.FC = () => {
+interface CrmUserUserProps {
+  userData: UserDataType;
+  setUserData: React.Dispatch<React.SetStateAction<UserDataType>>;
+}
+
+const CrmUser_user: React.FC<CrmUserUserProps> = ({ userData, setUserData }) => {
   //---------------------------------------------------------------------
   //------------------------1 data dynamique ----------------------------
   //---------------------------------------------------------------------
-  const [unUserData, setUnUserData] = useState<UserDataType>(initialUserData);
-  const { userId } = useParams();
+  const unUserData = userData;
   const router = useRouter();
   const inputFileRef = useRef<HTMLInputElement>(null);
-  const userIdStr = Array.isArray(userId) ? userId[0] : userId;
-  const userIdNumber = userIdStr ? parseInt(userIdStr, 10) : NaN;
+  const userIdNumber = unUserData.userId;
   const getInputClass = (value: string) =>
     value
       ? "bg-gradient-to-l from-gray-800 to-black text-gray-300 placeholder-gray-400"
       : "bg-gradient-to-l from-gray-800 to-black text-white placeholder-white";
-
-  //---------------------------------------------------------------------
-  //------------------------useEffect chargement user -------------------
-  //---------------------------------------------------------------------
-  useEffect(() => {
-    async function fetchUser() {
-      if (!userIdStr) return;
-      const res = await crmUser_userOneSelection(userIdStr);
-      if (res.success && res.user) {
-        const u = res.user;
-        setUnUserData({
-          nom_entreprise: u.nom_entreprise ?? "",
-          personne_a_contacter: u.personne_a_contacter ?? "",
-          ville: u.ville ?? "",
-          code_postal: u.code_postal ?? "",
-          telephone: u.telephone ?? "",
-          date_de_naissance: u.date_de_naissance ?? "",
-          date_creation: u.date_creation ?? "",
-          email: u.email ?? "",
-          username: u.username ?? "",
-          status: u.status ?? "",
-          domaine_activite: u.domaine_activite ?? "",
-          employeur: u.employeur ?? "",
-          status_professionnel: u.status_professionnel ?? "",
-          adresse: u.adresse ?? "",
-          imgUrl: u.imgUrl ?? initialUserData.imgUrl,
-          btnUrlInt: u.btnUrlInt ?? initialUserData.btnUrlInt,
-          btnUrlExt: u.btnUrlExt ?? initialUserData.btnUrlExt,
-          btnTexte: u.btnTexte ?? initialUserData.btnTexte,
-          btnModifUrl: u.btnModifUrl ?? initialUserData.btnModifUrl,
-          userId: u.userId ?? initialUserData.userId,
-        });
-      }
-    }
-    fetchUser();
-  }, [userIdStr, userIdNumber]);
 
   //---------------------------------------------------------------------
   //2.1.0  CrmUser_user => handleClick
@@ -164,7 +105,7 @@ const CrmUser_user: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       try {
         const uploadedUrl = await fileStoreVercelBlob(e.target.files[0]);
-        setUnUserData({ ...unUserData, imgUrl: uploadedUrl });
+        setUserData({ ...unUserData, imgUrl: uploadedUrl });
       } catch {
         alert("L’image n’a pas pu être sélectionnée, veuillez réessayer.");
       }
@@ -216,7 +157,7 @@ const CrmUser_user: React.FC = () => {
                     type="email"
                     value={unUserData.email}
                     onChange={e =>
-                      setUnUserData({ ...unUserData, email: e.target.value })
+                      setUserData({ ...unUserData, email: e.target.value })
                     }
                     className={`w-full border-b ${getInputClass(
                       unUserData.email
@@ -230,7 +171,7 @@ const CrmUser_user: React.FC = () => {
                     <input
                       value={unUserData.nom_entreprise}
                       onChange={e =>
-                        setUnUserData({ ...unUserData, nom_entreprise: e.target.value })
+                        setUserData({ ...unUserData, nom_entreprise: e.target.value })
                       }
                       className={`w-full border-b ${getInputClass(
                         unUserData.nom_entreprise
@@ -242,7 +183,7 @@ const CrmUser_user: React.FC = () => {
                     <input
                       value={unUserData.personne_a_contacter}
                       onChange={e =>
-                        setUnUserData({
+                        setUserData({
                           ...unUserData,
                           personne_a_contacter: e.target.value,
                         })
@@ -260,7 +201,7 @@ const CrmUser_user: React.FC = () => {
                     <input
                       value={unUserData.code_postal}
                       onChange={e =>
-                        setUnUserData({ ...unUserData, code_postal: e.target.value })
+                        setUserData({ ...unUserData, code_postal: e.target.value })
                       }
                       className={`w-full border-b ${getInputClass(
                         unUserData.code_postal
@@ -272,7 +213,7 @@ const CrmUser_user: React.FC = () => {
                     <input
                       value={unUserData.ville}
                       onChange={e =>
-                        setUnUserData({ ...unUserData, ville: e.target.value })
+                        setUserData({ ...unUserData, ville: e.target.value })
                       }
                       className={`w-full border-b ${getInputClass(unUserData.ville)}`}
                     />
@@ -285,7 +226,7 @@ const CrmUser_user: React.FC = () => {
                     <input
                       value={unUserData.adresse}
                       onChange={e =>
-                        setUnUserData({ ...unUserData, adresse: e.target.value })
+                        setUserData({ ...unUserData, adresse: e.target.value })
                       }
                       className={`w-full border-b ${getInputClass(unUserData.adresse)}`}
                     />
@@ -295,7 +236,7 @@ const CrmUser_user: React.FC = () => {
                     <input
                       value={unUserData.telephone}
                       onChange={e =>
-                        setUnUserData({ ...unUserData, telephone: e.target.value })
+                        setUserData({ ...unUserData, telephone: e.target.value })
                       }
                       className={`w-full border-b ${getInputClass(
                         unUserData.telephone
@@ -309,7 +250,7 @@ const CrmUser_user: React.FC = () => {
                   <select
                     value={unUserData.domaine_activite}
                     onChange={e =>
-                      setUnUserData({
+                      setUserData({
                         ...unUserData,
                         domaine_activite: e.target.value,
                       })

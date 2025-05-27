@@ -208,7 +208,13 @@ const FormCrmUser_user: React.FC = () => {
               <CrmUser_userOffre />
             </>
           )}
-          {activeTab === "infos" && <CrmUser_user />}
+          {activeTab === "infos" && (
+            <CrmUser_user
+              key={unUserData.userId}
+              userData={unUserData}
+              setUserData={setUnUserData}
+            />
+          )}
         </div>
       </ContainerBGN>
     </div>

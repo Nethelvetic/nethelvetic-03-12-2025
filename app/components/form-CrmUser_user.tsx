@@ -7,6 +7,7 @@ import ContainerBGN from "./cont-BgGN";
 import CrmUser_userFactures from "./CrmUser_userFactures";
 import CrmUser_userOffre from "./CrmUser_userOffre";
 import CrmUser_user from "./CrmUser_userInfos";
+import CrmUsers_userInfosSimple from "./crmUsers_userInfosSimple";
 
 // TypeScript interface reprenant la structure du formulaire de modification
 interface UserDataType {
@@ -108,54 +109,32 @@ const FormCrmUser_user: React.FC = () => {
   //---------------------------------------------------------------------
   // Formulaire simplifié pour Offres et Factures
   //---------------------------------------------------------------------
-  const MiniUserForm = () => (
-    <form className="space-y-4 p-4 w-full">
-      <div className="flex flex-col md:flex-row items-start md:items-stretch p-3">
-        <div className="w-full md:w-1/3 lg:w-1/6 mx-auto md:mx-0 flex flex-col h-80 md:h-104 lg:h-52 overflow-hidden">
-          <div className="w-full overflow-hidden mt-15">
-            <img
-              src={unUserData.imgUrl}
-              alt="Image utilisateur"
-              className="object-contain w-full h-full"
-            />
-          </div>
-        </div>
-        <div className="w-full md:w-2/3 pl-0 md:pl-4 space-y-4">
-          <div>
-            <label className="font-medium">Email</label>
-            <input
-              type="email"
-              value={unUserData.email}
-              onChange={e =>
-                setUnUserData({ ...unUserData, email: e.target.value })
-              }
-              className={`w-full border-b ${getInputClass(unUserData.email)}`}
-            />
-          </div>
-          <div>
-            <label>Nom de l'entreprise</label>
-            <input
-              value={unUserData.nom_entreprise}
-              onChange={e =>
-                setUnUserData({ ...unUserData, nom_entreprise: e.target.value })
-              }
-              className={`w-full border-b ${getInputClass(unUserData.nom_entreprise)}`}
-            />
-          </div>
-          <div>
-            <label>Ville</label>
-            <input
-              value={unUserData.ville}
-              onChange={e =>
-                setUnUserData({ ...unUserData, ville: e.target.value })
-              }
-              className={`w-full border-b ${getInputClass(unUserData.ville)}`}
-            />
-          </div>
-        </div>
-      </div>
-    </form>
-  );
+const MiniUserForm = () => {
+  const cardData = {
+    id: unUserData.userId,
+    nom_entreprise: unUserData.nom_entreprise,
+    personne_a_contacter: unUserData.personne_a_contacter,
+    ville: unUserData.ville,
+    code_postal: unUserData.code_postal,
+    telephone: unUserData.telephone,
+    date_de_naissance: unUserData.date_de_naissance,
+    date_creation: unUserData.date_creation,
+    email: unUserData.email,
+    username: unUserData.username,
+    status: unUserData.status,
+    domaine_activite: unUserData.domaine_activite,
+    employeur: unUserData.employeur,
+    status_professionnel: unUserData.status_professionnel,
+    adresse: unUserData.adresse,
+    imgUrl: unUserData.imgUrl,
+    btnUrlInt: unUserData.btnUrlInt,
+    btnUrlExt: unUserData.btnUrlExt,
+    btnTexte: unUserData.btnTexte,
+    btnModifUrl: unUserData.btnModifUrl,
+  };
+
+  return <CrmUsers_userInfosSimple card={cardData} />;
+};
 
   //---------------------------------------------------------------------
   //------------------------2 Affichage --------------------------------

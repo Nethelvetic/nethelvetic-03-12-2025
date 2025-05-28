@@ -28,11 +28,11 @@ interface CarteData {
   btnModifUrl: string;
 }
 
-interface CrmUsers_userInfosSimpleProps {
+interface CrmUser_userInfosSimpleProps {
   card: CarteData;
 }
 
-const CrmUsers_userInfosSimple: React.FC<CrmUsers_userInfosSimpleProps> = ({ card }) => {
+const CrmUser_userInfosSimple: React.FC<CrmUser_userInfosSimpleProps> = ({ card }) => {
   const content = (
     <div className="w-full">
       <div className="flex flex-row items-start p-1 md:p-3">
@@ -67,4 +67,4 @@ const CrmUsers_userInfosSimple: React.FC<CrmUsers_userInfosSimpleProps> = ({ car
   return <ContainerBgGN>{content}</ContainerBgGN>;
 };
 
-export default CrmUsers_userInfosSimple;
+export default CrmUser_userInfosSimple;

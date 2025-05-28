@@ -61,8 +61,10 @@ const FormCrmUser_user: React.FC = () => {
   //------------------------1 data dynamique ----------------------------
   //---------------------------------------------------------------------
   const [unUserData, setUnUserData] = useState<UserDataType>(initialUserData);
-  const [activeTab, setActiveTab] =
-    useState<"factures" | "offres" | "infos">("infos");
+  const [activeTab, setActiveTab] = useState<"factures" | "offres" | "infos">(
+    "infos",
+  );
+  const [loading, setLoading] = useState(true);
   const { userId } = useParams();
   const userIdStr = Array.isArray(userId) ? userId[0] : userId;
   const getInputClass = (value: string) =>
@@ -76,6 +78,8 @@ const FormCrmUser_user: React.FC = () => {
   useEffect(() => {
     async function fetchUser() {
       if (!userIdStr) return;
+      setLoading(true);
+      setUnUserData(initialUserData);
       const res = await crmUser_userOneSelection(userIdStr);
       if (res.success && res.user) {
         const u = res.user;
@@ -102,6 +106,7 @@ const FormCrmUser_user: React.FC = () => {
           userId: u.userId ?? initialUserData.userId,
         });
       }
+      setLoading(false);
     }
     fetchUser();
   }, [userIdStr]);
@@ -109,32 +114,32 @@ const FormCrmUser_user: React.FC = () => {
   //---------------------------------------------------------------------
   // Formulaire simplifié pour Offres et Factures
   //---------------------------------------------------------------------
-const MiniUserForm = () => {
-  const cardData = {
-    id: unUserData.userId,
-    nom_entreprise: unUserData.nom_entreprise,
-    personne_a_contacter: unUserData.personne_a_contacter,
-    ville: unUserData.ville,
-    code_postal: unUserData.code_postal,
-    telephone: unUserData.telephone,
-    date_de_naissance: unUserData.date_de_naissance,
-    date_creation: unUserData.date_creation,
-    email: unUserData.email,
-    username: unUserData.username,
-    status: unUserData.status,
-    domaine_activite: unUserData.domaine_activite,
-    employeur: unUserData.employeur,
-    status_professionnel: unUserData.status_professionnel,
-    adresse: unUserData.adresse,
-    imgUrl: unUserData.imgUrl,
-    btnUrlInt: unUserData.btnUrlInt,
-    btnUrlExt: unUserData.btnUrlExt,
-    btnTexte: unUserData.btnTexte,
-    btnModifUrl: unUserData.btnModifUrl,
-  };
+  const MiniUserForm = () => {
+    const cardData = {
+      id: unUserData.userId,
+      nom_entreprise: unUserData.nom_entreprise,
+      personne_a_contacter: unUserData.personne_a_contacter,
+      ville: unUserData.ville,
+      code_postal: unUserData.code_postal,
+      telephone: unUserData.telephone,
+      date_de_naissance: unUserData.date_de_naissance,
+      date_creation: unUserData.date_creation,
+      email: unUserData.email,
+      username: unUserData.username,
+      status: unUserData.status,
+      domaine_activite: unUserData.domaine_activite,
+      employeur: unUserData.employeur,
+      status_professionnel: unUserData.status_professionnel,
+      adresse: unUserData.adresse,
+      imgUrl: unUserData.imgUrl,
+      btnUrlInt: unUserData.btnUrlInt,
+      btnUrlExt: unUserData.btnUrlExt,
+      btnTexte: unUserData.btnTexte,
+      btnModifUrl: unUserData.btnModifUrl,
+    };
 
-  return <CrmUsers_userInfosSimple card={cardData} />;
-};
+    return <CrmUsers_userInfosSimple card={cardData} />;
+  };
 
   //---------------------------------------------------------------------
   //------------------------2 Affichage --------------------------------
@@ -142,63 +147,68 @@ const MiniUserForm = () => {
   return (
     <div className="p-6 space-y-6">
       <ContainerBGN>
-        <div className="flex justify-center space-x-4 p-4">
-          <button
-            onClick={() => setActiveTab("factures")}
-            className={`px-4 py-2 rounded ${
-              activeTab === "factures"
-                ? "bg-gray-700 text-white"
-                : "bg-gray-500 text-gray-300"
-            } hover:bg-gray-600`}
-          >
-            Factures
-          </button>
-          <button
-            onClick={() => setActiveTab("offres")}
-            className={`px-4 py-2 rounded ${
-              activeTab === "offres"
-                ? "bg-gray-700 text-white"
-                : "bg-gray-500 text-gray-300"
-            } hover:bg-gray-600`}
-          >
-            Offres
-          </button>
-          <button
-            onClick={() => setActiveTab("infos")}
-            className={`px-4 py-2 rounded ${
-              activeTab === "infos"
-                ? "bg-gray-700 text-white"
-                : "bg-gray-500 text-gray-300"
-            } hover:bg-gray-600`}
-          >
-            Infos contact
-          </button>
-        </div>
-        <div className="p-4">
-          {activeTab === "factures" && (
-            <>
-              <MiniUserForm />
-              <CrmUser_userFactures />
-            </>
-          )}
-          {activeTab === "offres" && (
-            <>
-              <MiniUserForm />
-              <CrmUser_userOffre />
-            </>
-          )}
-          {activeTab === "infos" && (
-            <CrmUser_user
-              key={unUserData.userId}
-              userData={unUserData}
-              setUserData={setUnUserData}
-            />
-          )}
-        </div>
+        {loading ? (
+          <div className="p-4 text-center">Chargement...</div>
+        ) : (
+          <>
+            <div className="flex justify-center space-x-4 p-4">
+              <button
+                onClick={() => setActiveTab("factures")}
+                className={`px-4 py-2 rounded ${
+                  activeTab === "factures"
+                    ? "bg-gray-700 text-white"
+                    : "bg-gray-500 text-gray-300"
+                } hover:bg-gray-600`}
+              >
+                Factures
+              </button>
+              <button
+                onClick={() => setActiveTab("offres")}
+                className={`px-4 py-2 rounded ${
+                  activeTab === "offres"
+                    ? "bg-gray-700 text-white"
+                    : "bg-gray-500 text-gray-300"
+                } hover:bg-gray-600`}
+              >
+                Offres
+              </button>
+              <button
+                onClick={() => setActiveTab("infos")}
+                className={`px-4 py-2 rounded ${
+                  activeTab === "infos"
+                    ? "bg-gray-700 text-white"
+                    : "bg-gray-500 text-gray-300"
+                } hover:bg-gray-600`}
+              >
+                Infos contact
+              </button>
+            </div>
+            <div className="p-4">
+              {activeTab === "factures" && (
+                <>
+                  <MiniUserForm />
+                  <CrmUser_userFactures />
+                </>
+              )}
+              {activeTab === "offres" && (
+                <>
+                  <MiniUserForm />
+                  <CrmUser_userOffre />
+                </>
+              )}
+              {activeTab === "infos" && (
+                <CrmUser_user
+                  key={unUserData.userId}
+                  userData={unUserData}
+                  setUserData={setUnUserData}
+                />
+              )}
+            </div>
+          </>
+        )}
       </ContainerBGN>
     </div>
   );
 };
 
 export default FormCrmUser_user;
-

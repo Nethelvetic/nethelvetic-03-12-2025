@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { crmUser_userUpdateOne, crmUser_userSupprimer } from "../db/dbNeon-CrmUsers_user";
 import ContainerBGN from "./cont-BgGN";
 import ContBtnLgNoEffectBgG from "./cont-Btn-Lg-NoEffet-BgG";
-import fileStoreVercelBlob from "../util/fileStoreVercelBlob";
+import CrmUser_userInfosSimple from "./crmUser_userInfosSimple";
+import CrmUser_userInfos_Modif from "./CrmUser_userInfos_Modif";
 
 interface UserDataType {
   nom_entreprise: string;
@@ -42,44 +43,34 @@ const CrmUser_user: React.FC<CrmUserUserProps> = ({ userData, setUserData }) => 
   //---------------------------------------------------------------------
   const unUserData = userData;
   const router = useRouter();
-  const inputFileRef = useRef<HTMLInputElement>(null);
+  const [showModif, setShowModif] = useState(false);
   const userIdNumber = unUserData.userId;
   const getInputClass = (value: string) =>
     value
       ? "bg-gradient-to-l from-gray-800 to-black text-gray-300 placeholder-gray-400"
       : "bg-gradient-to-l from-gray-800 to-black text-white placeholder-white";
 
-  //---------------------------------------------------------------------
-  //2.1.0  CrmUser_user => handleClick
-  //---------------------------------------------------------------------
-  const handleClick = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (
-      !unUserData.email ||
-      !unUserData.nom_entreprise ||
-      !unUserData.personne_a_contacter ||
-      !unUserData.ville ||
-      !unUserData.code_postal ||
-      !unUserData.adresse ||
-      !unUserData.telephone ||
-      !unUserData.domaine_activite
-    ) {
-      alert("Veuillez remplir tous les champs.");
-      return;
-    }
-
-    const payload: UserDataType = { ...unUserData };
-
-    try {
-      const res = await crmUser_userUpdateOne(userIdNumber, payload);
-      if (res.success) {
-        router.push("/gestion360/identifier");
-      } else {
-        alert("La modification a échoué, veuillez réessayer.");
-      }
-    } catch (error) {
-      alert("La modification a échoué, veuillez réessayer.");
-    }
+  const cardData = {
+    id: unUserData.userId,
+    nom_entreprise: unUserData.nom_entreprise,
+    personne_a_contacter: unUserData.personne_a_contacter,
+    ville: unUserData.ville,
+    code_postal: unUserData.code_postal,
+    telephone: unUserData.telephone,
+    date_de_naissance: unUserData.date_de_naissance,
+    date_creation: unUserData.date_creation,
+    email: unUserData.email,
+    username: unUserData.username,
+    status: unUserData.status,
+    domaine_activite: unUserData.domaine_activite,
+    employeur: unUserData.employeur,
+    status_professionnel: unUserData.status_professionnel,
+    adresse: unUserData.adresse,
+    imgUrl: unUserData.imgUrl,
+    btnUrlInt: unUserData.btnUrlInt,
+    btnUrlExt: unUserData.btnUrlExt,
+    btnTexte: unUserData.btnTexte,
+    btnModifUrl: unUserData.btnModifUrl,
   };
 
   //---------------------------------------------------------------------
@@ -99,27 +90,18 @@ const CrmUser_user: React.FC<CrmUserUserProps> = ({ userData, setUserData }) => 
   };
 
   //---------------------------------------------------------------------
-  //2.3.0  CrmUser_user => handleImageUpload
-  //---------------------------------------------------------------------
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      try {
-        const uploadedUrl = await fileStoreVercelBlob(e.target.files[0]);
-        setUserData({ ...unUserData, imgUrl: uploadedUrl });
-      } catch {
-        alert("L’image n’a pas pu être sélectionnée, veuillez réessayer.");
-      }
-    }
-  };
-
-  //---------------------------------------------------------------------
   //------------------------2 Affichage --------------------------------
   //---------------------------------------------------------------------
+  if (showModif) {
+    return <CrmUser_userInfos_Modif />;
+  }
+
   return (
     <div className="p-6 space-y-6">
+      <CrmUser_userInfosSimple card={cardData} />
       <ContainerBGN>
         <div className="w-full">
-          <form onSubmit={handleClick} className="space-y-4 p-4 w-full">
+          <form className="space-y-4 p-4 w-full">
             <div className="flex flex-col md:flex-row items-start p-3">
               {/* Image */}
               <div className="w-full md:w-1/3 mx-auto md:mx-0 flex flex-col h-80 md:h-104 overflow-hidden">
@@ -130,23 +112,7 @@ const CrmUser_user: React.FC<CrmUserUserProps> = ({ userData, setUserData }) => 
                     className="object-contain w-full h-full"
                   />
                 </div>
-                <div className="mt-2">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    ref={inputFileRef}
-                    className="hidden"
-                  />
-                  <ContBtnLgNoEffectBgG>
-                    <button
-                      type="button"
-                      onClick={() => inputFileRef.current?.click()}
-                    >
-                      Charger une image
-                    </button>
-                  </ContBtnLgNoEffectBgG>
-                </div>
+                <div className="mt-2" />
               </div>
               {/* Champs */}
               <div className="w-full md:w-2/3 pl-0 md:pl-4 space-y-4">
@@ -244,6 +210,80 @@ const CrmUser_user: React.FC<CrmUserUserProps> = ({ userData, setUserData }) => 
                     />
                   </div>
                 </div>
+                {/* Date de naissance & Date de création */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label>Date de naissance</label>
+                    <input
+                      type="date"
+                      value={unUserData.date_de_naissance}
+                      onChange={e =>
+                        setUserData({ ...unUserData, date_de_naissance: e.target.value })
+                      }
+                      className={`w-full border-b ${getInputClass(unUserData.date_de_naissance)}`}
+                    />
+                  </div>
+                  <div>
+                    <label>Date de création</label>
+                    <input
+                      type="date"
+                      value={unUserData.date_creation}
+                      onChange={e =>
+                        setUserData({ ...unUserData, date_creation: e.target.value })
+                      }
+                      className={`w-full border-b ${getInputClass(unUserData.date_creation)}`}
+                    />
+                  </div>
+                </div>
+                {/* Username & Status */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label>Username</label>
+                    <input
+                      value={unUserData.username}
+                      onChange={e =>
+                        setUserData({ ...unUserData, username: e.target.value })
+                      }
+                      className={`w-full border-b ${getInputClass(unUserData.username)}`}
+                    />
+                  </div>
+                  <div>
+                    <label>Status</label>
+                    <input
+                      value={unUserData.status}
+                      onChange={e =>
+                        setUserData({ ...unUserData, status: e.target.value })
+                      }
+                      className={`w-full border-b ${getInputClass(unUserData.status)}`}
+                    />
+                  </div>
+                </div>
+                {/* Employeur & Statut professionnel */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label>Employeur</label>
+                    <input
+                      value={unUserData.employeur}
+                      onChange={e =>
+                        setUserData({ ...unUserData, employeur: e.target.value })
+                      }
+                      className={`w-full border-b ${getInputClass(unUserData.employeur)}`}
+                    />
+                  </div>
+                  <div>
+                    <label>Statut professionnel</label>
+                    <input
+                      value={unUserData.status_professionnel}
+                      onChange={e =>
+                        setUserData({
+                          ...unUserData,
+                          status_professionnel: e.target.value,
+                        })
+                      }
+                      className={`w-full border-b ${getInputClass(unUserData.status_professionnel)}`}
+                    />
+                  </div>
+                </div>
                 {/* Domaine d'activité */}
                 <div>
                   <label>Domaine d'activité</label>
@@ -278,7 +318,9 @@ const CrmUser_user: React.FC<CrmUserUserProps> = ({ userData, setUserData }) => 
                 {/* Boutons */}
                 <div className="flex space-x-4 pt-4">
                   <ContBtnLgNoEffectBgG>
-                    <button type="submit">Modifier</button>
+                    <button type="button" onClick={() => setShowModif(true)}>
+                      Modifier
+                    </button>
                   </ContBtnLgNoEffectBgG>
                   <ContBtnLgNoEffectBgG>
                     <button type="button" onClick={handleDelete}>

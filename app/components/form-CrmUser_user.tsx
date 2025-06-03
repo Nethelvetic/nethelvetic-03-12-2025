@@ -197,11 +197,14 @@ const FormCrmUser_user: React.FC = () => {
                 </>
               )}
               {activeTab === "infos" && (
-                <CrmUser_user
-                  key={unUserData.userId}
-                  userData={unUserData}
-                  setUserData={setUnUserData}
-                />
+                <>
+                  <MiniUserForm />
+                  <CrmUser_user
+                    key={unUserData.userId}
+                    userData={unUserData}
+                    setUserData={setUnUserData}
+                  />
+                </>
               )}
             </div>
           </>

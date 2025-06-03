@@ -79,7 +79,7 @@ const ListCrmUser_userBtnBgGN: React.FC<ListCrmUser_userBtnBgGNProps> = ({
                   className="object-contain w-full h-full"
                 />
               </div>
-              {/* Conteneur texte avec largeur ajustée (3/4) */}
+              {/* Conteneur texte avec largeur ajustée (3/4) */} 
               <div className="w-3/4 flex flex-col text-left pl-1 md:pl-4 mt-0 md:mt-4">
                 <h4 className="font-bold text-2xl md:text-3xl">{card.email}</h4>
                 <h2 className="font-bold text-3xl md:text-5xl">{card.nom_entreprise}</h2>

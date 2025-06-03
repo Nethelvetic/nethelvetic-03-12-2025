@@ -32,12 +32,12 @@ interface UserDataType {
 }
 
 
-interface CrmUserUserProps {
+interface CrmUserUserInfosProps {
   userData: UserDataType;
   setUserData: React.Dispatch<React.SetStateAction<UserDataType>>;
 }
 
-const CrmUser_user: React.FC<CrmUserUserProps> = ({ userData, setUserData }) => {
+const CrmUser_userInfos: React.FC<CrmUserUserInfosProps> = ({ userData, setUserData }) => {
   //---------------------------------------------------------------------
   //------------------------1 data dynamique ----------------------------
   //---------------------------------------------------------------------
@@ -337,5 +337,5 @@ const CrmUser_user: React.FC<CrmUserUserProps> = ({ userData, setUserData }) => 
   );
 };
 
-export default CrmUser_user;
+export default CrmUser_userInfos;
 

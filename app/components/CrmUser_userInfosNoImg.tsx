@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { crmUser_userUpdateOne, crmUser_userSupprimer } from "../db/dbNeon-CrmUsers_user";
+import { crmUser_userSupprimer } from "../db/dbNeon-CrmUsers_user";
 import ContainerBGN from "./cont-BgGN";
 import ContBtnLgNoEffectBgG from "./cont-Btn-Lg-NoEffet-BgG";
 import CrmUser_userInfosSimple from "./crmUser_userInfosSimple";
@@ -44,6 +44,10 @@ const CrmUser_userInfosNoImg: React.FC<CrmUserUserInfosProps> = ({ userData, set
   const unUserData = userData;
   const router = useRouter();
   const [showModif, setShowModif] = useState(false);
+
+  const handleModifClick = () => {
+    setShowModif(true);
+  };
   const userIdNumber = unUserData.userId;
   const getInputClass = (value: string) =>
     value
@@ -307,7 +311,7 @@ const CrmUser_userInfosNoImg: React.FC<CrmUserUserInfosProps> = ({ userData, set
                 {/* Boutons */}
                 <div className="flex space-x-4 pt-4">
                   <ContBtnLgNoEffectBgG>
-                    <button type="button" onClick={() => setShowModif(true)}>
+                    <button type="button" onClick={handleModifClick}>
                       Modifier
                     </button>
                   </ContBtnLgNoEffectBgG>

@@ -8,6 +8,7 @@ import CrmUser_userFactures from "./CrmUser_userFactures";
 import CrmUser_userOffre from "./CrmUser_userOffre";
 import CrmUser_userInfosFull from "./CrmUser_userInfosFull";
 import CrmUser_userInfosSimple from "./crmUser_userInfosSimple";
+import CrmUser_userInfosNoImg from "./CrmUser_userInfosNoImg";
 
 // TypeScript interface reprenant la structure du formulaire de modification
 interface UserDataType {
@@ -199,11 +200,20 @@ const FormCrmUser_user: React.FC = () => {
               {activeTab === "infos" && (
                 <>
                   <MiniUserForm />
-                  <CrmUser_userInfosFull
-                    key={unUserData.userId}
-                    userData={unUserData}
-                    setUserData={setUnUserData}
-                  />
+                  <div className="block md:hidden">
+                    <CrmUser_userInfosNoImg
+                      key={unUserData.userId}
+                      userData={unUserData}
+                      setUserData={setUnUserData}
+                    />
+                  </div>
+                  <div className="hidden md:block">
+                    <CrmUser_userInfosFull
+                      key={unUserData.userId}
+                      userData={unUserData}
+                      setUserData={setUnUserData}
+                    />
+                  </div>
                 </>
               )}
             </div>

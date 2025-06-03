@@ -97,7 +97,7 @@ const CrmUser_userInfosNoImg: React.FC<CrmUserUserInfosProps> = ({ userData, set
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 max-w-5xl mx-auto">
 
       <ContainerBGN>
         <div className="w-full">

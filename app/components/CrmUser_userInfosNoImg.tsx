@@ -37,7 +37,7 @@ interface CrmUserUserInfosProps {
   setUserData: React.Dispatch<React.SetStateAction<UserDataType>>;
 }
 
-const CrmUser_userInfos: React.FC<CrmUserUserInfosProps> = ({ userData, setUserData }) => {
+const CrmUser_userInfosNoImg: React.FC<CrmUserUserInfosProps> = ({ userData, setUserData }) => {
   //---------------------------------------------------------------------
   //------------------------1 data dynamique ----------------------------
   //---------------------------------------------------------------------
@@ -103,17 +103,6 @@ const CrmUser_userInfos: React.FC<CrmUserUserInfosProps> = ({ userData, setUserD
         <div className="w-full">
           <form className="space-y-4 p-4 w-full">
             <div className="flex flex-col md:flex-row items-start p-3">
-              {/* Image */}
-              <div className="w-full md:w-1/3 mx-auto md:mx-0 flex flex-col h-80 md:h-104 overflow-hidden">
-                <div className="w-full overflow-hidden mt-15">
-                  <img
-                    src={unUserData.imgUrl}
-                    alt="Image uploadée"
-                    className="object-contain w-full h-full"
-                  />
-                </div>
-                <div className="mt-2" />
-              </div>
               {/* Champs */}
               <div className="w-full md:w-2/3 pl-0 md:pl-4 space-y-4">
                 {/* Email */}
@@ -337,5 +326,5 @@ const CrmUser_userInfos: React.FC<CrmUserUserInfosProps> = ({ userData, setUserD
   );
 };
 
-export default CrmUser_userInfos;
+export default CrmUser_userInfosNoImg;
 

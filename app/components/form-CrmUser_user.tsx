@@ -6,7 +6,6 @@ import { crmUser_userOneSelection } from "../db/dbNeon-CrmUsers_user";
 import ContainerBGN from "./cont-BgGN";
 import CrmUser_userFactures from "./CrmUser_userFactures";
 import CrmUser_userOffre from "./CrmUser_userOffre";
-import CrmUser_userInfosFull from "./CrmUser_userInfosFull";
 import CrmUser_userInfosSimple from "./crmUser_userInfosSimple";
 import CrmUser_userInfosNoImg from "./CrmUser_userInfosNoImg";
 
@@ -200,20 +199,11 @@ const FormCrmUser_user: React.FC = () => {
               {activeTab === "infos" && (
                 <>
                   <MiniUserForm />
-                  <div className="block md:hidden">
-                    <CrmUser_userInfosNoImg
-                      key={unUserData.userId}
-                      userData={unUserData}
-                      setUserData={setUnUserData}
-                    />
-                  </div>
-                  <div className="hidden md:block">
-                    <CrmUser_userInfosFull
-                      key={unUserData.userId}
-                      userData={unUserData}
-                      setUserData={setUnUserData}
-                    />
-                  </div>
+                  <CrmUser_userInfosNoImg
+                    key={unUserData.userId}
+                    userData={unUserData}
+                    setUserData={setUnUserData}
+                  />
                 </>
               )}
             </div>

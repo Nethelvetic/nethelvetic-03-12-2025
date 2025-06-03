@@ -98,7 +98,7 @@ const CrmUser_userInfos: React.FC<CrmUserUserInfosProps> = ({ userData, setUserD
 
   return (
     <div className="p-6 space-y-6">
-      <CrmUser_userInfosSimple card={cardData} />
+
       <ContainerBGN>
         <div className="w-full">
           <form className="space-y-4 p-4 w-full">

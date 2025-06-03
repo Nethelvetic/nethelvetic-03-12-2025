@@ -6,7 +6,7 @@ import { crmUser_userOneSelection } from "../db/dbNeon-CrmUsers_user";
 import ContainerBGN from "./cont-BgGN";
 import CrmUser_userFactures from "./CrmUser_userFactures";
 import CrmUser_userOffre from "./CrmUser_userOffre";
-import CrmUser_userInfos from "./CrmUser_userInfos";
+import CrmUser_userInfosFull from "./CrmUser_userInfosFull";
 import CrmUser_userInfosSimple from "./crmUser_userInfosSimple";
 
 // TypeScript interface reprenant la structure du formulaire de modification
@@ -199,7 +199,7 @@ const FormCrmUser_user: React.FC = () => {
               {activeTab === "infos" && (
                 <>
                   <MiniUserForm />
-                  <CrmUser_userInfos
+                  <CrmUser_userInfosFull
                     key={unUserData.userId}
                     userData={unUserData}
                     setUserData={setUnUserData}

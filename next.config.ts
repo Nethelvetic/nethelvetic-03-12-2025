@@ -17,8 +17,8 @@ const nextConfig: NextConfig = {
       poll: 500,
       // attendre 200 ms après un changement pour lancer la recompilation
       aggregateTimeout: 200,
-      // on peut ignorer node_modules pour éviter trop de bruit
-      ignored: /node_modules/,
+      // on peut ignorer node_modules et .next pour éviter trop de bruit
+      ignored: /node_modules|\.next/,
     };
     return config;
   },
